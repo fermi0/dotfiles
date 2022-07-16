@@ -1,0 +1,93 @@
+{
+	"$schema": "https://joplinapp.org/schema/settings.json",
+	"locale": "en_US",
+	"api.token": "4bec0e769d55ce2d6126be1d2513a138f91b4b798d519a5f4a26bcc7dfe11ecc92f58e4380b132ed9d23e594f51b9f98b8910a68ce2329b73381fbefdcd53a15",
+	"markdown.plugin.softbreaks": true,
+	"markdown.plugin.typographer": true,
+	"spellChecker.language": "en-US",
+	"ui.layout": {
+		"key": "root",
+		"children": [
+			{
+				"key": "tempContainer-yVdtrUGkKTvQJ34cR7EcE4",
+				"children": [
+					{
+						"key": "noteList",
+						"visible": true,
+						"height": 213
+					},
+					{
+						"key": "sideBar",
+						"visible": true
+					}
+				],
+				"visible": true,
+				"width": 338
+			},
+			{
+				"key": "tempContainer-FRA8zkRro2y6k6L8TVQ1Ly",
+				"children": [
+					{
+						"key": "plugin-view-joplin.plugin.note.tabs-note.tabs.panel",
+						"context": {
+							"pluginId": "joplin.plugin.note.tabs"
+						},
+						"visible": true,
+						"height": 40
+					},
+					{
+						"key": "editor",
+						"visible": true
+					}
+				],
+				"visible": true
+			},
+			{
+				"key": "plugin-view-ylc395.noteLinkSystem-panel",
+				"context": {
+					"pluginId": "ylc395.noteLinkSystem"
+				},
+				"visible": false
+			}
+		],
+		"visible": true
+	},
+	"noteVisiblePanes": [
+		"viewer"
+	],
+	"editor.codeView": true,
+	"sync.target": 5,
+	"sync.interval": 43200,
+	"sync.5.path": "https://ppp.woelkli.com/remote.php/webdav/Joplin",
+	"sync.5.username": "corvus.expelliarmus@gmail.com",
+	"dateFormat": "YYYY.MM.DD",
+	"timeFormat": "h:mm A",
+	"editor.keyboardMode": "vim",
+	"editor.spellcheckBeta": false,
+	"theme": 2,
+	"themeAutoDetect": false,
+	"notes.sortOrder.buttonsVisible": false,
+	"markdown.plugin.fountain": true,
+	"markdown.plugin.sub": true,
+	"markdown.plugin.sup": true,
+	"markdown.plugin.deflist": true,
+	"markdown.plugin.abbr": true,
+	"markdown.plugin.emoji": false,
+	"markdown.plugin.insert": true,
+	"markdown.plugin.multitable": true,
+	"showNoteCounts": true,
+	"uncompletedTodosOnTop": true,
+	"notes.sortOrder.field": "title",
+	"richTextBannerDismissed": true,
+	"showTrayIcon": true,
+	"notes.sortOrder.reverse": false,
+	"style.editor.fontFamily": "FantasqueSansMono Nerd Font Mono",
+	"style.editor.monospaceFontFamily": "Unifont",
+	"editor": "/usr/bin/vim.gtk3",
+	"windowContentZoomFactor": 100,
+	"style.editor.fontSize": 16,
+	"markdown.plugin.katex": true,
+	"sync.maxConcurrentConnections": 5,
+	"style.editor.contentMaxWidth": 0,
+	"trackLocation": false
+}

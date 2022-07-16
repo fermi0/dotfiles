@@ -1,0 +1,103 @@
+#pacity
+blur-strength = 10000000000000000000000000000000000000000000000000000000000000000000;
+##active-opacity = 0.9;
+##inactive-opacity = 0.9;
+#
+opacity-rule = [
+
+    "85:class_g = 'Thunar' && !_NET_WM_STATE@:32a",
+    "0:_NET_WM_STATE@[0]:32a *= '_NET_WM_STATE_HIDDEN'",
+    "0:_NET_WM_STATE@[1]:32a *= '_NET_WM_STATE_HIDDEN'",
+    "0:_NET_WM_STATE@[2]:32a *= '_NET_WM_STATE_HIDDEN'",
+    "0:_NET_WM_STATE@[3]:32a *= '_NET_WM_STATE_HIDDEN'",
+    "0:_NET_WM_STATE@[4]:32a *= '_NET_WM_STATE_HIDDEN'",
+    "69:class_g = 'Rofi'",
+    "90:class_g = 'Audacious'",
+    "100:class_g = 'mpv'",
+    "69:class_g = 'Artha'", 
+    "69:class_g = 'i3bar'", 
+    "69:class_g = 'i3-frame'", 
+    "85:class_g = 'Thunar'",  
+    "90:class_g = 'XTerm'", 
+    "88:class_g = 'Cherrytree'", 
+    "88:class_g = 'Code'", 
+    "88:class_g = 'Evince'", 
+    "88:class_g = 'Zathura'", 
+    "78:class_g = 'Spotify'",
+    "90:class_g = 'TelegramDesktop'", 
+    "85:class_g = 'dolphin'",  
+    "96:class_g = 'Firefox'",  
+    "90:class_g = 'VirtualBox Manager'"
+
+];
+
+
+# Shadow
+#shadow = true;			    # Enabled client-side shadows on windows.
+#no-dock-shadow = true;		# Avoid drawing shadows on dock/panel windows.
+#shadow-of-dock = false;		# Avoid drawing shadows on dock/panel windows.
+#no-dnd-shadow = true;		# Don't draw shadows on DND windows.
+#shadow-of-dnd = false;		# Don't draw shadows on DND windows.
+#clear-shadow = true;		# Zero the part of the shadow's mask behind the
+                            # window. Fix some weirdness with ARGB windows.
+#shadow-radius = 7;		    # The blur radius for shadows. (default 12)
+#shadow-offset-x = -7;		# The left offset for shadows. (default -15)
+#shadow-offset-y = -7;		# The top offset for shadows. (default -15)
+#shadow-opacity = 0.7;		# The translucency for shadows. (default .75)
+## shadow-red = 0.0;		# Red color value of shadow. (0.0 - 1.0, defaults to 0)
+## shadow-green = 0.0;		# Green color value of shadow. (0.0 - 1.0, defaults to 0)
+## shadow-blue = 0.0;		# Blue color value of shadow. (0.0 - 1.0, defaults to 0)
+#shadow-exclude = [ "_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'" ];	# Exclude conditions for shadows.
+#shadow-ignore-shaped = true;	# Avoid drawing shadow on all shaped windows
+				# (see also: --detect-rounded-corners)
+
+# Opacity
+#menu-opacity = 0.9;			# The opacity for menus. (default 1.0)
+opacity-of-popup_menu = 0.9;			# The opacity for menus. (default 1.0)
+opacity-of-dropdown_menu = 0.9;			# The opacity for menus. (default 1.0)
+#inactive-opacity = 0.75;			# Default opacity of inactive windows. (0.0 - 1.0)
+# active-opacity = 0.8;			# Default opacity for active windows. (0.0 - 1.0)
+frame-opacity = 0.8;			# Opacity of window titlebars and borders. (0.1 - 1.0)
+# inactive-opacity-override = true;	# Let inactive opacity set by 'inactive-opacity' overrides
+					# value of _NET_WM_OPACITY. Bad choice.
+#alpha-step = 0.9;			# XRender backend: Step size for alpha pictures. Increasing
+					# it may result in less X resource usage,
+					# Yet fading may look bad.
+# inactive-dim = 0.2;			# Dim inactive windows. (0.0 - 1.0)
+# inactive-dim-fixed = true;		# Do not let dimness adjust based on window opacity.
+blur-background = true;		# Blur background of transparent windows.
+					# Bad performance with X Render backend.
+					# GLX backend is preferred.
+blur-background-frame = true;		# Blur background of opaque windows with transparent
+					# frames as well.
+blur-background-fixed = true;		# Do not let blur radius adjust based on window opacity.
+blur-background-exclude = [ "class_g = 'conky'" ];
+					# Exclude conditions for background blur.
+
+# Fading
+fading = true;			# Fade windows during opacity changes.
+# fade-delta = 30;		# The time between steps in a fade in milliseconds. (default 10).
+fade-in-step = 0.03;		# Opacity change between steps while fading in. (default 0.028).
+fade-out-step = 0.03;		# Opacity change between steps while fading out. (default 0.03).
+# no-fading-openclose = true;	# Avoid fade windows in/out when opening/closing.
+
+fade-exclude = [ ];		# Exclude conditions for fading.
+
+# Other
+backend = "glx"		# Backend to use: "xrender" or "glx". GLX backend is typically
+				# much faster but depends on a sane driver.
+mark-wmwin-focused = true;	# Try to detect WM windows and mark them as active.
+mark-ovredir-focused = true;	# Mark all non-WM but override-redirect windows active (e.g. menus).
+use-ewmh-active-win = false;	# Use EWMH _NET_WM_ACTIVE_WINDOW to determine which window is focused
+				# instead of using FocusIn/Out events. Usually more reliable but
+				# depends on a EWMH-compliant WM.
+detect-rounded-corners = true;	# Detect rounded corners and treat them as rectangular when --shadow-ignore-shaped is on.
+detect-client-opacity = true;	# Detect _NET_WM_OPACITY on client windows, useful for window
+				# managers not passing _NET_WM_OPACITY of client windows to frame
+				# windows.
+refresh-rate = 0;		# For --sw-opti: Specify refresh rate of the screen. 0 for auto.
+vsync = "opengl";			# "none", "drm", "opengl", "opengl-oml", "opengl-swc", "opengl-mswc"
+				# See man page for more details.
+dbe = false;			# Enable DBE painting mode. Rarely needed.
+#paint-on-overlay = true;	# Painting on X Composite overlay window. Recommended.
+sw-opti = false;		# Limit compton to repaint at most once every 1 / refresh_rate.

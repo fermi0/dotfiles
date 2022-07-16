@@ -1,0 +1,433 @@
+# Basic vars
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 10
+set icons
+set drawbox
+set period 1
+set hidden
+set cleaner '/etc/lf/cleaner'
+set previewer '/etc/lf/scope'
+set preview
+set info size:time
+set sortby natural
+set dircounts
+set ignorecase
+set smartcase
+set relativenumber
+
+# cmds/functions
+cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
+cmd sudo-mkdir $sudo mkdir -p "$(echo $* | tr ' ' '\ ')"
+cmd mkfile $vim "$(echo $* | tr ' ' '\ ')"
+cmd sudo-mkfile $sudo vim "$(echo $* | tr ' ' '\ ')"
+cmd sshfs-f $sshfs fermi@192.168.1.64:/sdcard /media/oppenheimer/Fermion-sshfs
+cmd dragon %dragon -a -x $fx
+cmd dragon-stay %dragon -a $fx
+cmd dlfile %dlfile
+
+# Trash cli bindings
+cmd trash ${{
+  files=$(printf "$fx" | tr '\n' ';')
+  while [ "$files" ]; do
+    # extract the substring from start of string up to delimiter.
+    # this is the first "element" of the string.
+    file=${files%%;*}
+
+    trash-put "$(basename "$file")"
+    # if there's only one element left, set `files` to an empty string.
+    # this causes us to exit this `while` loop.
+    # else, we delete the first "element" of the string from files, and move onto the next.
+    if [ "$files" = "$file" ]; then
+      files=''
+    else
+      files="${files#*;}"
+    fi
+  done
+}}
+
+cmd clear_trash %trash-empty
+
+cmd restore_trash ${{
+      trash-restore
+      }}
+
+# Manage permissions
+cmd chmod ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+    printf "Mode Bits: "
+    read ans
+
+    for file in "$fx"
+    do
+      sudo chmod $ans $file
+    done
+
+    lf -remote 'send reload'
+}}
+
+cmd chown ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+    printf "owner:group: "
+    read ans
+
+    if [ $ans = "~" ]; then
+        for file in "$fx"
+        do
+          sudo chown oppenheimer:oppenheimer $file
+        done
+    fi
+    if [ $ans = "/" ]; then
+        for file in "$fx"
+        do
+          sudo chown root:root $file
+        done
+    else
+        for file in "$fx"
+        do
+          sudo chown $ans $file
+        done
+    fi
+
+    lf -remote 'send reload'
+}}
+
+# Extract & Compress
+cmd extract ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "Extract?[Y/n]"
+	read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        aunpack $fx
+    fi
+    lf -remote 'send reload'
+}}
+
+cmd compress ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "Compress?[Y/n]"
+	read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        read -p "Output zip: " ask
+        zip -r9vA -Zdeflate $ask tes $fx
+    fi
+    lf -remote 'send reload'
+}}
+
+# symlinks
+cmd symlink ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+    for i in $fx; do
+        printf "%s\n\t" "$i"
+        read -p "Destination for symlink: " des
+        sudo ln -s $i $des/$(basename $i)
+    done
+    sleep 2;
+    }}
+
+cmd sudodelete ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "delete?[Y/n]"
+	read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        sudo rm -rfv -- $fx
+    fi
+    lf -remote 'send reload'
+}}
+
+cmd delete ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "delete?[Y/n]"
+	read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        rm -rfv -- $fx
+    fi
+    lf -remote 'send reload'
+}}
+
+cmd shell-put ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    cd $PWD
+    $SHELL
+}}
+
+cmd mount ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+    printf "mountpoint directory name: "
+    read ans
+
+    if [ -d "/media/oppenheimer/$ans" ]; then
+        echo "/media/oppenheimer/$ans already exist!"
+        sudo mount $fx /media/oppenheimer/$ans
+        echo "/media/oppenheimer/$ans mounted!"
+        sleep 2;
+    fi
+
+    if [ ! -d "/media/oppenheimer/$ans" ]; then
+        mkdir /media/oppenheimer/$ans
+        echo "mounting on /media/oppenheimer/$ans"
+        sudo mount $fx /media/oppenheimer/$ans
+        echo "/media/oppenheimer/$ans mounted!"
+        sleep 2;
+    fi
+
+    lf -remote 'send reload'
+}}
+
+cmd mtp-mount ${{
+    #trap bashtrap INT
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "mountpoint directory name: "
+    read ans
+    #bashtrap()
+    #{
+    #    echo "Mounting /media/oppenheimer/$ans"
+    #    }
+    #for i in `seq 1 2`; do
+    mtp-connect&
+    sleep 5;
+    #if [ x"$quit" = xy ]; then
+    if [ -d "/media/oppenheimer/$ans" ]; then
+        jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
+        echo "/media/oppenheimer/$ans already exist!"
+        echo "/media/oppenheimer/$ans mounted!"
+    fi
+
+    if [ ! -d "/media/oppenheimer/$ans" ]; then
+        mkdir /media/oppenheimer/$ans
+        echo "mounting on /media/oppenheimer/$ans"
+        sleep 1;
+        jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
+        echo "/media/oppenheimer/$ans mounted!"
+    fi
+
+    lf -remote 'send reload'
+    sleep 2;
+}}
+
+cmd unmount ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+    printf "unmount?[Y/n] "
+    read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        sudo umount -l $fx && sleep 5 && sudo rm -rfv -- $fx
+    fi
+    lf -remote 'send reload'
+}}
+
+cmd kdeconnect ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    read -p "Destination(Fermion=y or specify): " dest
+    if [ -z "$dest" ]; then
+        for i in $fx; do
+            kdeconnect-cli --share $i --name Fermion
+        done
+    else
+        for i in $fx; do
+            kdeconnect-cli --share $i --name $dest
+        done
+    fi
+    sleep 5;
+}}
+
+cmd rsync ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    read -p "rsync to $PWD?[Y/n] " pwd
+    
+    if [ -z "$pwd" ] || [ $pwd = "y" ]; then
+        tmux neww -n rsyncing rsync -ausvxhP --ignore-existing $fx $PWD
+    fi
+    if [ $pwd = "n" ]; then
+        read -p "rsync to Fermion?[Y/n] " myd
+        if [ $myd = "n" ]; then
+            read -p "Destination path: " dest
+            tmux neww -n "rsyncing to $dest" rsync -ausvxhP --ignore-existing $fx $dest
+        fi
+        if [ -z "$myd" ] || [ $myd = "y" ]; then
+            read -p "Destination path: " des
+            if [ -z "$des" ]; then
+                tmux neww -n "rsyncing to /sdcard" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard
+            else
+                tmux neww -n "rsyncing to /sdcard/$des" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard/$des
+            fi
+        fi
+    fi
+    sleep 2;
+}}
+
+cmd git-download ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    read -p "URL: " url
+    read -p "File/directory: " path
+    svn export $url/trunk/$path
+    printf "$path downloaded!"
+    sleep 1;
+}}
+
+cmd spacefm-open ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+}}
+
+cmd depkg ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+	printf "install?[Y/n]"
+	read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        sudo dpkg -i $fx
+    fi
+}}
+
+cmd setbg "$1"
+cmd bulkrename $vidir $fx
+
+#Unmap Defaults
+map e
+map d
+map f
+map y
+map p
+map m
+map c
+map t
+map sa
+map se
+map sn
+map ss
+map st
+map gh
+
+# Bindings
+map fzf $lf -remote "send $id select '$(fzf)'"
+
+map DS sudodelete
+map DD delete
+map dd cut
+map yy copy
+map pp paste
+map cc clear
+map U unselect
+map r rename
+map <delete> trash
+map trr restore_trash
+map trc clear_trash
+map send kdeconnect
+map syn rsync
+map psyn rsync
+
+map dr dragon
+map ds dragon-stay
+map dl dlfile
+
+map E extract
+map mdr push :mkdir<space>
+map mds push :sudo-mkdir<space>
+map mfl push :mkfile<space>
+map msf push :sudo-mkfile<space>
+map chm chmod
+map cho chown
+
+map sfs sshfs-f
+map mnt mount
+map mo! unmount
+map mtp mtp-mount
+map <enter> shell
+map sex $$fx
+map swa !$fx
+map sas &$fx
+map sio %$fx
+map oo &mimeopen $fx && disown
+map O $tmux neww mimeopen --ask $fx
+map do $tmux neww mimeopen --ask-default $fx
+map I depkg
+map sfm spacefm-open
+map gtd git-download
+map B bulkrename
+map ee $tmux neww -n "$(basename "$fx")" /usr/bin/vim.gtk3 $fx
+map see $sudo /usr/bin/vim.gtk3 $fx
+map H top
+map L bottom
+map M mark-save
+map R reload
+map sln symlink
+
+map W $setsid -f $TERMINAL >/dev/null 2>&1
+map Yp $printf "%s" "$fx" | xclip -selection clipboard
+map Yy $printf $(basename "$fx") | xclip -selection clipboard
+
+# Navigation
+map gh cd /home/oppenheimer
+map gr cd /root
+map g/ cd /root
+map gdc cd /home/oppenheimer/Documents
+map gdl cd /home/oppenheimer/Downloads
+map gvi cd /home/oppenheimer/Videos
+map gmu cd /home/oppenheimer/Music
+map gpc cd /home/oppenheimer/Pictures
+
+map gtr cd /home/oppenheimer/.local/share/Trash/files
+map glb cd /home/oppenheimer/.local/bin
+map gcf cd /home/oppenheimer/.config
+map glf cd /home/oppenheimer/.config/lf
+map gi3 cd /home/oppenheimer/.config/i3
+map gnt cd /home/oppenheimer/notes
+
+map gwa cd /home/oppenheimer/Pictures/walls
+map gsc cd /home/oppenheimer/Pictures/Screenshots
+
+map gpr cd /home/oppenheimer/Documents/Projects
+map gmc cd /home/oppenheimer/Documents/Configs
+map gak cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/Journalorigin
+map gbb cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/My_Books
+map gbc cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Computers
+map gbm cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Mathematics
+map gbp cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Physics
+
+map gtl cd /home/oppenheimer/Downloads/Tools
+map gds cd /home/oppenheimer/Downloads/Softwares
+map gf2 cd /home/oppenheimer/Downloads/Archives/f22
+
+map gtc cd /etc
+map gpt cd /opt
+map gea cd /etc/apt/
+map gub cd /usr/bin
+map gtm cd /tmp
+map gdv cd /dev
+map gmo cd /media/oppenheimer

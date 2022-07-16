@@ -1,0 +1,61 @@
+DISPLAY=:0.0
+SHELL=/bin/bash
+XDG_RUNTIME_DIR=/run/user/1000
+PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/snap/bin
+
+# m h  dom mon dow(0=Sunday)   command
+*/1 * * * * crontab -l > /home/oppenheimer/Documents/Configs/dotfiles/cronfiles/crontab.txt
+*/1 * * * * notify-send -i /home/oppenheimer/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
+
+0 */12 * * * crontab -l > /home/oppenheimer/Documents/Configs/dotfiles/cronfiles/crontab.txt
+0 */12 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
+
+# time-keeping
+20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
+20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * cd /home/oppenheimer/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69 
+
+0 6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
+0 5,6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * cd /home/oppenheimer/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
+
+# alarm
+0 6 * * * xterm -e "mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3"
+20 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobFogHornAlarm.opus
+30 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobSquarePantsFogHorn.mp3
+
+# wallpaper loop
+*/3 * * * * exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
+
+# updates
+0 22 * * 5 guake --show -n -e guake -r "System Update" -e "sudo apt update -y && sudo apt full-upgrade -y && sudo apt autopurge -y && sudo apt autoclean -y && sudo apt clean -y"
+
+# schedule
+# sleep 11am - 4am
+# 50 22 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/sleep.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "You Can't Live Without It!"
+# 50 22 * * * play --volume 0.9 ~/Documents/Configs/sounds/sleep.wav repeat 5
+# 0 23 * * * mpv --volume=60 ~/Documents/Configs/sounds/playlists/sleep.m3u
+
+# wikipedia
+9 8 * * * cd ~/Documents/Configs/dotfiles/scripts/wikipedia/ && wikit $(python3 query.py) --all > wiki.txt
+10 8 * * * cd ~/Documents/Configs/dotfiles/scripts/wikipedia/ && mpv interesting_wiki.mp3 --speed=1.2
+10 8 * * * xterm -e "sleep 3 && gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - --speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000"
+10 8 * * * xterm -e "less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt"
+
+
+# walk
+# 0 17 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/walk.svg -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Go For A Walk"
+
+# book 9:00 - 11:50 pm
+# 25 21 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/book.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Book Reading"
+# 25 21 * * * play --volume 0.9 ~/Documents/Configs/sounds/book.wav repeat 5
+# 45 21 * * * play --volume 0.9 ~/Documents/Configs/sounds/reset.wav repeat$#$$#$#$ER$ ###5
+
+# regular back ups
+# @reboot sleep 100 && /home/oppenheimer/Documents/Configs/scripts/nightly/nightly_backup.sh& 
+
+# sun 0
+# mon 1
+# tue 2
+# wed 3
+# thu 4
+# fri 5
+# sat 6

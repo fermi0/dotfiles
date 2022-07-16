@@ -1,0 +1,1618 @@
+/* OhmineDT v3.1.84 | userchrome.css | 
+/* CSS for: Markdown Editor | Joplin UI */
+
+/* By usual case, you would only to edit the source code within the root section to fulfill most of your personal needs */
+/* Please add your custom code to the bottom of this document if needed. */
+
+/* OhmineDT will stay compatible with the latest stable versions of Joplin. */
+/* OhmineDT's updates information: https://github.com/Nacandev/Ohmine-Dark-Theme-For-Joplin#latest-released */
+
+/* Thank you, guys! I hope you enjoy what's OhmineDT did for you! */
+/* Tell me whatever you want > Joplin Forum: https://discourse.joplinapp.org/t/css-theme-ohmine-dark-theme/21000 */
+/* Directly report an issue > Github: https://github.com/Nacandev/Ohmine-Dark-Theme-For-Joplin/issues/new/choose */
+
+
+
+:root {
+
+  /* ******************************************************* */
+  /* !!!!!!!!!         ROOT: SECTION START        !!!!!!!!!! */
+  /* ******************************************************* */
+  /* ******************************************************* */
+  /* ===                    SWITCHER                     === */
+  /* ******************************************************* */
+
+  /* to get the correct effect, please follow the below comments to edit the switchers */
+
+  
+
+  /* SWITCHER FOR MARKDOWN EDITOR ************************** */
+  /* change the below css property values to control the style effects on Markdown Editor */
+
+  --switcher-mde-abstract-content-bar-display: block; /* SHOW: "block;" | HIDE: "none;" | show/hide the abstract content bar */
+  --switcher-mde-abstract-content-bar-blank-line-display: none; /* SHOW: "block;" | HIDE: "none;" | show/hide the blank lines on abstract content bar */
+  --switcher-mde-headings-text-shadow: 0 0 2px; /* SHOW: "0 0 2px;" | HIDE: "none;" | show/hide the text shadow of headings */
+  --switcher-mde-h1-font-variant: none; /* ON: "small-caps;" | OFF: "none;" | turn on/off the small-caps effect of h1 heading */
+  --switcher-mde-horizontal-line-background-color: var(--hr-background-gradient); /* ON: "var(--hr-background-gradient);" | OFF: "none;" | turn on/off the background color of horizontal line markdown syntax */
+
+
+
+  /* SWITCHER JOPLIN UI ************************************ */
+  /* change the below css property values to control the Joplin UI layout */
+  
+  --switcher-jui-all-note-button-display: none; /* SHOW: "flex;" | HIDE: "none;" | show/hide the top left all notes button */
+  --switcher-jui-rich-text-editor-switch-button-display: flex; /* SHOW: "flex;" | HIDE: "none;" | show/hide the top right editor toggle button */
+  --switcher-jui-notebook-panel-notebook-item-wrap: normal; /* ON: "normal;" | OFF: "none;" | turn on/off wrap text effect of the notebook names in notebook panel (mouse hover + [SHIFT] + [MOUSE WHEEL] for scroll) */
+
+
+
+  /* ******************************************************* */
+  /* ===            STYLING: MARKDOWN EDITOR             === */
+  /* ******************************************************* */
+  
+
+
+  /* GENERAL *********************************************** */
+  /* base font:  heading | paragraph | blockquote | list | footnote | sticky notes | custom title block | emphasize | strong | insert | strikethrough | mark | search */
+  --base-font: "FantasqueSansMono Nerd Font Mono", sans-serif;
+  --base-font-size: 15px;
+
+  /* monospace font:  table | anchor text link | file path link | code block | inline code | katex | html */
+  --monospace-font: "FantasqueSansMono Nerd Font Mono", monospace;
+  --monospace-font-size: 14px;
+  --monospace-font-line-height: normal;
+
+  /* bigger monospace font:  file path link text | anchor link text | abbreviation text */
+  --bigger-monospace-font-size: 15px;
+
+  /* markdown editor --------------------------------------- */
+  --markdown-editor-background-color: #151b1a;
+
+  /* paragraph --------------------------------------------- */
+  --markdown-editor-text-color: #cccccc;
+
+  /* horizontal line --------------------------------------- */
+  --hr-background-color: #3a3930;
+  --hr-text-color: #777777;
+  --hr-background-gradient: linear-gradient( /* edit this value might cause the `--switcher-mde-horizontal-line-background-color` not working */
+                              to bottom, 
+                              var(--markdown-editor-background-color) 30%,
+                              var(--hr-background-color) 53%,
+                              var(--markdown-editor-background-color) 75%
+                            );
+
+
+  /* HEADINGS ********************************************** */
+  /* headings group: h1 to h6 ------------------------------ */
+  --headings-font-weight: 500;
+  --headings-line-height: 1em;
+  --headings-text-color: #cacaca;
+  --headings-text-shadow: none;
+
+  /* headings font size ------------------------------------ */
+  --h1-font-size: 1.7em;
+  --h2-font-size: 1.6em;
+  --h3-font-size: 1.5em;
+  --h4-font-size: 1.4em;
+  --h5-font-size: 1.3em;
+  --h6-font-size: 1.2em;
+
+  /* headings color ---------------------------------------- */
+  /* by default, they are all equal to the --headings-text-color */
+  --h1-text-color: var(--headings-text-color);
+  --h2-text-color: var(--headings-text-color);
+  --h3-text-color: var(--headings-text-color);
+  --h4-text-color: var(--headings-text-color);
+  --h5-text-color: var(--headings-text-color);
+  --h6-text-color: var(--headings-text-color);
+
+  /* headings text shadow ---------------------------------- */
+  /* by default, they are all equal to the --headings-text-shadow */
+  --h1-text-shadow: var(--headings-text-shadow);
+  --h2-text-shadow: var(--headings-text-shadow);
+  --h3-text-shadow: var(--headings-text-shadow);
+  --h4-text-shadow: var(--headings-text-shadow);
+  --h5-text-shadow: var(--headings-text-shadow);
+  --h6-text-shadow: var(--headings-text-shadow);
+
+
+
+  /* SPECIAL TEXT ****************************************** */
+  /* special text group:  mark | emphasize | abbreviation | strong | insert | strikethrough */
+  --special-text-color: #73b99d;
+  --special-text-border-color: var(--special-text-color);
+
+  /* mark text --------------------------------------------- */
+  --mark-text-color: var(--special-text-color);
+  --mark-text-border-color: var(--mark-text-color);
+
+  /* search text ------------------------------------------- */
+  --search-text-color: #f1f173;
+  --search-text-border-color-selected: var(--search-text-color);
+  --search-text-box-shadow: var(--search-text-color);
+  /* search text - scrollbar search marker ------------------*/
+  --search-text-scrollbar-marker-background-color: var(--search-text-color);
+
+  /* text group:  emphasize | abbreviation ----------------- */
+  /* joplin didn't provide an independent abbreviation text css class on markdown editor */
+  --emphasize-text-color: var(--special-text-color);
+  --emphasize-text-border-color: var(--emphasize-text-color);
+
+  /* strong text ------------------------------------------- */
+  --strong-text-color: var(--special-text-color);
+  --strong-text-border-color: var(--strong-text-color);
+
+  /* insert text ------------------------------------------- */
+  --insert-text-color: var(--special-text-color);
+  --insert-text-border-color: var(--insert-text-color);
+
+  /* strikethrough text ------------------------------------ */
+  --strikethrough-text-color: var(--special-text-color);
+  --strikethrough-text-border-color: var(--strikethrough-text-color);
+
+  /* inline code text -------------------------------------- */
+  --inline-code-text-color: #bdbdbd;
+  --inline-code-text-background-color: #232323;
+  --inline-code-text-border-color: #585858;
+  --inline-code-text-shadow: black;
+
+
+
+  /* SYNTAX ************************************************ */
+  /* syntax group: tag | string | attribute ---------------- */
+  --syntax-text-color: #a0a0a0;
+
+  /* syntax tag -------------------------------------------- */
+  --syntax-tag-text-color: var(--syntax-text-color);
+  --syntax-tag-background-color: #2f0008;
+
+  /* syntax string ----------------------------------------- */
+  --syntax-string-text-color: var(--syntax-text-color);
+  --syntax-string-background-color: #0b2d00;
+
+  /* syntax attribute -------------------------------------- */
+  --syntax-attribute-text-color: var(--syntax-text-color);
+  --syntax-attribute-background-color: #36005a;
+
+
+
+  /* LINK ************************************************** */
+  --link-text-color: #9a9a7e;
+
+
+
+  /* LIST ************************************************** */
+  --list-text-color: #a5a5a5;
+  --list-token-color: var(--list-text-color);
+
+
+
+  /* BLOCKQUOTE ******************************************** */
+  --blockquote-text-color: #808080;
+
+
+
+  /* CODEBLOCK ********************************************* */
+  --codeblock-background-color: #191919;
+
+
+
+  /* ABSTRACT CONTENT BAR ********************************** */
+  --acb-plain-text: #383838;
+  --acb-heading: #ffffff6e;
+  --acb-list: #51bba8;
+  --acb-blockquote: #a97945;
+  --acb-table: #575384;
+  --acb-image: #045d00;
+  --acb-footnote: #5a5800;
+  --acb-link: #cdd286;
+  --acb-abbreviation: #00c538;
+  --acb-html-tag: #ff0063;
+  --acb-katex: #5aa5fb;
+  --acb-checklist: #5d00ff;
+  --acb-codeblock: var(--codeblock-background-color);
+  --acb-blank-line: var(--markdown-editor-background-color);
+
+
+
+  /* PLUGIN: MARKDOWN TABLE COLORIZE *********************** */
+  /* markdown table colorize: caret ------------------------ */
+  --mtc-table-caret-color: #ff0000;
+  
+  /* markdown table colorize: table vertical bar ----------- */
+  --mtc-table-vertical-bar-color: #5a5a5a;
+
+  /* markdown table colorize: table text ------------------- */
+  --mtc-table-text-color: #bdbdbd;
+
+  /* markdown table colorize: table separate group: header | row */
+  --mtc-table-separate-text-color: #bdbdbd;
+  --mtc-table-separate-text-shadow: black;
+
+  /* markdown table colorize: table separate header -------- */
+  --mtc-table-separate-header-background-color: linear-gradient(to right, #696969 10%, #2d2d2d 40%);
+  
+  /* markdown table colorize: table separate row ----------- */
+  --mtc-table-separate-row-background-color: linear-gradient(to right, #424242 10%, #242424 40%);
+
+  /* markdown table colorize: table column mark -----------  */
+  /* table column mark group ------------------------------- */
+  --mtc-table-column-mark-background-color: black;
+  --mtc-table-column-mark-border-color: #4c4c4c; /* only for column 10 to 19 */
+
+  /* standalone table column mark -------------------------- */
+  --mtc-table-col0-mark-color: #ff8080cc;
+  --mtc-table-col1-mark-color: #fff980cc;
+  --mtc-table-col2-mark-color: #80fff7cc;
+  --mtc-table-col3-mark-color: #9080ffcc;
+  --mtc-table-col4-mark-color: #ff80fdcc;
+  --mtc-table-col5-mark-color: #a3ffa5cc;
+  --mtc-table-col6-mark-color: #ff9500cc;
+  --mtc-table-col7-mark-color: #2eff62cc;
+  --mtc-table-col8-mark-color: #579dffcc;
+  --mtc-table-col9-mark-color: #ff00cc;
+  --mtc-table-col10-mark-color: var(--mtc-table-col0-mark-color);
+  --mtc-table-col11-mark-color: var(--mtc-table-col1-mark-color);
+  --mtc-table-col12-mark-color: var(--mtc-table-col2-mark-color);
+  --mtc-table-col13-mark-color: var(--mtc-table-col3-mark-color);
+  --mtc-table-col14-mark-color: var(--mtc-table-col4-mark-color);
+  --mtc-table-col15-mark-color: var(--mtc-table-col5-mark-color);
+  --mtc-table-col16-mark-color: var(--mtc-table-col6-mark-color);
+  --mtc-table-col17-mark-color: var(--mtc-table-col7-mark-color);
+  --mtc-table-col18-mark-color: var(--mtc-table-col8-mark-color);
+  --mtc-table-col19-mark-color: var(--mtc-table-col9-mark-color);
+
+
+
+  /* ******************************************************* */
+  /* ===               STYLING: JOPLIN UI                === */
+  /* ******************************************************* */
+
+
+
+  /* GENERAL *********************************************** */
+  --general-body-background-color: #191919;
+
+
+
+  /* NOTEBOOK PANEL **************************************** */
+  /* notebook panel: container ----------------------------- */
+  --np-background-color: #191919;
+  --np-box-shadow: #33524a;
+  
+  /* notebook panel: header -------------------------------- */
+  /* header text group:  notebook icon | text | plus icon -- */
+  --np-header-text-color: white;
+  
+  /* notebook panel: directory icon ------------------------ */
+  --np-directory-icon-closed-color: #f6ff67;
+  --np-directory-icon-opened-color: #71ffc4;
+  --np-directory-icon-shadow: white;
+  
+  /* notebook panel: notebook item ------------------------- */
+  --np-notebook-item-text-color: #e2e2e2;
+  --np-notebook-item-border-color: #393939;
+  --np-notebook-item-scrollbar-color: #00ffd5;
+
+  /* notebook panel: notebook item selected state ---------- */
+  --np-notebook-item-background-color-selected: linear-gradient(60deg, #002f24, #00926a);
+  --np-notebook-item-box-shadow-selected: #72fdbd;
+  
+  /* notebook panel: note count label ---------------------- */
+  --np-note-count-label-text-color: #ffffff;
+  --np-note-count-label-background-color: #1d2927;
+  --np-note-count-label-box-shadow: white;
+
+  /* notebook panel: synchronize information text ---------- */
+  --np-sync-info-text-color: #02ffd0;
+  
+  /* notebook panel: synchronize button -------------------- */
+  --np-sync-button-background-color: #191919;
+  --np-sync-button-box-shadow: #5a826e;
+  --np-sync-button-background-color-hover: #151f19;
+  --np-sync-button-box-shadow-hover: #beffdf;
+  --np-sync-button-text-color: #b1b1b1;
+  --np-sync-button-text-color-hover: #ddffef;
+  --np-sync-button-icon-shadow-hover: #7dffa6;
+
+
+
+  /* NOTELIST PANEL **************************************** */
+  /* notelist panel: container ----------------------------- */
+  --nlp-box-shadow: #33524a;
+  
+  /* notelist panel: header container ---------------------- */
+  --nlp-header-background-color: #172723;
+  --nlp-header-box-shadow: #beffdf;
+  
+  /* notelist panel: header search bar --------------------- */
+  --nlp-header-search-bar-placeholder-text-color: #888;
+  --nlp-header-search-bar-background-color: #191919;
+  --nlp-header-search-bar-box-shadow: #c1c1c1;
+  --nlp-header-search-bar-box-shadow-hover: white;
+  
+  /* notelist panel: header button ------------------------- */
+  /* button group: sort field | sort reverse | todo | note --- */
+  --nlp-header-button-background-color: #191919;
+  --nlp-header-button-box-shadow: #c1c1c1;
+  --nlp-header-button-background-color-hover: #22584d;
+  --nlp-header-button-box-shadow-hover: white;
+
+  /* button icon group:  search | cancel | sort field | sort reverse | todo | note */
+  --nlp-header-button-icon-color: #b1b1b1;
+  --nlp-header-button-icon-color-hover: #83e2ca;
+  
+  /* notelist panel: body container ------------------------ */
+  --nlp-body-container-background-color: #191919;
+
+  /* notelist panel: note list item ------------------------ */
+  --nlp-list-item-text-color: var(--np-notebook-item-text-color);
+  --nlp-list-item-border-color: var(--np-notebook-item-border-color);
+  --nlp-note-list-item-background-color: #74370166;
+  --nlp-note-list-item-background-color-selected: linear-gradient(60deg, #002f24, #00926a);
+  --nlp-note-list-item-box-shadow-selected: #72fdbd;
+  --nlp-note-list-item-filter-hover-selected: hue-rotate(180deg);
+
+
+
+  /* EDITOR HEADER ***************************************** */
+  /* editor header: container ------------------------------ */
+  --eh-background-color: #151b1a;
+
+  /* editor header: notebook navigation button ------------- */
+  --eh-notebook-navigation-button-text-color: white;
+  --eh-notebook-navigation-button-background-color: #089c74;
+  --eh-notebook-navigation-button-hover: hue-rotate(180deg);
+
+
+
+  /* EDITOR TOP TOOLBAR ************************************ */
+  /* editor top toolbar: container ------------------------- */
+  --ett-background-color: #172723;
+  --ett-box-shadow: #beffdf;
+  
+  /* editor top toolbar: button ---------------------------- */
+  --ett-button-background-color-hover: #22584d;
+  --ett-button-box-shadow-hover: white;
+  --ett-button-icon-color-hover: #83e2ca;
+  --ett-button-icon-color: var(--nlp-header-button-icon-color);
+
+  /* editor top toolbar: rich text editor toolbar container  */
+  --ett-rich-text-editor-toolbar-background: var(--ett-background-color);
+  --ett-rich-text-editor-toolbar-box-shadow: var(--ett-box-shadow);
+  
+  
+
+  /* EDITOR BOTTOM TAG BAR ********************************* */
+  /* editor bottom tag bar: container ---------------------- */
+  --ebtb-background-color:#191919;
+  --ebtb-box-shadow: grey;
+  
+  /* editor bottom tag bar: tag ---------------------------- */
+  --ebtb-tag-background-color: #4e3f1c;
+  --ebtb-tag-border-color: #ffffff1f;
+  --ebtb-tag-text-shadow: black;
+  --ebtb-tag-text-hover: white;
+
+
+
+  /* OPTIONS PAGE ****************************************** */
+  /* option page: menu ------------------------------------- */
+  --op-menu-text-color: white;
+  --op-menu-background-color: #151b1a;
+  --op-menu-background-color-hover: #009e847a;
+  --op-menu-background-color-selected: #009e84;
+
+  /* option page: content ---------------------------------- */
+  --op-content-background-color: #3b403f;
+  --op-input-text-color: #bdbdbd;
+  --op-dropdown-list-text-color: #bdbdbd;
+  --op-checkbox-checked-filter: hue-rotate(320deg);
+  --op-label-font-size: 14px;
+  --op-button-background-color: #151b1a;
+  --op-button-text-color: #6bbbae;
+  --op-table-container-background-color: #151b1a;
+  --op-table-border-color: #444;
+  --op-table-keyboard-shortcut-background-color: #565656;
+
+  /* option page: plugin ----------------------------------- */
+  --op-plugin-card-background-color: #292929;
+  --op-plugin-card-box-shadow: #151b1a;
+  --op-plugin-switcher-filter: hue-rotate(300deg);
+  --op-plugin-update-button-background-color: #1c3f46;
+  --op-plugin-update-button-box-shadow: #68ffb4;
+
+
+
+/* ********************************************************* */
+/* !!!!!!!!!           ROOT: SECTION END          !!!!!!!!!! */
+/* ********************************************************* */
+
+}
+  
+/* ********************************************************* */
+/* !!!!!!!!!    MAIN SOURCE CODE: SECTION START   !!!!!!!!!! */
+/* ********************************************************* */
+/* ********************************************************* */
+/*                  STYLING: MARKDOWN EDITOR                 */
+/* ********************************************************* */
+
+
+
+/* GENERAL ************************************************* */
+/* base font:  heading | paragraph | blockquote | list | footnote | sticky notes | custom title block | emphasize | strong | insert | strikethrough | mark | search */
+.CodeMirror-lines .CodeMirror-line * {
+  font-family: var(--base-font) !important;
+  font-size: var(--base-font-size) !important;
+}
+
+/* monospace font:  table | anchor text link | file path link | code block | inline code | katex | html */
+.CodeMirror-lines .CodeMirror-line .cm-url.cm-rm-link,
+.CodeMirror-lines .CodeMirror-line .cm-hr,
+.CodeMirror-lines .CodeMirror-line .cm-tag,
+.CodeMirror-lines .CodeMirror-line .cm-string,
+.CodeMirror-lines .CodeMirror-line .cm-attribute,
+.CodeMirror-lines .CodeMirror-line .cm-image,
+.CodeMirror-lines .CodeMirror-line .cm-atom,
+.CodeMirror-lines .CodeMirror-line .cm-number,
+.CodeMirror-lines .CodeMirror-line .cm-bracket,
+.CodeMirror-lines .CodeMirror-line .cm-rm-link.cm-rm-image,
+.CodeMirror-lines .CodeMirror-line .cm-string.cm-rm-link,
+.CodeMirror-lines .CodeMirror-line .cm-link-text,
+.CodeMirror-lines .CodeMirror-line [class|="cm-katex"],
+.CodeMirror-lines .CodeMirror-line [class|="cm-katex"] ~ .cm-variable-2,
+.CodeMirror-lines .CodeMirror-line .cm-bracket ~ .cm-variable-2,
+.CodeMirror-lines .CodeMirror-line .cm-link-text.cm-em ~ *,
+.CodeMirror-lines .CodeMirror-line .cm-jn-monospace {
+  font-family: var(--monospace-font) !important;
+  font-size: var(--monospace-font-size) !important;
+  line-height: var(--monospace-font-line-height);
+}
+
+/* bigger monospace font:  file path link text | anchor link text | abbreviation text */
+.CodeMirror-lines .CodeMirror-line .cm-rm-link,
+.CodeMirror-lines .CodeMirror-line .cm-em.cm-link-text,
+.CodeMirror-lines .CodeMirror-line .cm-link-text.cm-em ~ * {
+  font-size: var(--bigger-monospace-font-size) !important;
+}
+
+/* markdown editor ----------------------------------------- */
+.resizableLayoutItem.rli-root,
+.codeMirrorEditor {
+  background-color: var(--markdown-editor-background-color) !important;
+}
+
+/* paragraph ----------------------------------------------- */
+.CodeMirror-line span[role="presentation"]:only-child,
+.CodeMirror-line .cm-comment.cm-jn-monospace {
+  color: var(--markdown-editor-text-color) !important;
+}
+.CodeMirror-lines {
+  padding: 0 5px 0 0 !important;
+}
+
+/* horizontal line ----------------------------------------- */
+.CodeMirror-line.cm-rm-hr > span,
+.CodeMirror-line.cm-rm-hr {
+  display: inline-block;
+  width: 100%;
+  background: var(--hr-background-gradient);
+  background: var(--switcher-mde-horizontal-line-background-color);
+}
+.CodeMirror-lines .CodeMirror-line .cm-hr {
+  color: var(--hr-text-color);
+}
+
+
+
+/* HEADINGS ************************************************ */
+/* headings group: h1 to h6 -------------------------------- */
+.CodeMirror-line .cm-header {
+  font-weight: var(--headings-font-weight);
+  line-height: var(--headings-line-height);
+  color: var(--headings-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--headings-text-shadow);
+}
+
+/* h1 ------------------------------------------------------ */
+.CodeMirror-line .cm-header.cm-header-1 {
+  font-size: var(--h1-font-size) !important;
+  font-variant: var(--switcher-mde-h1-font-variant);
+  color: var(--h1-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--h1-text-shadow);
+}
+
+/* h2 ------------------------------------------------------ */
+.CodeMirror-line .cm-header.cm-header-2 {
+  font-size: var(--h2-font-size) !important;
+  color: var(--h2-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--h2-text-shadow);
+}
+
+/* h3 ------------------------------------------------------ */
+.CodeMirror-line .cm-header.cm-header-3 {
+  font-size: var(--h3-font-size) !important;
+  color: var(--h3-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--h3-text-shadow);
+}
+
+/* h4 ------------------------------------------------------ */
+.CodeMirror-line .cm-header.cm-header-4 {
+  font-size: var(--h4-font-size) !important;
+  color: var(--h4-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--h4-text-shadow);
+}
+
+/* h5 ------------------------------------------------------ */
+.CodeMirror-line .cm-header.cm-header-5 {
+  font-size: var(--h5-font-size) !important;
+  color: var(--h5-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--h5-text-shadow);
+}
+
+/* h6 ------------------------------------------------------ */
+.CodeMirror-line .cm-header.cm-header-6 {
+  font-size: var(--h6-font-size) !important;
+  color: var(--h6-text-color);
+  text-shadow: var(--switcher-mde-headings-text-shadow) var(--h6-text-shadow);
+}
+
+
+
+/* SPECIAL TEXT ******************************************** */
+/* special text group:  mark | search | emphasize | abbreviation | strong | insert | strikethrough | inline code text */
+/* .CodeMirror-lines .CodeMirror-line .cm-rm-highlight, */
+.CodeMirror-lines .CodeMirror-line .cm-link-text.cm-em,
+.CodeMirror-lines .CodeMirror-line .cm-link-text.cm-em ~ *,
+.CodeMirror-lines .CodeMirror-line .cm-rm-ins {
+  color: var(--special-text-color);
+  border-width: 0 0 1px 0;
+  border-style: dotted;
+  border-color: var(--special-text-border-color);
+  background: none;
+  text-decoration: none;
+}
+
+/* mark text ----------------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-rm-highlight {
+  color: var(--mark-text-color);
+  background: #0d4a32;
+}
+
+/* search text --------------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-search-marker,
+.CodeMirror-lines .CodeMirror-line .cm-search-marker-selected {
+  padding: 2px 6px !important;
+  margin: 0 3px !important;
+  color: var(--search-text-color) !important;
+  border-radius: 1em;
+  background: inherit !important;
+  box-shadow: 0 0 3px var(--search-text-box-shadow) !important;
+  opacity: 1;
+}
+.CodeMirror-lines .CodeMirror-line .cm-search-marker-selected {
+  border: 3px solid var(--search-text-border-color-selected);
+}
+/* search text - scrollbar search marker ------------------- */
+.cm-search-marker-scrollbar {
+  height: 1px !important;
+  background: var(--search-text-scrollbar-marker-background-color) !important;
+  opacity: 0.5;
+}
+
+/* text group:  emphasize | abbreviation ------------------- */
+/* joplin didn't provide an independent abbreviation text css class on markdown editor */
+.CodeMirror-lines .CodeMirror-line .cm-em:not(.cm-image-alt-text) {
+  color: var(--emphasize-text-color) !important;
+  border-color: var(--emphasize-text-border-color) !important;
+}
+
+/* strong text --------------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-strong {
+  color: var(--strong-text-color) !important;
+  border-color: var(--strong-text-border-color) !important;
+}
+
+/* strikethrough text -------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-strikethrough {
+  color: var(--strikethrough-text-color) !important;
+  border-color: none !important;
+  text-decoration: line-through !important;
+}
+
+/* insert text --------------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-rm-ins {
+  color: var(--insert-text-color) !important;
+  border-width: 0 0 1px 0;
+  border-style: solid; 
+  border-color: var(--insert-text-border-color) !important;
+}
+
+/* inline code text ---------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-comment.cm-jn-inline-code {
+  color: var(--inline-code-text-color) !important;
+  border: 1px solid var(--inline-code-text-border-color) !important;
+  background: var(--inline-code-text-background-color) !important;
+  text-shadow: 1px 1px 2px var(--inline-code-text-shadow);
+}
+
+
+
+/* SYNTAX ************************************************** */
+/* syntax tag ---------------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-tag:not(.cm-jn-monospace),
+.CodeMirror-lines .CodeMirror-line .cm-number:not(.cm-jn-monospace) {
+  color: var(--syntax-tag-text-color);
+  background: var(--syntax-tag-background-color);
+}
+
+/* syntax string ------------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-string:not(.cm-url):not(.cm-jn-monospace),
+.CodeMirror-lines .CodeMirror-line .cm-string.cm-rm-image:not(.cm-rm-link):not(.cm-jn-monospace) {
+  color: var(--syntax-string-text-color);
+  background: var(--syntax-string-background-color);
+}
+
+/* syntax attribute ---------------------------------------- */
+.CodeMirror-lines .CodeMirror-line .cm-attribute:not(.cm-jn-monospace) {
+  color: var(--syntax-attribute-text-color);
+  background: var(--syntax-attribute-background-color);
+}
+
+
+
+/* LINK **************************************************** */
+.CodeMirror .CodeMirror-line .cm-rm-link,
+.CodeMirror .CodeMirror-line .cm-url,
+.CodeMirror .CodeMirror-line .cm-link-text {
+  color: var(--link-text-color);
+}
+
+
+
+/* LIST **************************************************** */
+.CodeMirror .CodeMirror-line .cm-variable-2,
+.CodeMirror .CodeMirror-line .cm-variable-3,
+.CodeMirror .CodeMirror-line .cm-keyword {
+  color: var(--list-text-color);
+}
+.cm-variable-2.cm-overlay.cm-rm-list-token,
+.cm-variable-3.cm-overlay.cm-rm-list-token,
+.cm-keyword.cm-overlay.cm-rm-list-token {
+  color: var(--list-token-color);
+}
+
+
+
+/* BLOCKQUOTE ********************************************** */
+.CodeMirror .CodeMirror-line .cm-quote {
+  color: var(--blockquote-text-color);
+  opacity: 1;
+}
+
+
+
+/* CODE BLOCK ********************************************** */
+.CodeMirror .cm-jn-code-block-background.CodeMirror-linebackground {
+  background: var(--codeblock-background-color);
+  margin-right: -2px;
+}
+
+/* code block text ----------------------------------------- */
+
+.cm-jn-code-block > span {
+  filter: grayscale(0.1);
+}
+
+
+
+/* ABSTRACT CONTENT BAR ************************************ */
+.CodeMirror-code > .CodeMirror-line > span[role="presentation"]::after,
+.cm-header::after,
+.cm-quote::after,
+.cm-rm-list-token::after,
+.CodeMirror-code > .CodeMirror-line > span > .cm-null.cm-jn-monospace:not(.cm-tabcolor-pipe)::after,
+.cm-overlay.cm-rm-link.cm-rm-image::after,
+.cm-link-text::after,
+.cm-overlay.cm-rm-link::after,
+.cm-em.cm-link-text::after,
+.cm-tag:not(.cm-jn-monospace)::after,
+.cm-katex-marker-open::after,
+.cm-katex-marker-close::after,
+.cm-rm-sup::after,
+.cm-number:not(.cm-jn-monospace)::after,
+.cm-rm-checkbox::after,
+.cm-jn-code-block.CodeMirror-line::after,
+span[cm-text]:only-child::after {
+  content: " ";
+  position: absolute;
+  display: var(--switcher-mde-abstract-content-bar-display);
+  top: 0px;
+  right: -4px;
+  width: 2px;
+  height: 100%;
+}
+
+/* plain text ---------------------------------------------- */
+.CodeMirror-code > .CodeMirror-line > span[role="presentation"]::after {
+  background: var(--acb-plain-text);
+  z-index: 1;
+}
+
+/* heading ------------------------------------------------- */
+.cm-header::after {
+  background: var(--acb-heading);
+  z-index: 2;
+}
+
+/* ordered list & unordered list --------------------------- */
+.cm-rm-list-token::after {
+  background: var(--acb-list);
+  z-index: 3;
+}
+
+/* blockquote ---------------------------------------------- */
+.cm-quote::after {
+  background: var(--acb-blockquote);
+  z-index: 4;
+}
+
+/* table --------------------------------------------------- */
+.CodeMirror-code > .CodeMirror-line > span > .cm-null.cm-jn-monospace:not(.cm-tabcolor-pipe)::after {
+  background: var(--acb-table);
+  z-index: 5;
+}
+
+/* attached image ------------------------------------------ */
+.cm-overlay.cm-rm-link.cm-rm-image::after {
+  background: var(--acb-image);
+  z-index: 6;
+}
+
+/* footnote ------------------------------------------------ */
+.cm-link-text:not(.cm-variable-2)::after {
+  background: var(--acb-footnote);
+  z-index: 7;
+}
+
+/* simple link & anchor text link & file path link --------- */
+.cm-overlay.cm-rm-link::after {
+  background: var(--acb-link);
+  z-index: 8;
+}
+
+/* abbreviation -------------------------------------------- */
+.cm-em.cm-link-text::after {
+  background: var(--acb-abbreviation);
+  z-index: 9;
+}
+
+/* html tag ------------------------------------------------ */
+.cm-tag::after {
+  background: var(--acb-html-tag);
+  z-index: 10;
+/*   height: 2em !important; */
+  max-height: 26px;
+}
+
+/* math notation ------------------------------------------- */
+.cm-katex-marker-open::after,
+.cm-katex-marker-close::after,
+.cm-rm-sup::after,
+.cm-number:not(.cm-jn-monospace)::after {
+  background: var(--acb-katex);
+  z-index: 11;
+}
+
+/* checklist ----------------------------------------------- */
+.cm-rm-checkbox::after {
+  background: var(--acb-checklist);
+  z-index: 12;
+}
+
+/* codeblock ----------------------------------------------- */
+.cm-jn-code-block.CodeMirror-line::after {
+  background: var(--acb-codeblock);
+  z-index: 13;
+}
+
+/* blank line ---------------------------------------------- */
+span[cm-text]:only-child::after {
+  display: var(--switcher-mde-abstract-content-bar-blank-line-display);
+  background: var(--acb-blank-line);
+  z-index: 14;
+}
+
+
+
+/* PLUGIN: MARKDOWN TABLE COLORIZE ************************* */
+/* markdown table colorize: caret -------------------------- */
+.CodeMirror-lines .CodeMirror-line [class*="cm-tabcolor-col"] {
+  caret-color: var(--mtc-table-caret-color);
+  /* disable original text background color */
+  background: none;
+}
+
+/* markdown table colorize: table vertical bar ------------- */
+.CodeMirror-lines .CodeMirror-line .cm-tabcolor-pipe {
+  color: var(--mtc-table-vertical-bar-color) !important;
+}
+
+/* markdown table colorize: table text --------------------- */
+.CodeMirror-lines .CodeMirror-line [class*="cm-tabcolor-col"]:not(.cm-tabcolor-pipe) {
+  font-weight: normal;
+  color: var(--mtc-table-text-color) !important;
+}
+
+/* markdown table colorize: table separate group: header | row */
+.cm-tabcolor-firstch::before,
+.cm-tabcolor-row.cm-tabcolor-firstch::before {
+  display: block;
+  font-family: var(--base-font);
+  margin: 10px 0 1px 0;
+  width: 100%;
+  height: fit-content;
+  color: var(--mtc-table-separate-text-color);
+  border-radius: 2px;
+  text-shadow: 0 0 2px var(--mtc-table-separate-text-shadow);
+}
+
+/* markdown table colorize: table separate header ---------- */
+.cm-tabcolor-firstch::before {
+  content: "    H E A D E R > ";
+  padding: 3px 0;
+  font-size: 10px;
+  background-image: var(--mtc-table-separate-header-background-color);
+}
+
+/* markdown table colorize: table separate row ------------- */
+.cm-tabcolor-row.cm-tabcolor-firstch::before {
+  content: "     R O W >";
+  padding: 2px 0 1px 0;
+  font-weight: 400;
+  font-size: 8px;
+  background-image: var(--mtc-table-separate-row-background-color);
+}
+
+/* markdown table colorize: table separate hover ----------- */
+.CodeMirror-line:hover .cm-tabcolor-firstch::before {
+  filter: brightness(160%);
+  transition: filter 0.3s;
+}
+
+/* markdown table colorize: table column mark -------------- */
+/* table column mark group --------------------------------- */
+[class*="cm-tabcolor-col"].cm-tabcolor-pipe::after {
+  content: "";
+  position: initial;
+  display: inline-block;
+  padding: 1px;
+  margin: 0 5px 0 0;
+  font-weight: 100;
+  font-size: 9px;
+  background: var(--mtc-table-column-mark-background-color);
+  border-radius: 2px;
+}
+.CodeMirror-line .cm-tabcolor-pipe:last-child::after {
+  display: none;
+}
+.CodeMirror-line:hover .cm-tabcolor-pipe::after {
+  filter: brightness(170%);
+  transition: filter 0.3s;
+}
+
+/* standalone table column mark ---------------------------- */
+[class*="cm-tabcolor-col"].cm-tabcolor-firstch::after {
+  content: "A:";
+  color: var(--mtc-table-col0-mark-color);
+}
+.cm-tabcolor-col1.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "B:";
+  color: var(--mtc-table-col1-mark-color);
+}
+.cm-tabcolor-col2.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "C:";
+  color: var(--mtc-table-col2-mark-color);
+}
+.cm-tabcolor-col3.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "D:";
+  color: var(--mtc-table-col3-mark-color);
+}
+.cm-tabcolor-col4.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "E:";
+  color: var(--mtc-table-col4-mark-color);
+}
+.cm-tabcolor-col5.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "F:";
+  color: var(--mtc-table-col5-mark-color);
+}
+.cm-tabcolor-col6.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "G:";
+  color: var(--mtc-table-col6-mark-color);
+}
+.cm-tabcolor-col7.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "H:";
+  color: var(--mtc-table-col7-mark-color);
+}
+.cm-tabcolor-col8.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "I:";
+  color: var(--mtc-table-col8-mark-color);
+}
+.cm-tabcolor-col9.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "J:";
+  color: var(--mtc-table-col9-mark-color);
+}
+.cm-tabcolor-col10.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col11.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col12.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col13.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col14.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col15.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col16.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col17.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col18.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after,
+.cm-tabcolor-col19.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  border: 1px solid var(--mtc-table-column-mark-border-color);
+}
+.cm-tabcolor-col10.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "K:";
+  color: var(--mtc-table-col10-mark-color);
+}
+.cm-tabcolor-col11.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "L:";
+  color: var(--mtc-table-col11-mark-color);
+}
+.cm-tabcolor-col12.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "M:";
+  color: var(--mtc-table-col12-mark-color);
+}
+.cm-tabcolor-col13.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "N:";
+  color: var(--mtc-table-col13-mark-color);
+}
+.cm-tabcolor-col14.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "O:";
+  color: var(--mtc-table-col14-mark-color);
+}
+.cm-tabcolor-col15.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "P:";
+  color: var(--mtc-table-col15-mark-color);
+}
+.cm-tabcolor-col16.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "Q:";
+  color: var(--mtc-table-col16-mark-color);
+}
+.cm-tabcolor-col17.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "R:";
+  color: var(--mtc-table-col17-mark-color);
+}
+.cm-tabcolor-col18.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "S:";
+  color: var(--mtc-table-col18-mark-color);
+}
+.cm-tabcolor-col19.cm-tabcolor-pipe:not(.cm-tabcolor-firstch)::after {
+  content: "T:";
+  color: var(--mtc-table-col19-mark-color);
+}
+
+
+
+/* ********************************************************* */
+/*                     STYLING: JOPLIN UI                    */
+/* ********************************************************* */
+
+
+
+/* GENERAL ************************************************* */
+body {
+  background: var(--general-body-background-color);
+}
+
+/* NOTEBOOK PANEL ****************************************** */
+/* notebook panel: container ------------------------------- */
+.sidebar {
+  border-radius: 0 0 7px 7px;
+  background-color: var(--np-background-color) !important;
+  box-shadow: 0 0 2px var(--np-box-shadow);
+}
+
+/* notebook panel: header ---------------------------------- */
+/* group:  notebook icon | text | plus icon ---------------- */
+.sidebar > div:first-child > div:first-child > div > .icon-notebooks,
+.sidebar > div:first-child > div:first-child > div > .icon-notebooks ~ span,
+.sidebar > div:first-child > div:first-child > button > span {
+  color: var(--np-header-text-color) !important;
+}
+
+/* notebook panel: the "All Notes" button ------------------ */
+.sidebar .all-notes {
+  display: var(--switcher-jui-all-note-button-display) !important;
+}
+
+/* notebook panel: directory icon -------------------------- */
+i.fas.fa-caret-down,
+i.fas.fa-caret-right {
+  padding: 0 0 7px 0;
+  text-shadow: 0 0 5px var(--np-directory-icon-shadow);
+  opacity: 1 !important;
+}
+i.fas.fa-caret-right {
+  color: var(--np-directory-icon-closed-color);
+}
+i.fas.fa-caret-down {
+  color: var(--np-directory-icon-opened-color);
+}
+
+/* notebook panel: body container -------------------------- */
+.rli-sideBar .list-item-container,
+.rli-noteList .tags .list-item-container {
+  width: calc(100% - 4px);
+  height: auto;
+  margin: 0 2px;
+  padding: 6px 0 0 0;
+}
+
+/* notebook panel: notebook item --------------------------- */
+.list-item-container .list-item {
+  display: flex;
+  padding: 0 0 6px 0;
+  width: inherit;
+  border-bottom: 2px dotted var(--np-notebook-item-border-color);
+}
+.list-item-container .list-item > .title {
+  width: 100%;
+  color: var(--np-notebook-item-text-color);
+  line-height: normal !important;
+  font-size: 13px;
+  white-space: var(--switcher-jui-notebook-panel-notebook-item-wrap);
+  overflow-y: scroll;
+}
+.list-item-container .list-item > .title::-webkit-scrollbar {
+  height: 1px;
+}
+.list-item-container .list-item > .title::-webkit-scrollbar-thumb {
+  background: var(--np-notebook-item-scrollbar-color);
+}
+
+/* notebook panel: notebooks item hover -------------------- */
+.rli-sideBar .tags .list-item-container:hover,
+.rli-sideBar .list-item-container:hover {
+  width: calc(100% - 4px);
+  border-radius: 4px 10px !important;
+  background: #013f7466;
+  filter: hue-rotate(180deg);
+}
+
+/* notebook panel: notebook item selected ------------------ */
+.rli-sideBar .tags .list-item-container.selected,
+.rli-sideBar [class*="list-item-depth"].selected {
+  width: calc(100% - 4px);
+  border-radius: 4px 10px !important;
+  background: var(--np-notebook-item-background-color-selected);
+  box-shadow: 0 0 3px var(--np-notebook-item-box-shadow-selected);
+}
+
+/* notebook panel: notebook item indentation --------------- */
+.rli-sideBar .list-item-depth-0 {
+  padding-left: 11px;
+}
+.rli-sideBar .list-item-depth-1 {
+  padding-left: 22px;
+}
+.rli-sideBar .list-item-depth-2 {
+  padding-left: 33px;
+}
+.rli-sideBar .list-item-depth-3 {
+  padding-left: 44px;
+}
+.rli-sideBar .list-item-depth-4 {
+  padding-left: 55px;
+}
+.rli-sideBar .list-item-depth-5 {
+  padding-left: 66px;
+}
+.rli-sideBar .list-item-depth-6 {
+  padding-left: 77px;
+}
+.rli-sideBar .list-item-depth-7 {
+  padding-left: 88px;
+}
+.rli-sideBar .list-item-depth-8 {
+  padding-left: 99px;
+}
+.rli-sideBar .list-item-depth-9 {
+  padding-left: 110px;
+}
+.rli-sideBar .list-item-depth-10 {
+  padding-left: 121px;
+}
+.rli-sideBar .list-item-depth-11 {
+  padding-left: 132px;
+}
+.rli-sideBar .list-item-depth-12 {
+  padding-left: 143px;
+}
+.rli-sideBar .list-item-depth-13 {
+  padding-left: 154px;
+}
+.rli-sideBar .list-item-depth-14 {
+  padding-left: 165px;
+}
+.rli-sideBar .list-item-depth-15 {
+  padding-left: 176px;
+}
+
+/* notebook panel: note count label ------------------------ */
+.rli-sideBar .note-count-label {
+  position: sticky;
+  right: 6px;
+  font-size: 10px;
+  margin: auto 0 auto 15px;
+  padding: 1px 6px;
+  font-weight: 700;
+  color: var(--np-note-count-label-text-color);
+  background: var(--np-note-count-label-background-color);
+  border-radius: 200px;
+  box-shadow: 0 0 2px var(--np-note-count-label-box-shadow);
+  opacity: 1 !important;
+}
+
+/* notebook panel: synchronize information text ------------ */
+.rli-sideBar > div:last-child > div > div {
+  color: var(--np-sync-info-text-color) !important;
+}
+
+/* notebook panel: synchronize button ---------------------- */
+.sidebar > div > button,
+.sidebar > div > button:hover {
+  height: 23px;
+  font-size: 14px;
+  min-height: 23px;
+  max-height: 23px;
+  background-color: var(--np-sync-button-background-color) !important;
+  border: none !important;
+  border-radius: 1em !important;
+  box-shadow: 0 0 2px var(--np-sync-button-box-shadow);
+}
+.sidebar > div > button:hover {
+  background: var(--np-sync-button-background-color-hover) !important;
+  box-shadow: 0 0 2px var(--np-sync-button-box-shadow-hover);
+  transition: background 0.5s, box-shadow 0.5s; 
+}
+.sidebar button > .icon-sync ~ span,
+.sidebar button > .icon-sync::before {
+  color: var(--np-sync-button-text-color);
+}
+.sidebar button:hover > .icon-sync ~ span,
+.sidebar button:hover > .icon-sync::before {
+  color: var(--np-sync-button-text-color-hover);
+  transition: color 1s;
+}
+
+/* notebook panel: synchronize button icon ----------------- */
+.icon-sync {
+  font-size: 18px;
+  text-shadow: none;
+  -webkit-transition: transform 0.8s, font-size 0.8s, text-shadow 0.8s;
+  transition: transform 0.8s, font-size 0.8s, text-shadow 0.8s;
+}
+.sidebar > div > button:hover .icon-sync {
+  font-size: 21px;
+  text-shadow: 0 0 6px var(--np-sync-button-icon-shadow-hover) !important;
+  transform: rotateZ(11000deg);
+  -webkit-transition: transform 10s, font-size 1s, text-shadow 3s;
+  transition: transform 10s, font-size 1s, text-shadow 3s;
+}
+
+
+
+/* NOTELIST PANEL ****************************************** */
+/* notelist panel container -------------------------------- */
+.rli-noteList > div {
+  box-shadow: 0 0 2px var(--nlp-box-shadow);
+  border-radius: 7px;
+}
+
+/* notelist panel: header container ------------------------ */
+.rli-noteList > div > div > div {
+  margin: 1px;
+  background-color: var(--nlp-header-background-color);
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 0 2px var(--nlp-header-box-shadow);
+}
+
+/* notelist panel: disable official button hover effects --- */
+.dGfgOy:hover,
+.dGfgOy:active {
+  background: none;
+}
+
+/* notelist panel: header search bar ----------------------- */
+.rli-noteList .search-bar > div > input {
+  background: var(--nlp-header-search-bar-background-color);
+  border: 0;
+  box-shadow: 0 0 2px var(--nlp-header-search-bar-box-shadow);
+  border-radius: 4px 8px !important;
+}
+.rli-noteList .search-bar > div > input::placeholder {
+  color: var(--nlp-header-search-bar-placeholder-text-color);
+}
+
+/* notelist panel: header search bar hover ----------------- */
+.rli-noteList .search-bar > div > input:hover,
+.rli-noteList .search-bar > div > input:focus {
+  box-shadow: 0 0 4px var(--nlp-header-search-bar-box-shadow-hover);
+  transition: box-shadow 0.7s;
+}
+
+/* notelist panel: header button --------------------------- */
+/* button group: sort field | sort reverse | todo | note --- */
+.rli-noteList button:not(.search-bar > div > input ~ button) {
+  background: var(--nlp-header-button-background-color);
+  border: 0;
+  box-shadow: 0 0 2px var(--nlp-header-button-box-shadow);
+  border-radius: 4px 8px;
+}
+
+/* notelist panel: header button hover --------------------- */
+.rli-noteList button:not(.search-bar > div > input ~ button):hover {
+  background: var(--nlp-header-button-background-color-hover);
+  box-shadow: 0 0 4px var(--nlp-header-button-box-shadow-hover);
+  transition: background 0.5s, box-shadow 0.7s;
+}
+/* sort order field button --------------------------------- */
+.rli-noteList > div > div > div > div > .sort-order-field-button {
+  border-radius: 4px 0 0 4px;
+}
+/* sort order reverse button ------------------------------- */
+.rli-noteList > div > div > div > div > .sort-order-reverse-button {
+  border-radius: 0 4px 4px 0;
+}
+/* button icon group:  search | cancel | sort field | sort reverse | todo | note */
+.icon-search::before,
+.fa-font::before,
+.fa-long-arrow-alt-down::before,
+.icon-note::before,
+.fa-check-square::before,
+.fa-times::before {
+  color: var(--nlp-header-button-icon-color);
+}
+/* button icon group hover --------------------------------- */
+.rli-noteList .search-bar > div > button:hover > .icon-search::before,
+.rli-noteList button:hover > .fa-font::before,
+.rli-noteList button:hover > .fa-long-arrow-alt-down::before,
+.rli-noteList button:hover > .icon-note::before,
+.rli-noteList button:hover > .fa-check-square::before,
+.rli-noteList button:hover > .fa-times::before {
+  color: var(--nlp-header-button-icon-color-hover);
+  transition: color 0.5s;
+}
+/* note button icon ---------------------------------------- */
+.rli-noteList .icon-note::before {
+  font-size: 22px;
+}
+/* icon group: sort field | sort reverse ------------------- */
+.rli-noteList .fa-long-arrow-alt-down,
+.rli-noteList .fa-font {
+  font-size: 17px;
+}
+
+/* notelist panel: body container -------------------------- */
+.rli-noteList .note-list {
+  width: auto;
+  padding: 5px 3px 7px 3px;
+  background: var(--nlp-body-container-background-color);
+}
+
+/* notelist panel: note list item -------------------------- */
+.rli-noteList .note-list .note-list-item,
+.rli-noteList .note-list .selected.note-list-item {
+  width: initial;
+  border-radius: 3px 13px;
+}
+.rli-noteList .note-list .note-list-item::before {
+  margin-left: -6px;
+}
+.rli-noteList .note-list .note-list-item a {
+  padding-left: 9px !important;
+}
+.rli-noteList .note-list .note-list-item a::-webkit-scrollbar {
+  display: none;
+}
+
+.rli-noteList .item-list.note-list ::before {
+  border-bottom: 2px dotted var(--nlp-list-item-border-color);
+  opacity: 0.8;
+}
+.rli-noteList .note-list .note-list-item a > span {
+  color: var(--nlp-list-item-text-color);
+}
+
+/* disable joplin official note list item hover ------------ */
+.cGoJUI:hover {
+  background-color: unset;
+}
+
+/* note list item hover ------------------------------------ */
+.rli-noteList .note-list .note-list-item:hover {
+  background-color: var(--nlp-note-list-item-background-color);
+}
+.rli-noteList .note-list .selected.note-list-item:hover {
+  filter: var(--nlp-note-list-item-filter-hover-selected);
+}
+
+/* note list item selected state --------------------------- */
+.rli-noteList .note-list .selected.note-list-item {
+  background: var(--nlp-note-list-item-background-color-selected);
+  box-shadow: 0 0 3px var(--nlp-note-list-item-box-shadow-selected);
+}
+
+
+
+/* EDITOR HEADER ******************************************* */
+/* editor header: container -------------------------------- */
+.rli-editor > div > div > div > div:first-child,
+.rli-editor input.title-input,
+span.updated-time-label,
+.updated-time-label ~ .editor-toolbar {
+  background: var(--eh-background-color) !important;
+  border-radius: 0 !important;
+}
+
+/* editor header: note title input bar --------------------- */
+.rli-editor input.title-input {
+  padding: 0 0 0 2px !important;
+}
+
+/* editor header: time label ------------------------------- */
+span.updated-time-label {
+  padding-right: 20px;
+}
+
+/* editor header: header toolbar --------------------------- */
+.updated-time-label ~ .editor-toolbar {
+  box-shadow: none;
+}
+
+/* editor header: notebook navigation button --------------- */
+.rli-editor > div > div > div > div > button {
+  min-height: 30px;
+  max-height: 30px;
+  padding: 0 8px;
+  font-size: 15px;
+  background: var(--eh-notebook-navigation-button-background-color) !important;
+  border-radius: 4px 11px !important;
+}
+
+/* editor header: notebook navigation button text ---------- */
+.rli-editor > div > div > div > div > button > span {
+  color: var(--eh-notebook-navigation-button-text-color) !important;
+}
+
+/* editor header: notebook navigation button hover --------- */
+.rli-editor > div > div > div > div > button:hover {
+  filter: var(--eh-notebook-navigation-button-hover);
+}
+
+
+
+/* EDITOR TOP TOOLBAR ************************************** */
+/* editor top toolbar: container --------------------------- */
+.rli-editor > div > div > div > div > div > div > .editor-toolbar {
+  margin: 0 0 0 -12px;
+  background: var(--ett-background-color) !important;
+  border-radius: 7px;
+  box-shadow: 0 0 2px var(--ett-box-shadow);
+}
+
+/* editor top toolbar: button ------------------------------ */
+.editor-toolbar > div > a {
+  border-radius: 4px 8px;
+}
+.editor-toolbar > div > a > i,
+.editor-toolbar > div > a > span {
+  color: var(--ett-button-icon-color);
+}
+/* button hover effect ------------------------------------- */
+.editor-toolbar > div > a:hover {
+  background: var(--ett-button-background-color-hover);
+  box-shadow: 0 0 4px var(--ett-button-box-shadow-hover);
+  transition: background 0.3s, box-shadow 0.4s;
+}
+.editor-toolbar > div > a:hover > span,
+.editor-toolbar > div > a:hover > i {
+  color: var(--ett-button-icon-color-hover);
+  transition: color .2s;
+}
+
+/* editor top toolbar: rich text editor switch button ------ */
+.editor-toolbar > div > button {
+  display: var(--switcher-jui-rich-text-editor-switch-button-display) !important;
+}
+
+/* editor top toolbar: rich text editor toolbar ------------ */
+.tox-editor-header > div > div > div {
+  background: none !important;
+}
+div.joplin-tinymce > div:nth-child(1),
+div.joplin-tinymce > div:nth-child(2),
+div.joplin-tinymce div.tox div.tox-toolbar__primary {
+  background-color: var(--ett-rich-text-editor-toolbar-background) !important;
+  margin-top: 1px;
+  box-shadow: 0 0 2px var(--ett-rich-text-editor-toolbar-box-shadow);
+}
+.tox-editor-container .tox-editor-header .tox-toolbar__primary {
+  margin-left: -11px !important;
+}
+.tox-editor-container .tox-editor-header .tox-toolbar-overlord {
+  margin-right: 6px !important;
+}
+
+div.joplin-tinymce > div:nth-child(1) {
+  margin-left: -11px !important;
+  border-radius: 7px 0 0 7px;
+  box-shadow: 0 0 2px var(--ett-rich-text-editor-toolbar-box-shadow);
+}
+div.joplin-tinymce > div:nth-child(2) {
+  border-radius: 0 7px 7px 0;
+  box-shadow: 0 0 2px var(--ett-rich-text-editor-toolbar-box-shadow);
+}
+
+
+
+/* EDITOR BOTTOM TAG BAR *********************************** */
+.rli-editor .tag-bar {
+  margin-left: -4px;
+  background: var(--ebtb-background-color);
+  border-radius: 7px;
+  box-shadow: 0 0 2px var(--ebtb-box-shadow);
+  z-index: 100;
+}
+
+/* editor bottom tag bar: tags ----------------------------- */
+.tag-bar > div > .tag-list > button {
+  text-shadow: 0 0 2px var(--ebtb-tag-text-shadow);
+  background: var(--ebtb-tag-background-color) !important;
+  border: 1px solid var(--ebtb-tag-border-color);
+  font-size: 12px !important;
+  -webkit-transition: font-size 0.1s;
+  transition: font-size 0.1s;
+}
+
+/* editor bottom tag bar: tags hover effect ---------------- */
+.tag-bar > div > .tag-list > button:hover {
+  font-size: 18px !important;
+  color: var(--ebtb-tag-text-hover) !important;
+  -webkit-transition: font-size 0.1s;
+  transition: font-size 0.1s, color 0.1s;
+}
+
+
+
+/* TAG MANAGER MODAL DIALOG ******************************** */
+.modal-dialog {
+  border-radius: 4px 12px;
+  background: var(--markdown-editor-background-color) !important;
+  box-shadow: 0 0 3px white !important;
+}
+
+/* modal dialog: button ------------------------------------ */
+.modal-layer > .modal-dialog > div > button {
+  display: inline-block;
+  width: 100px;
+  border-radius: 4px 8px;
+}
+.modal-layer > .modal-dialog > div > button:hover {
+  filter: brightness(130%);
+  transition: filter 0.5s;
+}
+
+/* modal dialog: tag selector bar -------------------------- */
+.css-16hp18y-control {
+  border-radius: 8px;
+}
+.tag-selector > div > div > div > div {
+  border-radius: 3px 6px;
+}
+
+
+/* OPTIONS PAGE ******************************************** */
+/* option page: menu --------------------------------------- */
+.config-screen > div,
+.config-screen-content-wrapper > div > div > div > div {
+  background: var(--op-menu-background-color) !important;
+}
+.config-screen > div > a > span {
+  color: var(--op-menu-text-color) !important;
+}
+.kpFtJJ {
+  background: var(--op-menu-background-color-selected) !important;
+}
+.config-screen > div > a:hover {
+  background: var(--op-menu-background-color-hover) !important;
+}
+
+/* option page: config screen ------------------------------ */
+.sc-fznNvL.ihsqJx,
+.config-screen > div > div,
+.config-screen-content-wrapper > div > div {
+  background: var(--op-content-background-color) !important;
+}
+
+/* option page: input -------------------------------------- */
+input {
+  border-radius: 7px !important;
+  color: var(--op-input-text-color) !important;
+}
+
+/* option page: dropdown list ------------------------------ */
+select {
+  border-radius: 7px !important;
+  color: var(--op-dropdown-list-text-color) !important;
+}
+
+/* option page: checkbox ----------------------------------- */
+.config-screen input[checked] {
+  filter: var(--op-checkbox-checked-filter);
+}
+
+/* option page: label -------------------------------------- */
+.config-screen label {
+  font-size: var(--op-label-font-size) !important;
+}
+
+/* option page: button ------------------------------------- */
+.config-screen button {
+  background: var(--op-button-background-color) !important;
+  border-radius: 7px !important;
+}
+.config-screen button span,
+.config-screen-content-wrapper button {
+  color: var(--op-button-text-color) !important;
+}
+
+/* option page: table -------------------------------------- */
+.config-screen-content-wrapper table {
+  background: var(--op-table-container-background-color) !important;
+}
+.config-screen-content-wrapper table > thead > tr > th,
+.config-screen-content-wrapper table > tbody > tr > td {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--op-table-border-color);
+}
+.config-screen-content-wrapper table kbd {
+  background: var(--op-table-keyboard-shortcut-background-color) !important;
+  border: none !important;
+}
+
+/* option page: plugin ------------------------------------- */
+.sc-fzppAM.gNDenk {
+  background: var(--op-plugin-card-background-color) !important;
+  box-shadow: 0 0 5px var(--op-plugin-card-box-shadow);
+}
+/* option page: plugin switcher ---------------------------- */
+.config-screen .sc-fznBtT.fjjhGD > div > div {
+  filter: var(--op-plugin-switcher-filter);
+}
+/* option page: plugin update button ----------------------- */
+button.sc-AxirZ.sc-Axmtr.fuPMcZ.sc-fzozJi.dfRkax {
+  background: var(--op-plugin-update-button-background-color);
+  box-shadow: 0 0 3px var(--op-plugin-update-button-box-shadow);
+}
+
+
+
+/* ********************************************************* */
+/* !!!!!!!!!     MAIN SOURCE CODE: SECTION END    !!!!!!!!!! */
+/* ********************************************************* */
+/* ********************************************************* */
+/* vvvvvvvvv             CUSTOM CODE              vvvvvvvvvv */
+/* ********************************************************* */
+/* Add your custom code below here to avoid confusing with OhmineDT's code. */
+
+* {
+  font-family: "FantasqueSansMono Nerd Font Mono" !important;
+  font-weight: normal; 
+  font-size: 13px !important;
+}

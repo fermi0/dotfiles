@@ -1,0 +1,138 @@
+[
+  {
+    "command": "focusSearch",
+    "accelerator": "Ctrl+F"
+  },
+  {
+    "command": "showLocalSearch",
+    "accelerator": "Ctrl+/"
+  },
+  {
+    "command": "focusElementSideBar",
+    "accelerator": null
+  },
+  {
+    "command": "focusElementNoteList",
+    "accelerator": null
+  },
+  {
+    "command": "focusElementNoteTitle",
+    "accelerator": null
+  },
+  {
+    "command": "focusElementNoteBody",
+    "accelerator": null
+  },
+  {
+    "command": "help",
+    "accelerator": null
+  },
+  {
+    "command": "editor.toggleComment",
+    "accelerator": "Ctrl+Shift+3"
+  },
+  {
+    "command": "setHomenote",
+    "accelerator": "Ctrl+Alt+Shift+H"
+  },
+  {
+    "command": "openHomenote",
+    "accelerator": "Ctrl+Shift+H"
+  },
+  {
+    "command": "goToItemViaText",
+    "accelerator": null
+  },
+  {
+    "command": "convertTextToItem",
+    "accelerator": null
+  },
+  {
+    "command": "CombineNotes",
+    "accelerator": null
+  },
+  {
+    "command": "insert_spoiler_block",
+    "accelerator": "Ctrl+Alt+P"
+  },
+  {
+    "command": "moveSnippetCommand",
+    "accelerator": "Ctrl+Shift+M"
+  },
+  {
+    "command": "insert_inline_spoiler",
+    "accelerator": "Ctrl+Alt+O"
+  },
+  {
+    "command": "quickMove1",
+    "accelerator": "Ctrl+Shift+1"
+  },
+  {
+    "command": "quickMove2",
+    "accelerator": "Ctrl+Shift+2"
+  },
+  {
+    "command": "quickMove3",
+    "accelerator": null
+  },
+  {
+    "command": "quickMove4",
+    "accelerator": "Ctrl+Shift+4"
+  },
+  {
+    "command": "quickMove5",
+    "accelerator": "Ctrl+Shift+5"
+  },
+  {
+    "command": "quickMove6",
+    "accelerator": "Ctrl+Shift+6"
+  },
+  {
+    "command": "quickMove7",
+    "accelerator": "Ctrl+Shift+7"
+  },
+  {
+    "command": "quickMove8",
+    "accelerator": "Ctrl+Shift+8"
+  },
+  {
+    "command": "quickMove9",
+    "accelerator": "Ctrl+Shift+9"
+  },
+  {
+    "command": "createNoteFromTemplate",
+    "accelerator": "Alt+Ctrl+Shift+N"
+  },
+  {
+    "command": "createNoteFromDefaultTemplate",
+    "accelerator": "Alt+Shift+N"
+  },
+  {
+    "command": "createTodoFromTemplate",
+    "accelerator": "Alt+Ctrl+Shift+T"
+  },
+  {
+    "command": "createTodoFromDefaultTemplate",
+    "accelerator": "Alt+Shift+T"
+  },
+  {
+    "command": "insertTemplate",
+    "accelerator": "Alt+Ctrl+I"
+  },
+  {
+    "command": "inlineTodo.createSummaryNote",
+    "accelerator": null
+  },
+  {
+    "command": "copyFolderID",
+    "accelerator": null
+  },
+  {
+    "command": "colorPick",
+    "accelerator": "Ctrl+Shift+C"
+  },
+  {
+    "command": "toggleOutline",
+    "accelerator": "F1"
+  }
+]

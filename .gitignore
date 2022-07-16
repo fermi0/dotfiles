@@ -1,0 +1,12 @@
+.fonts/.uuid
+.fonts/*/.uuid
+.fonts/*/*/.uuid
+.BurpSuite/burpbrowser
+
+config/joplin-desktop/cache/
+config/joplin-desktop/resources/
+config/joplin-desktop/tmp/
+config/joplin-desktop/database.sqlite
+config/joplin-desktop/log.txt
+config/cherrytree/icons
+config/PulseEffects/autoload

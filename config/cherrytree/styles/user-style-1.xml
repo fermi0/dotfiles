@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style-scheme id="user-1" _name="User Style" version="1.0">
+  <author>Current User</author>
+  <_description>User Defined Style</_description>
+  <style name="text"                foreground="#c0bfbc" background="#2c2525"/>
+  <style name="selection"           foreground="#ff008a" background="#281b1b"/>
+  <style name="cursor"              foreground="#ff0081"/>
+  <style name="current-line"        background="#261d1d"/>
+  <style name="current-line-number" background="#261d1d"/>
+  <style name="line-numbers"        foreground="#ffffff" background="#000000"/>
+</style-scheme>
