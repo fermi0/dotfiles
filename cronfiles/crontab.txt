@@ -4,9 +4,6 @@ XDG_RUNTIME_DIR=/run/user/1000
 PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/snap/bin
 
 # m h  dom mon dow(0=Sunday)   command
-*/1 * * * * crontab -l > /home/oppenheimer/Documents/Configs/dotfiles/cronfiles/crontab.txt
-*/1 * * * * notify-send -i /home/oppenheimer/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
-
 0 */12 * * * crontab -l > /home/oppenheimer/Documents/Configs/dotfiles/cronfiles/crontab.txt
 0 */12 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
 
