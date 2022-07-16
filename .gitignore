@@ -3,8 +3,7 @@
 .fonts/*/*/.uuid
 .BurpSuite/burpbrowser
 
-./cronfiles/date.txt
-
+cronfiles/date.txt
 config/joplin-desktop/cache/
 config/joplin-desktop/resources/
 config/joplin-desktop/tmp/
