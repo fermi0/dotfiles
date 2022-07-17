@@ -53,6 +53,7 @@
 		"visible": true
 	},
 	"noteVisiblePanes": [
+		"editor",
 		"viewer"
 	],
 	"editor.codeView": true,
