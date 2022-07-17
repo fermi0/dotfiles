@@ -2,7 +2,7 @@
 .fonts/*/.uuid
 .fonts/*/*/.uuid
 .BurpSuite/burpbrowser
-.tmux
+.tmux/
 
 cronfiles/date.txt
 config/joplin-desktop/cache/
