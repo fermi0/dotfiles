@@ -1,40 +1,40 @@
-#install lm-sendors, artha, kdeconnect, snapd, nautilus, feh, light, fonts-hack-ttf, xfce4-terminal, pycharm, rofi, compton, virtuabox, audacious, pactl, pavucontrol, scrot, mpv, lxappearance, xorg, apparmor, xcompmgr, automake, autoconf, ranger, python3, dunst, x11proto-randr-dev, htop, byobu, hollywood, neofetch, jmtpfs, mtp-tools, ntfs-3g, cheese, gtk-chtheme, i3blocks, gdebi, xrandr, arandr, libc11-dev, libxft-dev, fontconfig, moka-icon-theme, faba-icon-theme, python3-software-properties, 
+# install lm-sendors, artha, kdeconnect, snapd, nautilus, feh, light, fonts-hack-ttf, xfce4-terminal, pycharm, rofi, compton, virtuabox, audacious, pactl, pavucontrol, scrot, mpv, lxappearance, xorg, apparmor, xcompmgr, automake, autoconf, ranger, python3, dunst, x11proto-randr-dev, htop, byobu, hollywood, neofetch, jmtpfs, mtp-tools, ntfs-3g, cheese, gtk-chtheme, i3blocks, gdebi, xrandr, arandr, libc11-dev, libxft-dev, fontconfig, moka-icon-theme, faba-icon-theme, python3-software-properties, 
 
-#for i3 as deafult 
-#sed -i.bak '/^Exec=/ s/default/i3/' /usr/share/gdm/BuiltInSessions/default.desktop 
+# for i3 as deafult 
+# sed -i.bak '/^Exec=/ s/default/i3/' /usr/share/gdm/BuiltInSessions/default.desktop 
 
-#mod as super
+# mod as super
 set $mod Mod4
 
-#use mouse + $mod to drag floating windows 
+# use mouse + $mod to drag floating windows 
 floating_modifier $mod
 
-#font(download fonts-hack-ttf, download fontawesome-webfont.ttf, fontawesome-regular/brand/solid, mkdir ~/.fonts cp // ~/.fonts)
+# font(download fonts-hack-ttf, download fontawesome-webfont.ttf, fontawesome-regular/brand/solid, mkdir ~/.fonts cp // ~/.fonts)
 font pango:FantasqueSansMono Nerd Font Mono 9
 
-#NetworkManager using nm-applet 
+# NetworkManager using nm-applet 
 exec_always --no-startup-id nm-applet
 
 # start terminals(download xfce4-terminal, Gnome-terminal)
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec sakura
 
 # kill focused window
 bindsym $mod+q kill
 bindsym --release $mod+x exec xkill
 
 # Application menu handled by rofi: 
-bindsym $mod+d exec rofi -modi drun -show drun \
+bindsym $mod+d exec rofi -show run \
 		-config ~/.config/rofi/rofidmenu.rasi
 
-## rofi bindings for window menu ($mod+t /F10 optional disabled))
+# rofi bindings for window menu ($mod+t /F10 optional disabled))
 bindsym $mod+Shift+d exec rofi -show window \
 		-config ~/.config/rofi/rofidmenu.rasi
 
 # Power Profiles menu switcher (rofi)
-bindsym $mod+Shift+p exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/power-profiles
+# bindsym $mod+Shift+p exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/power-profiles
 
 # keybinding in fancy rofi (automated):
-bindsym $mod+Mod1+d exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/keyhint-2
+# bindsym $mod+Mod1+d exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/keyhint-2
 
 
 
@@ -66,7 +66,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
+# bindsym $mod+s layout stacking
 bindsym $mod+Shift+t layout tabbed
 bindsym $mod+t layout toggle split
 
@@ -76,7 +76,7 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-#workspaces
+# workspaces
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:🦊 "
@@ -121,19 +121,19 @@ bindsym $mod+p move workspace to output right
 bindsym $mod+m move scratchpad
 bindsym $mod+s scratchpad show
 
-#applications in default workspace 
-#ssign [class="Brave-browser"] $ws1
+# applications in default workspace 
+# ssign [class="Brave-browser"] $ws1
 assign [class="firefox-beta"] $ws1
 assign [class="VirtualBox Machine"] $ws7
 # assign [class="Joplin"] $ws2		
 assign [class="Code"] $ws2		        
-#assign [class="dolphin"] $ws3			
+# assign [class="dolphin"] $ws3			
 assign [class="Org.gnome.Nautilus"] $ws5				
 assign [class="burp-StartBurp"] $ws7				
-#assign [class="Zathura"] $ws2			
+# assign [class="Zathura"] $ws2			
 assign [class="Wireshark"] $ws7				
-#assign [class="akregator"] $ws4				#install akregator
-#assign [class="VirtualBox Manager"] $ws10	
+# assign [class="akregator"] $ws4				#install akregator
+# assign [class="VirtualBox Manager"] $ws10	
 assign [class="vlc"] $ws8			
 assign [class="mpv"] $ws8			
 assign [class="Vlc"] $ws8				
@@ -175,7 +175,7 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-#resize window
+# resize window
 bindsym $mod+r mode "resize"
 
 # Sreen brightness controls
@@ -184,15 +184,16 @@ bindsym XF86MonBrightnessDown exec light -U 3    # decrease screen brightness
 
 # redshift modes
  bindsym $mod+b mode "$mode_redshift"
- set $mode_redshift Set colour temperature: (a)uto, (r)eset, (2)500K, (3)500K, (4)000K, (5)000K
+ set $mode_redshift Set colour temperature: (a)uto, (r)eset, (2)500K, (3)500K, (4)000K, (5)000K (6)000K
  set $kill_redshift pkill -9 redshift;
  mode "$mode_redshift" {
-     bindsym a exec --no-startup-id "$kill_redshift redshift -g 1:0.69:0.59 -P -t 5000:4000", mode "default"
-     bindsym r exec --no-startup-id "$kill_redshift redshift -g 1:0.69:0.59 -x", mode "default"
-     bindsym 2 exec --no-startup-id "$kill_redshift redshift -g 1:0.69:0.59 -P -O 2500", mode "default"
-     bindsym 3 exec --no-startup-id "$kill_redshift redshift -g 1:0.69:0.59 -P -O 3000", mode "default"
-     bindsym 4 exec --no-startup-id "$kill_redshift redshift -g 1:0.69:0.59 -P -O 4000", mode "default"
-     bindsym 5 exec --no-startup-id "$kill_redshift redshift -g 1:0.69:0.59 -P -O 5000", mode "default"
+     bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.7:0.5 -P -t 4600:4000", mode "default"
+     bindsym r exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -x", mode "default"
+     bindsym 2 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 3500", mode "default"
+     bindsym 3 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 4000", mode "default"
+     bindsym 4 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 4500", mode "default"
+     bindsym 5 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 5000", mode "default"
+     bindsym 6 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 5500", mode "default"
 
      # exit mode: "Enter" or "Escape"
      bindsym Return mode "default"
@@ -217,7 +218,7 @@ exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
 # bindsym Ctrl+Shift+w exec ~/.config/i3/update_walls.sh
 bindsym Scroll_Lock exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
 
-#colors 
+# colors 
 set $red     		#ff0000
 set $yellow  		#fefd00
 set $purple  		#fe3efe
@@ -233,7 +234,7 @@ set $white		    #ffffff
 set $gray		    #9c9c9c
 set $pencildark 	#1f1f1f
 set $pencildarker	#303029
-#set $lightestblue  	#d1d4e0
+# set $lightestblue  	#d1d4e0
 set $darkbluegrey  	#2f343f
 set $lightbluegrey	#676E7D
 set $pencildarkest	#202020
@@ -273,7 +274,7 @@ bar {
 	output HDMI-1
 	mode hide
 	hidden_state hide
-	modifier Mod1
+	modifier Mod4
 
 	colors {
 
@@ -290,11 +291,11 @@ bar {
 
 }
 
-#screenshot with scrot
+# screenshot with scrot
 bindsym Print exec "scrot --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
 bindsym Shift+Print exec "scrot -ub --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
 bindsym --release Ctrl+Shift+Print exec "scrot -s --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
-#hovering cursor focus
+# hovering cursor focus
 focus_follows_mouse yes
 
 # sticky window
@@ -302,20 +303,20 @@ bindsym $mod+Shift+s sticky toggle
 
 # floating
 for_window [class="Pavucontrol"] floating enable
-#for_window [class="Chromium"] floating enable
+# for_window [class="Chromium"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="VirtualBox Manager"] floating enable
 for_window [class="Artha"] floating enable
 for_window [class="xdman-Main"] floating enable
-#for_window [class="Gufw.py"] floating enable
-#for_window [class="conky"] floating enable
-#for_window [class="yakuake"] floating enable
-#for_window [class="XTerm"] floating enable
+# for_window [class="Gufw.py"] floating enable
+# for_window [class="conky"] floating enable
+# for_window [class="yakuake"] floating enable
+# for_window [class="Sakura"] floating enable
 
-#for_window [class="^.*"] floating enable
+# for_window [class="^.*"] floating enable
 
-#keybindings usage
-bindsym F12 exec "guake-toggle"
+# keybindings usage
+# bindsym F12 exec "guake-toggle"
 bindsym $mod+Pause exec "shutdown now"
 bindsym $mod+Shift+Ctrl+r exec "reboot"
 bindsym Pause exec "killall play"
@@ -325,38 +326,38 @@ bindsym $mod+Mod1+h exec "xfce4-terminal -e 'vim /home/oppenheimer/notes/hints'"
 bindsym Mod1+XF86AudioRaiseVolume exec "tmux neww -n 'wiki' vim /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt"
 bindsym Mod1+Shift+w exec "xfce4-terminal -e 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'"
 
-#for transparency
+# for transparency
 exec_always --no-startup-id picom --config /home/oppenheimer/.config/picom/picom.conf
 
 # thin borders
 hide_edge_borders both
 for_window [class="^.*"] border none
-#i3-gapps
+# i3-gapps
 gaps inner 3
 gaps outer 3
 
 # i3lock(install i3lock, download icon create ~/.xlock save it)
 bindsym $mod+Ctrl+l exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/lock.sh
 
-#startup(artha, kdeconnect)
+# startup(artha, kdeconnect)
 exec --no-startup-id artha
-#exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergyd
-#exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergy
-#exec --no-startup-id pulseeffects
+# exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergyd
+# exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergy
+# exec --no-startup-id pulseeffects
 exec_always --no-startup-id indicator-kdeconnect
 exec_always --no-startup-id kdeconnect-indicator
-#exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
-#exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
+# exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
+# exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
 exec_always --no-startup-id xrandr --output LVDS-1 --off --output VGA-1 --mode 1280x1024 --refresh 75.02 --pos 1920x0 --rotate normal --output HDMI-1 --primary --mode 1920x1080 --refresh 60 --pos 0x0 --rotate normal --output DP-1 --off
-#exec --no-startup-id xdman 
+# exec --no-startup-id xdman 
 exec --no-startup-id guake 
-#exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core
+# exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core
 
-#title alignment
+# title alignment
 title_align center
 
 # focus the parent container
-#bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+# bindsym $mod+d focus child
