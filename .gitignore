@@ -12,3 +12,6 @@ config/joplin-desktop/log.txt
 config/cherrytree/icons
 config/cherrytree/*.tmp
 config/PulseEffects/autoload
+config/spacefm/*
+
+!config/spacefm/session
