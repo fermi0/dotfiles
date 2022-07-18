@@ -109,7 +109,7 @@ cat $HOME/.config/ascii/jwst
 #cat ~/asciii.txt | lolcat 
 export EDITOR=/usr/bin/vim.gtk3
 export QT_QPA_PLATFORMTHEME=qt5ct
-export PATH=$PATH:/home/oppenheimer/Downloads/Tools/go/bin
+export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/oppenheimer/.local/bin
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 
