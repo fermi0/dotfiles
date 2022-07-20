@@ -187,13 +187,13 @@ bindsym XF86MonBrightnessDown exec light -U 3    # decrease screen brightness
  set $mode_redshift Set colour temperature: (a)uto, (r)eset, (2)500K, (3)500K, (4)000K, (5)000K (6)000K
  set $kill_redshift pkill -9 redshift;
  mode "$mode_redshift" {
-     bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.7:0.5 -P -t 4600:4000", mode "default"
-     bindsym r exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -x", mode "default"
-     bindsym 2 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 3500", mode "default"
-     bindsym 3 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 4000", mode "default"
-     bindsym 4 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 4500", mode "default"
-     bindsym 5 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 5000", mode "default"
-     bindsym 6 exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -b 0.6:0.4 -P -O 5500", mode "default"
+     bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -m randr:crtc=0 -b 0.8:0.6 -P -t 4300:3800; redshift -l 27.717245:85.323959 -m randr:crtc=2 -b 0.57:0.4 -P -t 4200:3800", mode "default"
+     bindsym r exec --no-startup-id "$kill_redshift redshift -x", mode "default"
+     bindsym 2 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 3500; redshift -m randr:crtc=2 -b 0.4 -P -O 3500", mode "default"
+     bindsym 3 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4000; redshift -m randr:crtc=2 -b 0.4 -P -O 4000", mode "default"
+     bindsym 4 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4500; redshift -m randr:crtc=2 -b 0.4 -P -O 4500", mode "default"
+     bindsym 5 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5000; redshift -m randr:crtc=2 -b 0.4 -P -O 5000", mode "default"
+     bindsym 6 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5500; redshift -m randr:crtc=2 -b 0.4 -P -O 5500", mode "default"
 
      # exit mode: "Enter" or "Escape"
      bindsym Return mode "default"

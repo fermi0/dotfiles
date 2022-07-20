@@ -16,8 +16,10 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 
 # alarm
 0 6 * * * xterm -e "mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3"
-20 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobFogHornAlarm.opus
-30 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobSquarePantsFogHorn.mp3
+0 3 * * * xterm -e "mpv --volume=130 --loop /media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard\ P.\ Feynman/Los\ Alamos\ from\ below\ -\ Richard\ P.\ Feynman.mp3"
+0 3 * * * xterm -e "mpv --volume=130 --loop '/media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard P. Feynman/Los Alamos from below - Richard P. Feynman.mp3'"
+20 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobFogHornAlarm.opus"
+30 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobSquarePantsFogHorn.mp3"
 
 # wallpaper loop
 */3 * * * * exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh

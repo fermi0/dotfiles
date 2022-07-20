@@ -210,7 +210,7 @@ cmd mtp-mount ${{
     #    }
     #for i in `seq 1 2`; do
     mtp-connect&
-    sleep 5;
+    sleep 11;
     #if [ x"$quit" = xy ]; then
     if [ -d "/media/oppenheimer/$ans" ]; then
         jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
