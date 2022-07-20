@@ -1,12 +1,14 @@
 # Enable colors and change prompt:
 autoload -U colors && colors
+
 PS1="%{$fg[red]%}[%{$fg[cyan]%}%n%{$fg[yellow]%}@%{$fg[red]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$ "
 
+# Options
 setopt autocd              # change directory just by typing its name
-#setopt correct            # auto correct mistakes
+setopt correct             # auto correct mistakes
 setopt interactivecomments # allow comments in interactive mode
 setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
-#setopt nonomatch           # hide error message if there is no match for the pattern
+setopt nonomatch           # hide error message if there is no match for the pattern
 setopt notify              # report the status of background jobs immediately
 setopt numericglobsort     # sort filenames numerically when it makes sense
 setopt promptsubst         # enable command substitution in prompt
@@ -16,24 +18,24 @@ WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 # hide EOL sign ('%')
 PROMPT_EOL_MARK=""
 
-# Use ~~ as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='~~'
+# # Use ~~ as the trigger sequence instead of the default **
+# export FZF_COMPLETION_TRIGGER='~~'
 
-# Options to fzf command
-export FZF_COMPLETION_OPTS='--border --info=inline'
+# # Options to fzf command
+# export FZF_COMPLETION_OPTS='--border --info=inline'
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
+# # Use fd (https://github.com/sharkdp/fd) instead of the default find
+# # command for listing path candidates.
+# # - The first argument to the function ($1) is the base path to start traversal
+# # - See the source code (completion.{bash,zsh}) for the details.
+# _fzf_compgen_path() {
+#   fd --hidden --follow --exclude ".git" . "$1"
+# }
 
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
-}
+# # Use fd to generate the list for directory completion
+# _fzf_compgen_dir() {
+#   fd --type d --hidden --follow --exclude ".git" . "$1"
+# }
 
 # enable completion features
 autoload -Uz compinit
@@ -55,13 +57,13 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 _comp_options+=(globdots)		# Include hidden files.
 compinit
 
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
+# Search history of the keyword upto cursor
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up
-bindkey "^[[B" down-line-or-beginning-search # Down
-#
+[[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
+[[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
+
 # History configurations
 HISTFILE=~/.zsh_history
 HISTSIZE=2000
@@ -70,7 +72,7 @@ setopt hist_expire_dups_first # delete duplicates first when HISTFILE size excee
 setopt hist_ignore_dups       # ignore duplicated commands history list
 setopt hist_ignore_space      # ignore commands that start with space
 setopt hist_verify            # show command with history expansion to user before running it
-#setopt share_history         # share command history data
+setopt share_history          # share command history data
 
 # force zsh to show the complete history
 alias history="history 0"
@@ -111,7 +113,40 @@ export EDITOR=/usr/bin/vim.gtk3
 export QT_QPA_PLATFORMTHEME=qt5ct
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/oppenheimer/.local/bin
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+
+#zoxide
+export _ZO_DATA_DIR=$HOME/.local/share
+export _ZO_ECHO=1
+export _ZO_EXCLUDE_DIRS=$HOME/.mozilla/firefox
+export _ZO_RESOLVE_SYMLINKS=1
+eval "$(zoxide init zsh)"
+
+# exit when command-line is filled
+exit_zsh() { exit }
+zle -N exit_zsh
+bindkey '^D' exit_zsh
+
+#Alt+left: back in directory history Alt+up: go to parent directory 
+cdUndoKey() {
+  popd
+  zle       reset-prompt
+  print
+  ls
+  zle       reset-prompt
+}
+
+cdParentKey() {
+  pushd ..
+  zle      reset-prompt
+  print
+  ls
+  zle       reset-prompt
+}
+
+zle -N                 cdParentKey
+zle -N                 cdUndoKey
+bindkey '^[[1;3A'      cdParentKey
+bindkey '^[[1;3D'      cdUndoKey
 
 #LF Icons
 export LF_ICONS="di=📁:\
