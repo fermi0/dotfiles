@@ -1,7 +1,7 @@
 DISPLAY=:0.0
-SHELL=/bin/bash
+SHELL=/bin/zsh
 XDG_RUNTIME_DIR=/run/user/1000
-PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/snap/bin
+PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/oppenheimer/.dotnet/tools:/usr/local/go/bin:/home/oppenheimer/.local/bin
 
 # m h  dom mon dow(0=Sunday)   command
 0 */12 * * * crontab -l > /home/oppenheimer/Documents/Configs/dotfiles/cronfiles/crontab.txt
@@ -15,29 +15,28 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 0 5,6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * cd /home/oppenheimer/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
 
 # alarm
-0 6 * * * xterm -e "mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3"
-0 3 * * * xterm -e "mpv --volume=130 --loop /media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard\ P.\ Feynman/Los\ Alamos\ from\ below\ -\ Richard\ P.\ Feynman.mp3"
-0 3 * * * xterm -e "mpv --volume=130 --loop '/media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard P. Feynman/Los Alamos from below - Richard P. Feynman.mp3'"
-20 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobFogHornAlarm.opus"
-30 6 * * * xterm -e "mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobSquarePantsFogHorn.mp3"
+0 5 * * * xfce4-terminal -e "tmux new -s 'alarm 1' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
+30 5 * * * xfce4-terminal -e "tmux new -s 'alarm 2' 'mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobFogHornAlarm.opus'"
+0 6 * * * xfce4-terminal -e "tmux new -s 'alarm 3' 'mpv --volume=130 --loop /media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard\ P.\ Feynman/Los\ Alamos\ from\ below\ -\ Richard\ P.\ Feynman.mp3'"
+25 6 * * * xfce4-terminal -e "tmux new -s 'alarm 4' 'mpv --volume=130 --loop '/media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard P. Feynman/Los Alamos from below - Richard P. Feynman.mp3'"
 
 # wallpaper loop
-*/3 * * * * exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
+*/2 * * * * exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
 
 # updates
-0 22 * * 5 guake --show -n -e guake -r "System Update" -e "sudo apt update -y && sudo apt full-upgrade -y && sudo apt autopurge -y && sudo apt autoclean -y && sudo apt clean -y"
+0 22 * * 5 xfce4-terminal -e "tmux new -s 'System Update' 'sudo apt update -y && sudo apt full-upgrade -y && sudo apt autopurge -y && sudo apt autoclean -y && sudo apt clean -y'"
 
 # schedule
 # sleep 11am - 4am
-# 50 22 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/sleep.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "You Can't Live Without It!"
+# 50 22 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/sleep.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "hypothalamus is flooding your basal ganglia with melatonin"
 # 50 22 * * * play --volume 0.9 ~/Documents/Configs/sounds/sleep.wav repeat 5
 # 0 23 * * * mpv --volume=60 ~/Documents/Configs/sounds/playlists/sleep.m3u
 
 # wikipedia
-9 8 * * * cd ~/Documents/Configs/dotfiles/scripts/wikipedia/ && wikit $(python3 query.py) --all > wiki.txt
-10 8 * * * cd ~/Documents/Configs/dotfiles/scripts/wikipedia/ && mpv interesting_wiki.mp3 --speed=1.2
-10 8 * * * xterm -e "sleep 3 && gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - --speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000"
-10 8 * * * xterm -e "less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt"
+20 6 * * * wikit $(python3 ~/Documents/Configs/dotfiles/scripts/wikipedia/query.py) -a > ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt
+30 6 * * * mpv /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
+30 6 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
+30 6 * * * sleep 3; tmux neww -n 'Wiki text' 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
 
 
 # walk
