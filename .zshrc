@@ -109,10 +109,12 @@ bindkey '^e' edit-command-line
 cat $HOME/.config/ascii/jwst
 
 #cat ~/asciii.txt | lolcat 
+
 export EDITOR=/usr/bin/vim.gtk3
 export QT_QPA_PLATFORMTHEME=qt5ct
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/oppenheimer/.local/bin
+export LF_BOOKMARK_PATH=/home/oppenheimer/.config/lf/bookmarks
 
 #zoxide
 export _ZO_DATA_DIR=$HOME/.local/share
