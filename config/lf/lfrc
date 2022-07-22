@@ -1,13 +1,14 @@
 # Basic vars
-set shellopts '-eu'
+set shell zsh
+set shellopts '-euy'
 set ifs "\n"
 set scrolloff 10
 set icons
 set drawbox
 set period 1
 set hidden
-set cleaner '/etc/lf/cleaner'
-set previewer '/etc/lf/scope'
+set cleaner ctpvclear
+set previewer ctpv
 set preview
 set info size:time
 set sortby natural
@@ -15,6 +16,9 @@ set dircounts
 set ignorecase
 set smartcase
 set relativenumber
+%[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
+&ctpv -s $id
+cmd on-quit $ctpv -e $id
 
 # cmds/functions
 cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
@@ -25,6 +29,41 @@ cmd sshfs-f $sshfs fermi@192.168.1.64:/sdcard /media/oppenheimer/Fermion-sshfs
 cmd dragon %dragon -a -x $fx
 cmd dragon-stay %dragon -a $fx
 cmd dlfile %dlfile
+cmd bulkrename $vidir $fx
+cmd open-with %"$@" "$fx"
+# cmd setbg "$1"
+
+# zoxide integration
+# cmd z %{{
+#     result="$(zoxide query --exclude '${PWD}' -- '$1')"
+#     lf -remote "send ${id} cd '${result}'"
+# }}
+
+# cmd zi ${{
+#     result="$(zoxide query -i -- '$1')"
+#     lf -remote "send ${id} cd '${result}'"
+# }}
+
+# newfolder with selected items
+cmd newfold ${{
+    set -f
+	printf "%s\n\t" "$fx"
+    read newd
+    printf "Directory name: "
+    mkdir -- "$newd"
+    mv -- $fx "$newd"
+}}
+
+# Searchable bookmarks
+cmd bookmark_jump ${{
+    res="$(cat $LF_BOOKMARK_PATH/$(ls $LF_BOOKMARK_PATH | fzf))"
+    lf -remote "send $id cd \"$res\""
+}}
+
+cmd bookmark_create ${{
+    read ans
+    echo $PWD > $LF_BOOKMARK_PATH/$ans
+}}
 
 # Trash cli bindings
 cmd trash ${{
@@ -75,21 +114,30 @@ cmd chown ${{
     printf "owner:group: "
     read ans
 
-    if [ $ans = "~" ]; then
+    if [[ $ans = "~" ]]; then
         for file in "$fx"
         do
           sudo chown oppenheimer:oppenheimer $file
         done
     fi
-    if [ $ans = "/" ]; then
+    if [[ $ans = "/" ]]; then
         for file in "$fx"
         do
           sudo chown root:root $file
         done
-    else
+    fi
+    if [[ $ans == *":"* ]]; then
         for file in "$fx"
         do
           sudo chown $ans $file
+        done
+    fi
+    if [[ -z $ans ]]; then
+        exit 1
+    else
+        for file in "$fx"
+        do
+          sudo chown $ans':'$ans $file
         done
     fi
 
@@ -120,8 +168,8 @@ cmd compress ${{
 	if [ $ans = "n" ]; then
         exit 1
     else
-        read -p "Output zip: " ask
-        zip -r9vA -Zdeflate $ask tes $fx
+        vared -p "Output zip: " -c ask
+        zip -r9vA -Zdeflate $ask $fx
     fi
     lf -remote 'send reload'
 }}
@@ -132,12 +180,33 @@ cmd symlink ${{
 	set -f
     for i in $fx; do
         printf "%s\n\t" "$i"
-        read -p "Destination for symlink: " des
+        vared -p "Destination for symlink: " -c des
         sudo ln -s $i $des/$(basename $i)
     done
     sleep 2;
     }}
 
+# y (select for copy) and P to paste soft-link
+# d (select for cut) and P to paste hard-link
+cmd link %{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    if [ "$#" -lt 1 ]; then
+        lf -remote "send $id echo no files to link"
+        exit 0
+    fi
+    case "$mode" in
+        # symbolically copy mode is indicating a soft link
+        copy) ln -sr -t . -- "$@";;
+        # while a move mode is indicating a hard link
+        move) ln -t . -- "$@";;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+
+# delete
 cmd sudodelete ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
@@ -166,6 +235,7 @@ cmd delete ${{
     lf -remote 'send reload'
 }}
 
+#SHELL
 cmd shell-put ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
@@ -173,6 +243,7 @@ cmd shell-put ${{
     $SHELL
 }}
 
+# mounting
 cmd mount ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
@@ -202,19 +273,20 @@ cmd mtp-mount ${{
     #trap bashtrap INT
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    printf "mountpoint directory name: "
-    read ans
+    echo "[+] mtp is loading..."
+    mtp-connect&
+    sleep 15;
     #bashtrap()
     #{
     #    echo "Mounting /media/oppenheimer/$ans"
     #    }
     #for i in `seq 1 2`; do
-    mtp-connect&
-    sleep 11;
+    printf "mountpoint directory name: "
+    read ans
     #if [ x"$quit" = xy ]; then
     if [ -d "/media/oppenheimer/$ans" ]; then
-        jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
         echo "/media/oppenheimer/$ans already exist!"
+        jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
         echo "/media/oppenheimer/$ans mounted!"
     fi
 
@@ -227,7 +299,6 @@ cmd mtp-mount ${{
     fi
 
     lf -remote 'send reload'
-    sleep 2;
 }}
 
 cmd unmount ${{
@@ -244,64 +315,82 @@ cmd unmount ${{
     lf -remote 'send reload'
 }}
 
+# handle kdecinnect 
 cmd kdeconnect ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    read -p "Destination(Fermion=y or specify): " dest
-    if [ -z "$dest" ]; then
-        for i in $fx; do
-            kdeconnect-cli --share $i --name Fermion
-        done
+	printf "%s\n\t" "$fx"
+    printf "Destination(Fermion=y or specify): "
+    read ans
+    if [ -z $ans ]; then
+        for i in $fx
+            do
+                kdeconnect-cli --share $i --name Fermion
+            done
     else
-        for i in $fx; do
-            kdeconnect-cli --share $i --name $dest
-        done
+        for i in $fx
+            do
+                kdeconnect-cli --share $i --name $ans
+            done
     fi
-    sleep 5;
 }}
 
+# handle rsync
 cmd rsync ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    read -p "rsync to $PWD?[Y/n] " pwd
-    
-    if [ -z "$pwd" ] || [ $pwd = "y" ]; then
-        tmux neww -n rsyncing rsync -ausvxhP --ignore-existing $fx $PWD
+	printf "%s\n\t" "$fx"
+    vared -p "rsync to Fermion?[Y/n] " -c myd
+    if [ $myd = "n" ]; then
+        vared -p "Destination path: " -c dest
+        tmux neww -n "rsyncing to $dest" rsync -ausvxhP --ignore-existing $fx $dest
     fi
-    if [ $pwd = "n" ]; then
-        read -p "rsync to Fermion?[Y/n] " myd
-        if [ $myd = "n" ]; then
-            read -p "Destination path: " dest
-            tmux neww -n "rsyncing to $dest" rsync -ausvxhP --ignore-existing $fx $dest
-        fi
-        if [ -z "$myd" ] || [ $myd = "y" ]; then
-            read -p "Destination path: " des
-            if [ -z "$des" ]; then
-                tmux neww -n "rsyncing to /sdcard" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard
-            else
-                tmux neww -n "rsyncing to /sdcard/$des" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard/$des
-            fi
+    if [ -z "$myd" ] || [ $myd = "y" ]; then
+        vared -p "Destination path: " -c des
+        if [ -z "$des" ]; then
+            tmux neww -n "rsyncing to /sdcard" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard
+        else
+            tmux neww -n "rsyncing to /sdcard/$des" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard/$des
         fi
     fi
-    sleep 2;
 }}
 
+# show progress while pasting
+cmd paste &{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    case "$mode" in
+        copy)
+            rsync -ausvxh --ignore-existing --progress -- "$@" . |
+            stdbuf -i0 -o0 -e0 tr '\r' '\n' |
+            while IFS= read -r line; do
+                lf -remote "send $id echo $line"
+            done
+            ;;
+        move) mv -n -- "$@" .;;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+
+# git download
 cmd git-download ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    read -p "URL: " url
-    read -p "File/directory: " path
+    vared -p "URL: " -c url
+    vared -p "File/directory: " -c path
     svn export $url/trunk/$path
     printf "$path downloaded!"
     sleep 1;
 }}
 
 cmd spacefm-open ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    printf "%s\n\t" "$fx"
+    spacefm $PWD
 }}
 
+# dpkg
 cmd depkg ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
@@ -315,8 +404,6 @@ cmd depkg ${{
     fi
 }}
 
-cmd setbg "$1"
-cmd bulkrename $vidir $fx
 
 #Unmap Defaults
 map e
@@ -325,6 +412,7 @@ map f
 map y
 map p
 map m
+map r
 map c
 map t
 map sa
@@ -333,87 +421,121 @@ map sn
 map ss
 map st
 map gh
+map '"'
 
 # Bindings
-map fzf $lf -remote "send $id select '$(fzf)'"
+map f $lf -remote "send $id select '$(fzf)'"
+map rr rename
+# Edit filename before the extension
+map re ${{
+	filename="${f##*/}"
+	filename="$(printf '%q' "$filename")"
+	filename="${filename// /<space>}"
+	lf -remote "send $id push :rename<space>$filename<a-b><c-b>"
+}}
+map br bulkrename
+
+# map z. z
+# map zi zi
 
 map DS sudodelete
 map DD delete
+
+map <delete> trash
+map trr restore_trash
+map trc clear_trash
+
 map dd cut
 map yy copy
 map pp paste
 map cc clear
-map U unselect
-map r rename
-map <delete> trash
-map trr restore_trash
-map trc clear_trash
+map u unselect
+
 map send kdeconnect
 map syn rsync
-map psyn rsync
 
 map dr dragon
 map ds dragon-stay
 map dl dlfile
 
 map E extract
+map C compress
+
+map mdf newfold
 map mdr push :mkdir<space>
 map mds push :sudo-mkdir<space>
 map mfl push :mkfile<space>
 map msf push :sudo-mkfile<space>
+
 map chm chmod
 map cho chown
 
-map sfs sshfs-f
 map mnt mount
 map mo! unmount
 map mtp mtp-mount
-map <enter> shell
+
 map sex $$fx
 map swa !$fx
 map sas &$fx
 map sio %$fx
+
 map oo &mimeopen $fx && disown
 map O $tmux neww mimeopen --ask $fx
 map do $tmux neww mimeopen --ask-default $fx
+
+map ee $tmux neww -n "$(basename "$fx")" /usr/bin/vim.gtk3 $fx
+map see $sudo /usr/bin/vim.gtk3 $fx
+
+map H top
+map M middle
+map L bottom
+
+map mc bookmark_create
+map ms mark-save
+map mr mark-remove
+map "'" mark-load
+map '"' bookmark_jump
+
+map sln symlink
+map slp :link
+
+map yp $printf "%s" "$fx" | xclip -selection clipboard
+map yb $printf $(basename "$fx") | xclip -selection clipboard
+map yd $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+
+map <enter> shell
+map <c-z> $ kill -STOP $PPID
+map sfs sshfs-f
 map I depkg
 map sfm spacefm-open
 map gtd git-download
-map B bulkrename
-map ee $tmux neww -n "$(basename "$fx")" /usr/bin/vim.gtk3 $fx
-map see $sudo /usr/bin/vim.gtk3 $fx
-map H top
-map L bottom
-map M mark-save
 map R reload
-map sln symlink
-
-map W $setsid -f $TERMINAL >/dev/null 2>&1
-map Yp $printf "%s" "$fx" | xclip -selection clipboard
-map Yy $printf $(basename "$fx") | xclip -selection clipboard
+map ow push :open-with<space>
+# map W $setsid -f $TERMINAL >/dev/null 2>&1
 
 # Navigation
-map gh cd /home/oppenheimer
+map g/ cd /
 map gr cd /root
-map g/ cd /root
+map gh cd /home/oppenheimer
 map gdc cd /home/oppenheimer/Documents
 map gdl cd /home/oppenheimer/Downloads
 map gvi cd /home/oppenheimer/Videos
 map gmu cd /home/oppenheimer/Music
 map gpc cd /home/oppenheimer/Pictures
+map gnt cd /home/oppenheimer/notes
 
 map gtr cd /home/oppenheimer/.local/share/Trash/files
 map glb cd /home/oppenheimer/.local/bin
+
 map gcf cd /home/oppenheimer/.config
 map glf cd /home/oppenheimer/.config/lf
-map gi3 cd /home/oppenheimer/.config/i3
-map gnt cd /home/oppenheimer/notes
 
-map gwa cd /home/oppenheimer/Pictures/walls
+map gw1 cd /home/oppenheimer/Pictures/walls
+map gw2 cd /home/oppenheimer/Pictures/walls-2
 map gsc cd /home/oppenheimer/Pictures/Screenshots
 
 map gpr cd /home/oppenheimer/Documents/Projects
-map gmc cd /home/oppenheimer/Documents/Configs
+map gdt cd /home/oppenheimer/Documents/Configs/dotfiles
 map gak cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/Journalorigin
 map gbb cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/My_Books
 map gbc cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Computers
@@ -428,6 +550,7 @@ map gtc cd /etc
 map gpt cd /opt
 map gea cd /etc/apt/
 map gub cd /usr/bin
+map gul cd /usr/local/bin
 map gtm cd /tmp
 map gdv cd /dev
 map gmo cd /media/oppenheimer
