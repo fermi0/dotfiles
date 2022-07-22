@@ -1,28 +1,28 @@
-# install lm-sendors, artha, kdeconnect, snapd, nautilus, feh, light, fonts-hack-ttf, xfce4-terminal, pycharm, rofi, compton, virtuabox, audacious, pactl, pavucontrol, scrot, mpv, lxappearance, xorg, apparmor, xcompmgr, automake, autoconf, ranger, python3, dunst, x11proto-randr-dev, htop, byobu, hollywood, neofetch, jmtpfs, mtp-tools, ntfs-3g, cheese, gtk-chtheme, i3blocks, gdebi, xrandr, arandr, libc11-dev, libxft-dev, fontconfig, moka-icon-theme, faba-icon-theme, python3-software-properties, 
+# install lm-sendors, artha, kdeconnect, snapd, nautilus, feh, light, fonts-hack-ttf, xfce4-terminal, pycharm, rofi, compton, virtuabox, audacious, pactl, pavucontrol, scrot, mpv, lxappearance, xorg, apparmor, xcompmgr, automake, autoconf, ranger, python3, dunst, x11proto-randr-dev, htop, byobu, hollywood, neofetch, jmtpfs, mtp-tools, ntfs-3g, cheese, gtk-chtheme, i3blocks, gdebi, xrandr, arandr, libc11-dev, libxft-dev, fontconfig, moka-icon-theme, faba-icon-theme, python3-software-properties,
 
-# for i3 as deafult 
-# sed -i.bak '/^Exec=/ s/default/i3/' /usr/share/gdm/BuiltInSessions/default.desktop 
+# for i3 as deafult
+# sed -i.bak '/^Exec=/ s/default/i3/' /usr/share/gdm/BuiltInSessions/default.desktop
 
 # mod as super
 set $mod Mod4
 
-# use mouse + $mod to drag floating windows 
+# use mouse + $mod to drag floating windows
 floating_modifier $mod
 
 # font(download fonts-hack-ttf, download fontawesome-webfont.ttf, fontawesome-regular/brand/solid, mkdir ~/.fonts cp // ~/.fonts)
 font pango:FantasqueSansMono Nerd Font Mono 9
 
-# NetworkManager using nm-applet 
+# NetworkManager using nm-applet
 exec_always --no-startup-id nm-applet
 
 # start terminals(download xfce4-terminal, Gnome-terminal)
-bindsym $mod+Return exec sakura
+bindsym $mod+Return exec xfce4-terminal
 
 # kill focused window
 bindsym $mod+q kill
 bindsym --release $mod+x exec xkill
 
-# Application menu handled by rofi: 
+# Application menu handled by rofi:
 bindsym $mod+d exec rofi -show run \
 		-config ~/.config/rofi/rofidmenu.rasi
 
@@ -35,8 +35,6 @@ bindsym $mod+Shift+d exec rofi -show window \
 
 # keybinding in fancy rofi (automated):
 # bindsym $mod+Mod1+d exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/keyhint-2
-
-
 
 # change focus
 bindsym $mod+h focus left
@@ -57,7 +55,7 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # split in horizontal orientation
-bindsym $mod+a split h
+bindsym $mod+| split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -77,18 +75,16 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # workspaces
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:🦊 "
 set $ws2 "2:🖥️ "
 set $ws3 "3:🔖 "
 set $ws4 "4:🔬 "
 set $ws5 "5:☕ "
 set $ws6 "6:👁️ "
-set $ws7 "7:🐞 " 
+set $ws7 "7:🐞 "
 set $ws8 "8:🎬 "
-set $ws9 "9:📡 " 
-set $ws10 "10:🔭 " 
+set $ws9 "9:📡 "
+set $ws10 "10:🔭 "
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -121,24 +117,23 @@ bindsym $mod+p move workspace to output right
 bindsym $mod+m move scratchpad
 bindsym $mod+s scratchpad show
 
-# applications in default workspace 
+# applications in default workspace
 # ssign [class="Brave-browser"] $ws1
 assign [class="firefox-beta"] $ws1
 assign [class="VirtualBox Machine"] $ws7
-# assign [class="Joplin"] $ws2		
-assign [class="Code"] $ws2		        
-# assign [class="dolphin"] $ws3			
-assign [class="Org.gnome.Nautilus"] $ws5				
-assign [class="burp-StartBurp"] $ws7				
-# assign [class="Zathura"] $ws2			
-assign [class="Wireshark"] $ws7				
-# assign [class="akregator"] $ws4				#install akregator
-# assign [class="VirtualBox Manager"] $ws10	
-assign [class="vlc"] $ws8			
-assign [class="mpv"] $ws8			
-assign [class="Vlc"] $ws8				
+# assign [class="Joplin"] $ws2
+assign [class="Code"] $ws2
+# assign [class="dolphin"] $ws3
+# assign [class="Org.gnome.Nautilus"] $ws5
+assign [class="burp-StartBurp"] $ws7
+# assign [class="Zathura"] $ws2
+assign [class="Wireshark"] $ws7
+# assign [class="akregator"] $ws4
+# assign [class="VirtualBox Manager"] $ws10
+assign [class="mpv"] $ws8
+# assign [class="Vlc"] $ws8
 assign [class="Spotify"] $ws5
-assign [class="TelegramDesktop"] $ws5			
+assign [class="TelegramDesktop"] $ws5
 assign [class="Pulseeffects"] $ws5
 
 # reload the configuration file
@@ -208,17 +203,17 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Media player controls
-# bindsym XF86AudioPlay exec playerctl play
-# bindsym XF86AudioPause exec playerctl pause
-# bindsym XF86AudioNext exec playerctl next
-# bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPlay exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
 # set wallpaper(download feh)
 exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
-# bindsym Ctrl+Shift+w exec ~/.config/i3/update_walls.sh
+# bindsym Ctrl+Shift+w exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
 bindsym Scroll_Lock exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
 
-# colors 
+# colors
 set $red     		#ff0000
 set $yellow  		#fefd00
 set $purple  		#fe3efe
@@ -234,67 +229,58 @@ set $white		    #ffffff
 set $gray		    #9c9c9c
 set $pencildark 	#1f1f1f
 set $pencildarker	#303029
-# set $lightestblue  	#d1d4e0
+set $lightestblue  	#d1d4e0
 set $darkbluegrey  	#2f343f
 set $lightbluegrey	#676E7D
 set $pencildarkest	#202020
 
-# window colors                       border              background        text               
-client.focused          $darkbluegrey              $darkbluegrey          $pink               
+# window colors                       border              background        text
+client.focused          $darkbluegrey              $darkbluegrey          $pink
 client.unfocused        $darkbluegrey              $pencildark            $pencildark
 client.focused_inactive $darkbluegrey              $pencildark            $lightbluegrey
-client.urgent           $red                       $pencildark            $red                
+client.urgent           $red                       $pencildark            $red
 
-
-# Start i3bar to display a workspace bar 
+# Start i3bar to display a workspace bar
 bar {
-
-	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf   
+	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
 	output VGA-1
     tray_output VGA-1
-
 	colors {
-
 	    separator           $magenta
 	    background          $black
 	    statusline          $pencildarkest
-
-	#                  border             background         text
-	focused_workspace  $pink              $darkbluegrey      $pink
-    inactive_workspace $lightbluegrey 	  $pencildark	     $gray
-	urgent_workspace   $red	      	      $pencildark 	     $red
-	
+        #                  border             background         text
+        focused_workspace  $pink              $darkbluegrey      $pink
+        inactive_workspace $lightbluegrey 	  $pencildark	     $gray
+        urgent_workspace   $red	      	      $pencildark 	     $red
 	}
-
 }
 
 bar {
-
-	status_command i3blocks -c ~/.config/i3blocks/i3blocksHDMI.conf   
+	status_command i3blocks -c ~/.config/i3blocks/i3blocksHDMI.conf
 	output HDMI-1
 	mode hide
 	hidden_state hide
 	modifier Mod4
-
 	colors {
-
 	    separator           $magenta
 	    background          $black
 	    statusline          $pencildarkest
-
-	#                  border             background         text
-	focused_workspace  $pink              $darkbluegrey      $pink
-    inactive_workspace $lightbluegrey 	  $pencildark	     $gray
-	urgent_workspace   $red	      	      $pencildark 	     $red
-	
+        #                  border             background         text
+        focused_workspace  $pink              $darkbluegrey      $pink
+        inactive_workspace $lightbluegrey 	  $pencildark	     $gray
+        urgent_workspace   $red	      	      $pencildark 	     $red
 	}
-
 }
 
 # screenshot with scrot
+#all monitor
 bindsym Print exec "scrot --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
+# active window
 bindsym Shift+Print exec "scrot -ub --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
+# selected area
 bindsym --release Ctrl+Shift+Print exec "scrot -s --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
+
 # hovering cursor focus
 focus_follows_mouse yes
 
@@ -311,27 +297,29 @@ for_window [class="xdman-Main"] floating enable
 # for_window [class="Gufw.py"] floating enable
 # for_window [class="conky"] floating enable
 # for_window [class="yakuake"] floating enable
-# for_window [class="Sakura"] floating enable
-
+for_window [class="Xfce4-terminal"] floating enable
 # for_window [class="^.*"] floating enable
 
-# keybindings usage
+# keybindings
 # bindsym F12 exec "guake-toggle"
 bindsym $mod+Pause exec "shutdown now"
+bindsym $mod+F2 exec tilda -c "tmux new -s 'commands'"
 bindsym $mod+Shift+Ctrl+r exec "reboot"
-bindsym Pause exec "killall play"
-bindsym $mod+g exec "xfce4-terminal -e 'lfueb'"
-bindsym $mod+XF86AudioRaiseVolume exec "tmux neww -n 'wiki speak' /home/oppenheimer/.local/bin/wikit $(python3 /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.py) -a > /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt && sleep 5 && /usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - --speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000"
-bindsym $mod+Mod1+h exec "xfce4-terminal -e 'vim /home/oppenheimer/notes/hints'"
-bindsym Mod1+XF86AudioRaiseVolume exec "tmux neww -n 'wiki' vim /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt"
-bindsym Mod1+Shift+w exec "xfce4-terminal -e 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'"
+# bindsym Pause exec "killall play"
+bindsym $mod+Home exec xfce4-terminal -e "tmux new -s 'lf.manager' 'lfueb'"
+bindsym Mod1+Home exec xfce4-terminal -e "tmux neww -n 'lf' 'lfueb'"
+bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Speak' '/home/oppenheimer/.local/bin/wikit $(python3 /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.py) -a > /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt && sleep 5 && /usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - --speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
+bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/oppenheimer/notes/hints'"
+bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
+bindsym Mod1+Shift+w exec xfce4-terminal -e "tmux neww -n 'Wiki Text' 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'"
 
-# for transparency
+# transparency
 exec_always --no-startup-id picom --config /home/oppenheimer/.config/picom/picom.conf
 
 # thin borders
 hide_edge_borders both
 for_window [class="^.*"] border none
+
 # i3-gapps
 gaps inner 3
 gaps outer 3
@@ -344,20 +332,20 @@ exec --no-startup-id artha
 # exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergyd
 # exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergy
 # exec --no-startup-id pulseeffects
-exec_always --no-startup-id indicator-kdeconnect
+# exec_always --no-startup-id indicator-kdeconnect
 exec_always --no-startup-id kdeconnect-indicator
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
 exec_always --no-startup-id xrandr --output LVDS-1 --off --output VGA-1 --mode 1280x1024 --refresh 75.02 --pos 1920x0 --rotate normal --output HDMI-1 --primary --mode 1920x1080 --refresh 60 --pos 0x0 --rotate normal --output DP-1 --off
-# exec --no-startup-id xdman 
-exec --no-startup-id guake 
+# exec --no-startup-id xdman
+# exec --no-startup-id guake
 # exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core
 
 # title alignment
 title_align center
 
 # focus the parent container
-# bindsym $mod+a focus parent
+bindsym $mod+a focus parent
 
 # focus the child container
-# bindsym $mod+d focus child
+bindsym $mod+c focus child
