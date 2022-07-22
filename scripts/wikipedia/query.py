@@ -1,6 +1,6 @@
-log_file_name = "log_query.txt"
+log_file_name = "/home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/log_query.txt"
 
-f = open("query.txt", "r")
+f = open("/home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt", "r")
 names = f.readlines()
 f.close()
 
@@ -14,7 +14,7 @@ try:
 
     del names[0]
 
-    new_file = open("query.txt", "w+")
+    new_file = open("/home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt", "w+")
     for name in names:
         new_file.write(name)
 
@@ -22,7 +22,3 @@ try:
 
 except:
     print("End Of Line")
-
-
-    
-

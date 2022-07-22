@@ -1,5 +1,5 @@
 #!/bin/bash
-ICON=/home/oppenheimer/Documents/Configs/images/xlock/icon.png
+ICON=/home/oppenheimer/Documents/Configs/dotfiles/xlock/icon.png
 TMPBG=/tmp/screen.png
 scrot /tmp/screen.png
 convert $TMPBG -scale 10% -scale 1000% $TMPBG
