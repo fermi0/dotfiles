@@ -13,5 +13,7 @@ config/cherrytree/icons
 config/cherrytree/*.tmp
 config/PulseEffects/autoload
 config/spacefm/*
+config/tilda/*
 
 !config/spacefm/session
+!config/tilda/config_0
