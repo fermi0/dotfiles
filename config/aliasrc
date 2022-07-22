@@ -13,6 +13,9 @@ alias ss='sudo systemctl start'
 alias sstats='sudo systemctl status'
 alias sstp='sudo systemctl stop'
 
+alias snfs='sudo systemctl start nfs-server.service'
+alias ffrecscr='ffmpeg -f gdigrab -framerate 30 -i desktop -c:v libx264'
+
 alias ww='sudo wget --mirror --convert-links --adjust-extension --page-requisites --no-parent'
 alias dump_everything='sudo wget --mirror --convert-links --adjust-extension --page-requisites -x'
 alias phttp='python3 -m http.server'
