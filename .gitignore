@@ -4,6 +4,7 @@
 .BurpSuite/burpbrowser
 
 cronfiles/date.txt
+cronfiles/sucrontab.txt
 config/joplin-desktop/cache/
 config/joplin-desktop/resources/
 config/joplin-desktop/tmp/
@@ -14,6 +15,8 @@ config/cherrytree/*.tmp
 config/PulseEffects/autoload
 config/spacefm/*
 config/tilda/*
+config/lf/bookmarks
+config/lf/marks
 
 !config/spacefm/session
 !config/tilda/config_0
