@@ -59,7 +59,6 @@ alias gc='git commit'
 alias gl='git clone'
 alias gr='git restore'
 
-alias lf='/usr/local/bin/lfueb'
 alias ms='sudo service postgresql start && sudo msfdb run'
 alias airgd='cd /root/Downloads/GIT/Tools/airgeddon/ && ./airgeddon.sh'
 alias srcp='scrcpy -b889M -m8989 -f'
