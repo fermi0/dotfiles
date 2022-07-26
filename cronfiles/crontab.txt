@@ -24,7 +24,7 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 */2 * * * * exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
 
 # updates
-0 22 * * 5 xfce4-terminal -e "tmux new -s 'System Update' 'sudo apt update -y && sudo apt full-upgrade -y && sudo apt autopurge -y && sudo apt autoclean -y && sudo apt clean -y'"
+0 22 * * 5 xfce4-terminal --hold -e "tmux new -s 'System Update' 'sudo /home/oppenheimer/Documents/Configs/scripts/sysup.sh'"
 
 # schedule
 # sleep 11am - 4am
@@ -33,11 +33,10 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 # 0 23 * * * mpv --volume=60 ~/Documents/Configs/sounds/playlists/sleep.m3u
 
 # wikipedia
-20 6 * * * wikit $(python3 ~/Documents/Configs/dotfiles/scripts/wikipedia/query.py) -a > ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt
-30 6 * * * mpv /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
-30 6 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
-30 6 * * * sleep 3; tmux neww -n 'Wiki text' 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
-
+10 8 * * * /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
+30 8 * * * mpv /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
+30 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
+30 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
 
 # walk
 # 0 17 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/walk.svg -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Go For A Walk"
