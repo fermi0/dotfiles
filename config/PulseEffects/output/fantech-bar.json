@@ -57,8 +57,8 @@
             "state": "true",
             "input-gain": "0",
             "output-gain": "0",
-            "amount": "2.8000000000000007",
-            "harmonics": "7.9000000000000021",
+            "amount": "6.8999999999999915",
+            "harmonics": "9.7999999999999954",
             "scope": "100",
             "floor": "120",
             "blend": "10",
@@ -126,7 +126,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "4",
+                    "gain": "0",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -136,7 +136,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3.75",
+                    "gain": "2",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -146,7 +146,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2.5",
+                    "gain": "2",
                     "frequency": "119.24354052777788",
                     "q": "1.5047602375372451"
                 },
@@ -166,7 +166,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-4",
+                    "gain": "-2",
                     "frequency": "474.71708526294935",
                     "q": "1.5047602375372453"
                 },
@@ -186,7 +186,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "-8",
                     "frequency": "1889.8827562743609",
                     "q": "1.5047602375372449"
                 },
@@ -196,7 +196,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-8",
                     "frequency": "3770.8118433037489",
                     "q": "1.5047602375372449"
                 },
@@ -206,7 +206,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2.5",
+                    "gain": "-6",
                     "frequency": "7523.7587677823067",
                     "q": "1.5047602375372453"
                 },
@@ -216,7 +216,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "9",
+                    "gain": "-2.5",
                     "frequency": "15011.872336272731",
                     "q": "1.5047602375372451"
                 }
@@ -228,7 +228,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "4",
+                    "gain": "0",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -238,7 +238,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3.75",
+                    "gain": "2",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -248,7 +248,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2.5",
+                    "gain": "2",
                     "frequency": "119.24354052777788",
                     "q": "1.5047602375372451"
                 },
@@ -268,7 +268,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-4",
+                    "gain": "-2",
                     "frequency": "474.71708526294935",
                     "q": "1.5047602375372453"
                 },
@@ -288,7 +288,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "-8",
                     "frequency": "1889.8827562743609",
                     "q": "1.5047602375372449"
                 },
@@ -298,7 +298,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "-8",
                     "frequency": "3770.8118433037489",
                     "q": "1.5047602375372449"
                 },
@@ -308,7 +308,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2.5",
+                    "gain": "-6",
                     "frequency": "7523.7587677823067",
                     "q": "1.5047602375372453"
                 },
@@ -318,7 +318,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "9",
+                    "gain": "-2.5",
                     "frequency": "15011.872336272731",
                     "q": "1.5047602375372451"
                 }
@@ -384,11 +384,10 @@
             "semitones": "0",
             "octaves": "0",
             "crispness": "3",
-            "formant-preserving": "false",
-            "faster": "false"
+            "formant-preserving": "false"
         },
         "reverb": {
-            "state": "true",
+            "state": "false",
             "input-gain": "0",
             "output-gain": "0",
             "room-size": "Small",
@@ -547,8 +546,8 @@
             "ir-width": "100"
         },
         "crystalizer": {
-            "state": "false",
-            "aggressive": "true",
+            "state": "true",
+            "aggressive": "false",
             "input-gain": "0",
             "output-gain": "0",
             "band0": {
@@ -636,7 +635,7 @@
             "time-r": "0"
         },
         "rnnoise": {
-            "state": "false",
+            "state": "true",
             "input-gain": "0",
             "output-gain": "0",
             "model-path": "Standard RNNoise Model"
