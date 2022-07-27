@@ -337,7 +337,7 @@ exec_always --no-startup-id kdeconnect-indicator
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
 exec_always --no-startup-id xrandr --output LVDS-1 --off --output VGA-1 --mode 1280x1024 --refresh 75.02 --pos 1920x0 --rotate normal --output HDMI-1 --primary --mode 1920x1080 --refresh 60 --pos 0x0 --rotate normal --output DP-1 --off
-# exec --no-startup-id xdman
+exec --no-startup-id xdman
 # exec --no-startup-id guake
 # exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core
 
