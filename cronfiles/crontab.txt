@@ -1,53 +1,61 @@
 DISPLAY=:0.0
 SHELL=/bin/zsh
 XDG_RUNTIME_DIR=/run/user/1000
-PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/oppenheimer/.dotnet/tools:/usr/local/go/bin:/home/oppenheimer/.local/bin
+PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/go/bin:~/.local/bin
 
 # m h  dom mon dow(0=Sunday)   command
-0 */12 * * * crontab -l > /home/oppenheimer/Documents/Configs/dotfiles/cronfiles/crontab.txt
-0 */12 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
+0 */12 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
+0 */12 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
 
 # time-keeping
-20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
-20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * cd /home/oppenheimer/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69 
+20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
+20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69 
 
-0 6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
-0 5,6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * cd /home/oppenheimer/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
+0 6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
+0 5,6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
 
 # alarm
-0 5 * * * xfce4-terminal -e "tmux new -s 'alarm 1' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
-30 5 * * * xfce4-terminal -e "tmux new -s 'alarm 2' 'mpv --volume=130 --loop /home/oppenheimer/Desktop/SpongeBobFogHornAlarm.opus'"
+0 5 * * * xfce4-terminal -e "tmux new -s 'alarms' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
+30 5 * * * xfce4-terminal -e "tmux new -n 'alarm 1' -t alarms: 'mpv --volume=130 --loop ~/Desktop/SpongeBobFogHornAlarm.opus'"
 0 6 * * * xfce4-terminal -e "tmux new -s 'alarm 3' 'mpv --volume=130 --loop /media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard\ P.\ Feynman/Los\ Alamos\ from\ below\ -\ Richard\ P.\ Feynman.mp3'"
 25 6 * * * xfce4-terminal -e "tmux new -s 'alarm 4' 'mpv --volume=130 --loop '/media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard P. Feynman/Los Alamos from below - Richard P. Feynman.mp3'"
 
+35 10 * * * xfce4-terminal -e "tmux new -s 'alarms' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
+36 10 * * * xfce4-terminal -e "tmux neww -n 'alarm 1' -t 'alarms': 'mpv --volume=130 --loop ~/Desktop/SpongeBobFogHornAlarm.opus'"
+
 # wallpaper loop
-*/2 * * * * exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
+*/2 * * * * exec ~/Documents/Configs/dotfiles/scripts/update_walls.sh
 
 # updates
-0 22 * * 5 xfce4-terminal --hold -e "tmux new -s 'System Update' 'sudo /home/oppenheimer/Documents/Configs/scripts/sysup.sh'"
+0 22 * * 5 xfce4-terminal --hold -e "tmux new -s 'System Update' 'sudo ~/Documents/Configs/scripts/sysup.sh'"
 
 # schedule
 # sleep 11am - 4am
-# 50 22 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/sleep.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "hypothalamus is flooding your basal ganglia with melatonin"
+# 50 22 * * * notify-send -i ~/Documents/Configs/images/sleep.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "hypothalamus is flooding your basal ganglia with melatonin"
 # 50 22 * * * play --volume 0.9 ~/Documents/Configs/sounds/sleep.wav repeat 5
 # 0 23 * * * mpv --volume=60 ~/Documents/Configs/sounds/playlists/sleep.m3u
 
 # wikipedia
-10 8 * * * /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
-30 8 * * * mpv /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
-30 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
-30 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
+0 8 * * * ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
+10 8 * * * mpv ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
+10 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
+10 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
+
+35 8 * * * ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
+40 8 * * * mpv ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
+40 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
+40 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
 
 # walk
-# 0 17 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/walk.svg -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Go For A Walk"
+# 0 17 * * * notify-send -i ~/Documents/Configs/images/walk.svg -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Go For A Walk"
 
 # book 9:00 - 11:50 pm
-# 25 21 * * * notify-send -i /home/oppenheimer/Documents/Configs/images/book.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Book Reading"
+# 25 21 * * * notify-send -i ~/Documents/Configs/images/book.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Book Reading"
 # 25 21 * * * play --volume 0.9 ~/Documents/Configs/sounds/book.wav repeat 5
-# 45 21 * * * play --volume 0.9 ~/Documents/Configs/sounds/reset.wav repeat$#$$#$#$ER$ ###5
+# 45 21 * * * play --volume 0.9 ~/Documents/Configs/sounds/reset.wav repeat 5
 
 # regular back ups
-# @reboot sleep 100 && /home/oppenheimer/Documents/Configs/scripts/nightly/nightly_backup.sh& 
+# @reboot sleep 100 && ~/Documents/Configs/scripts/nightly/nightly_backup.sh& 
 
 # sun 0
 # mon 1

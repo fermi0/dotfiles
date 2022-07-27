@@ -1,68 +1,53 @@
-mahalo
-mahalo
-bonobo
-Random number generation
-petrol engine
-ernico fermi
-richard feynman
-general relativity
-special relativity
-calculus
-issac newton
-augmented reality
-classical conditioning
-fossil fuels
-combustion engine
-diesel engine
-René Descartes
-simon laplace
-laplace's demon
-chaos theory
-bonobo
-antiparticle
-mahalo
-gravity
-coherence_(physics)
-coherence_(physics)
-john von neumann
-saturn v
-richard feynman
-gravity
-bonobo
-feynmann
-mahalo
-feynman
-mahalo
-simulation annealing
-feynman
-feynman
-mahalo
-simulation annealing
-simulated annealing
-hill-climbing algorithm
-hill climbing algorithm
-statistical significance
-hill climbing
-richard feynman
-david hilbert
-
-richard feynman
 ASMR
-david hilbert
-elegy
-havanaise
-paul sartre
-sartre
-havanaise
-coffee
-elegy
-los alamos from below
-hardwork
+René Descartes
 antibiotic resistance
+antiparticle
+augmented reality
 basal ganglia
-fjsdh
-fskjdsdf
-fdsf
+bonobo
+calculus
+cbti
+chaos theory
+classical conditioning
+coffee
+cognitive behavioral therapy for insomnia
+coherence_(physics)
+combustion engine
+david hilbert
+diesel engine
 dsfsdfsdf
+elegy
+ernico fermi
+fdsf
+feynman
+feynmann
+fjsdh
+fossil fuels
+fskjdsdf
+general relativity
+gravity
+hardwork
+havanaise
+hill climbing
+hill climbing algorithm
+hill-climbing algorithm
+insomnia
+issac newton
+john von neumann
+laplace's demon
+los alamos from below
+mahalo
+paul sartre
+petrol engine
+richard feynman
+sartre
+saturn v
 sdfsdfsd
+simon laplace
+simulated annealing
+simulation annealing
+special relativity
+statistical significance
 basal ganglia
+antimicrobial resistance
+rhesus macaque
