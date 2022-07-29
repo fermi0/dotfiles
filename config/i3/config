@@ -308,10 +308,9 @@ bindsym $mod+Shift+Ctrl+r exec "reboot"
 # bindsym Pause exec "killall play"
 bindsym $mod+Home exec xfce4-terminal -e "tmux new -s 'lf.manager' 'lf'"
 bindsym Mod1+Home exec xfce4-terminal -e "tmux neww -n 'lf' 'lf'"
-bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Speak' '/home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh && sleep 5 && /usr/local/bin/gtts-cli -f /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - --speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
 bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/oppenheimer/notes/hints'"
+bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh" 
 bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
-bindsym Mod1+Shift+w exec xfce4-terminal -e "tmux neww -n 'Wiki Text' 'less /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'"
 
 # transparency
 exec_always --no-startup-id picom --config /home/oppenheimer/.config/picom/picom.conf
