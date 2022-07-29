@@ -3,6 +3,8 @@
 .fonts/*/*/.uuid
 .BurpSuite/burpbrowser
 
+scripts/sysup.sh
+
 cronfiles/date.txt
 cronfiles/sucrontab.txt
 config/joplin-desktop/cache/
