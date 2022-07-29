@@ -4,8 +4,8 @@ XDG_RUNTIME_DIR=/run/user/1000
 PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/go/bin:~/.local/bin
 
 # m h  dom mon dow(0=Sunday)   command
-0 */12 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
-0 */12 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
+0 */24 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
+0 */24 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
 
 # time-keeping
 20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
@@ -15,19 +15,16 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 0 5,6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
 
 # alarm
-0 5 * * * xfce4-terminal -e "tmux new -s 'alarms' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
-30 5 * * * xfce4-terminal -e "tmux new -n 'alarm 1' -t alarms: 'mpv --volume=130 --loop ~/Desktop/SpongeBobFogHornAlarm.opus'"
-0 6 * * * xfce4-terminal -e "tmux new -s 'alarm 3' 'mpv --volume=130 --loop /media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard\ P.\ Feynman/Los\ Alamos\ from\ below\ -\ Richard\ P.\ Feynman.mp3'"
-25 6 * * * xfce4-terminal -e "tmux new -s 'alarm 4' 'mpv --volume=130 --loop '/media/oppenheimer/adata/CLASSIFIED/Videos/Lectures/Richard P. Feynman/Los Alamos from below - Richard P. Feynman.mp3'"
-
-35 10 * * * xfce4-terminal -e "tmux new -s 'alarms' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
-36 10 * * * xfce4-terminal -e "tmux neww -n 'alarm 1' -t 'alarms': 'mpv --volume=130 --loop ~/Desktop/SpongeBobFogHornAlarm.opus'"
+0 5 * * * xfce4-terminal -e "tmux new -s 'alarm 5:00' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
+30 5 * * * xfce4-terminal -e "tmux new -s 'alarm 5:30' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
+0 6 * * * xfce4-terminal -e "tmux new -s 'alarm 6:00' 'mpv --volume=130 --loop ~/Desktop/SpongeBobFogHornAlarm.opus'"
+30 6 * * * xfce4-terminal -e "tmux new -s 'alarm 6:30' 'mpv --volume=130 --loop ~/Desktop/SpongeBobFogHornAlarm.opus'"
 
 # wallpaper loop
 */2 * * * * exec ~/Documents/Configs/dotfiles/scripts/update_walls.sh
 
 # updates
-0 22 * * 5 xfce4-terminal --hold -e "tmux new -s 'System Update' 'sudo ~/Documents/Configs/scripts/sysup.sh'"
+0 22 * * 5 xfce4-terminal -e "tmux new -s 'System Update' 'sudo ~/Documents/Configs/scripts/sysup.sh'"
 
 # schedule
 # sleep 11am - 4am
@@ -36,15 +33,11 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 # 0 23 * * * mpv --volume=60 ~/Documents/Configs/sounds/playlists/sleep.m3u
 
 # wikipedia
-0 8 * * * ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
-10 8 * * * mpv ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
-10 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
-10 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
-
-35 8 * * * ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
-40 8 * * * mpv ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
-40 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
-40 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
+# 0 8 * * * ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh
+# 10 8 * * * mpv ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
+# 10 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
+# 10 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
+0 7 * * * xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh"
 
 # walk
 # 0 17 * * * notify-send -i ~/Documents/Configs/images/walk.svg -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Go For A Walk"
@@ -64,3 +57,4 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 # thu 4
 # fri 5
 # sat 6
+
