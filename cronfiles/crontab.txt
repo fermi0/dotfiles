@@ -4,15 +4,15 @@ XDG_RUNTIME_DIR=/run/user/1000
 PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/go/bin:~/.local/bin
 
 # m h  dom mon dow(0=Sunday)   command
-0 */24 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
-0 */24 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
+0 */12 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
+0 */12 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
 
 # time-keeping
-20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
-20,40 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69 
+20,40 7,8,9,10,11,13,14,15,16,17,19,20,21,22,23 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
+20,40 7,8,9,10,11,13,14,15,16,17,19,20,21,22,23 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69 
 
-0 6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
-0 5,6,7,8,9,10,11,13,14,15,17,18,19,20,21 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
+0 5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,0 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
+0 5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,0 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
 
 # alarm
 0 5 * * * xfce4-terminal -e "tmux new -s 'alarm 5:00' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
@@ -24,7 +24,7 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 */2 * * * * exec ~/Documents/Configs/dotfiles/scripts/update_walls.sh
 
 # updates
-0 22 * * 5 xfce4-terminal -e "tmux new -s 'System Update' 'sudo ~/Documents/Configs/scripts/sysup.sh'"
+0 22 * * 5 xfce4-terminal -e "tmux new -s 'System Update' 'sudo ~/Documents/Configs/dotfiles/scripts/sysup.sh'"
 
 # schedule
 # sleep 11am - 4am
@@ -37,7 +37,7 @@ PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/gam
 # 10 8 * * * mpv ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 --speed=1.2
 # 10 8 * * * sleep 3; xfce4-terminal -e "tmux new -s 'Wiki Speak' '/usr/local/bin/gtts-cli -f ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt | mpv - -speed=1.1 --force-seekable --demuxer-seekable-cache=yes --demuxer-max-bytes=2000MiB --demuxer-readahead-secs=2000'"
 # 10 8 * * * sleep 3; tmux neww -n 'Wiki text' 'less ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt'
-0 7 * * * xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh"
+0 8 * * * xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh"
 
 # walk
 # 0 17 * * * notify-send -i ~/Documents/Configs/images/walk.svg -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "Go For A Walk"
