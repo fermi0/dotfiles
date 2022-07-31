@@ -35,10 +35,6 @@ elegy
 emacs
 eric satie
 ernico fermi
-fd
-fddkljhokhjouhojkh
-fdgdfgdfgdfg
-fdsf
 feline
 feline cat
 feline zoology
@@ -46,130 +42,29 @@ feline zoology
 feline zoology  
 feynman
 feynmann
-fjksdjf
-fjsdh
 fossil fuels
-fsdfdsf
-fsdfsdf
-fsdlkjklfj
-fsdsdsdfd
-fskjdsdf
-gdfgdfg
-gdfgdfgdfg
 general relativity
 german shepherd
-gfdfgdfgfdgdfgdf
 gravitational wave
 gravity
 great oxygenation period
 hardwork
 havanaise
 hello
-hellojkojkojojojjj
-hhjohjkhouh
 hill climbing
 hill climbing algorithm
 hill-climbing algorithm
-hjkhjklhjkhjh
-hjkhjknkjbn
-hjkhkhkh
-hjlkhnkljh
-hjohnjkhnkhnknb
-hklhlhklhl
-hlhjkljhlkjh
-hohohno
-hoih
-hwim
-i231409u93u04uj3
-ijljlkj
-ijlkhklhnlkjhn
-ijlkjhoihhdfdf
-ijnoijoijhoho
-ilhlkh
 insomnia
 issac newton
 jackle
-jfdhnjkgkwer
-jhbkbkbhbhk
-jhiohfdsf
-jhjhojohjjklnouh
-jhjjklhljkhjkl
-jhouhbojhnfjds
-jihjlkjhnklhlk
-jihkljjoikjol
-jij:w
-jijij
-jijiojhughigihvbib
-jijioji
-jijjnnnn
-jijkjolijoij
-jijoj
-jinnjniknk
-jiohjoihoho
-jiojhoihjnhjoijh
-jjipojoi
-jjlkjjkljlkj
-jkdshf
-jkhkjhjhkh
-jkjhoshdfohdf
-jkjkjkjkjk
-jkjkljhello
-jkjlkjlkjkl
-jkjlkljkljkljlk
-jkjoiujhlkjhsuiod
-jklhh
-jklhkhhn
-jklhklhjlkn
-jklhljkhh
-jkljhnkldshlkfhkshdfklhn
-jkljkj
-jkljkl
-jkljkljj
-jkljkljk
-jkljkljlkj
-jkljljklj
-jkljljljkjk
-jkljlkjhkljhkljnh
-jkljlkjklj
-jkljlkjkljlkjfdssd
-jkljlkjlkj
-jkljnlkjklj
-jkljoijhkljh
-jklkhojiojnhn
-jkllkjh
-jlhjlhnkbkhjb
-jljhlojnhkln
-jlkjhkljhn
-jlkjlkjkj
-jnjkhnvjdhfg
 john von neumann
-joishjdfhjlshnd
-khkhjkhn
-khllljhkjhkl
-kjh
-kjhkh
-kjljljlk
-kjlkjoij
-klhjnkln
-kljdaksljlkdjl
-kljdlsaj
-kljhklhjljh
-kljkljk
-kljlkjklj
 laplace's demon
-ljihjklhnljnh
-lkhujdfhnog
-lkjjljlkjkljlkj
 los alamos from below
 mahalo
 mahalooo
-mahalopjkljlkjkl
 nebula
 nebulae
 neutron star
-njklhkhhn
-ojhnonhjn
-ojkpjkj
 paul sartre
 petrol engine
 physics
@@ -182,11 +77,8 @@ rene decartes
 renedecartes
 rhesus macaque
 richard feynman
-richard fkjokj
-richard rynm
 sartre
 saturn v
-sdfsdfsd
 simon laplace
 simulated annealing
 simulation annealing
@@ -195,12 +87,7 @@ statistical significance
 succubus
 the great oxygenation period
 think
-uuuuuu
-uuuuuuuu
 vim
 whom
 why
-wiki
 windows 98
-yihiohouwedhnw
- 
