@@ -309,7 +309,7 @@ bindsym $mod+Shift+Ctrl+r exec "reboot"
 bindsym $mod+Home exec xfce4-terminal -e "tmux new -s 'lf.manager' 'lf'"
 bindsym Mod1+Home exec xfce4-terminal -e "tmux neww -n 'lf' 'lf'"
 bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/oppenheimer/notes/hints'"
-bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' ~/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh" 
+bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh" 
 bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
 
 # transparency
