@@ -54,6 +54,7 @@ alias windstp='windscribe disconnect ch && sudo /etc/init.d/windscribe-cli stop'
 
 alias gs='git status'
 alias ga='git add'
+alias gal='git add --all'
 alias gp='git push -u origin master'
 alias g.='git pull'
 alias gc='git commit'
