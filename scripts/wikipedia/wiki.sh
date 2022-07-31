@@ -54,11 +54,17 @@ empty_query () {
             -t='wiki speak': \
             vim "$QUERY"
     fi
-    tail \
+    timeout 20s \
+        tail \
         --pid=$(pgrep -a "vim" | grep "query" | cut -d " " -f1) \
-        -f /dev/null&
-    sleep 10m
+        -f /dev/null
     kill -9 $(pgrep -a "vim" | grep "query" | cut -d " " -f1) 2> /dev/null
+    
+    # sleep 5
+    # if pgrep -a "vim" | grep "query" | cut -d " " -f1; then
+    #     sleep 20
+    #     kill -9 $(pgrep -a "vim" | grep "query" | cut -d " " -f1) 2> /dev/null
+    # fi
 }
 
 session () {
