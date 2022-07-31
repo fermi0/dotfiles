@@ -57,7 +57,7 @@
             "state": "true",
             "input-gain": "0",
             "output-gain": "0",
-            "amount": "6.8999999999999915",
+            "amount": "8.8999999999999844",
             "harmonics": "9.7999999999999954",
             "scope": "100",
             "floor": "120",
@@ -156,7 +156,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "1",
                     "frequency": "237.92214271853953",
                     "q": "1.5047602375372451"
                 },
@@ -258,7 +258,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "0",
+                    "gain": "1",
                     "frequency": "237.92214271853953",
                     "q": "1.5047602375372451"
                 },
