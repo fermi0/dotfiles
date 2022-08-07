@@ -114,6 +114,7 @@ export EDITOR=/usr/bin/vim.gtk3
 export QT_QPA_PLATFORMTHEME=qt5ct
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:/home/oppenheimer/.local/bin
+export PATH=$PATH:/home/oppenheimer/bin
 export LF_BOOKMARK_PATH=/home/oppenheimer/.config/lf/bookmarks
 
 #zoxide
