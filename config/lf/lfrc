@@ -165,7 +165,7 @@ cmd compress ${{
 	printf "%s\n\t" "$fx"
 	printf "Compress?[Y/n]"
 	read ans
-	if [ $ans = "n" ]; then
+	if [[ $ans = "n" ]]; then
         exit 1
     else
         vared -p "Output zip: " -c ask
@@ -341,13 +341,13 @@ cmd rsync ${{
     set -f
 	printf "%s\n\t" "$fx"
     vared -p "rsync to Fermion?[Y/n] " -c myd
-    if [ $myd = "n" ]; then
+    if [[ $myd = "n" ]]; then
         vared -p "Destination path: " -c dest
         tmux neww -n "rsyncing to $dest" rsync -ausvxhP --ignore-existing $fx $dest
     fi
-    if [ -z "$myd" ] || [ $myd = "y" ]; then
+    if [[ -z "$myd" ]] || [[ $myd = "y" ]]; then
         vared -p "Destination path: " -c des
-        if [ -z "$des" ]; then
+        if [[ -z "$des" ]]; then
             tmux neww -n "rsyncing to /sdcard" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard
         else
             tmux neww -n "rsyncing to /sdcard/$des" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard/$des
