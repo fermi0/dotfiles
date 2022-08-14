@@ -126,7 +126,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "1",
+                    "gain": "4",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -136,7 +136,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2",
+                    "gain": "3",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -166,7 +166,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "0",
                     "frequency": "474.71708526294935",
                     "q": "1.5047602375372453"
                 },
@@ -176,7 +176,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-5",
+                    "gain": "-4",
                     "frequency": "947.18511049703125",
                     "q": "1.5047602375372451"
                 },
@@ -186,7 +186,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-6",
+                    "gain": "-5",
                     "frequency": "1889.8827562743609",
                     "q": "1.5047602375372449"
                 },
@@ -196,7 +196,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-5",
+                    "gain": "-6",
                     "frequency": "3770.8118433037489",
                     "q": "1.5047602375372449"
                 },
@@ -206,7 +206,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-2",
+                    "gain": "-7",
                     "frequency": "7523.7587677823067",
                     "q": "1.5047602375372453"
                 },
@@ -216,7 +216,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "1.5",
+                    "gain": "-8.0000000000000107",
                     "frequency": "15011.872336272731",
                     "q": "1.5047602375372451"
                 }
@@ -228,7 +228,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "1",
+                    "gain": "4",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -238,7 +238,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2",
+                    "gain": "3",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -268,7 +268,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-3",
+                    "gain": "0",
                     "frequency": "474.71708526294935",
                     "q": "1.5047602375372453"
                 },
@@ -278,7 +278,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-5",
+                    "gain": "-4",
                     "frequency": "947.18511049703125",
                     "q": "1.5047602375372451"
                 },
@@ -288,7 +288,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-6",
+                    "gain": "-5",
                     "frequency": "1889.8827562743609",
                     "q": "1.5047602375372449"
                 },
@@ -298,7 +298,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-5",
+                    "gain": "-6",
                     "frequency": "3770.8118433037489",
                     "q": "1.5047602375372449"
                 },
@@ -308,7 +308,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "-2",
+                    "gain": "-7",
                     "frequency": "7523.7587677823067",
                     "q": "1.5047602375372453"
                 },
@@ -318,7 +318,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "1.5",
+                    "gain": "-8.0000000000000107",
                     "frequency": "15011.872336272731",
                     "q": "1.5047602375372451"
                 }
@@ -546,7 +546,7 @@
             "ir-width": "100"
         },
         "crystalizer": {
-            "state": "true",
+            "state": "false",
             "aggressive": "false",
             "input-gain": "0",
             "output-gain": "0",
