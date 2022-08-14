@@ -269,6 +269,13 @@ cmd mount ${{
     lf -remote 'send reload'
 }}
 
+cmd mount_adata ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    /home/oppenheimer/Documents/Configs/dotfiles/scripts/mntadata.sh
+    lf -remote 'send reload'
+}}
+
 cmd mtp-mount ${{
     #trap bashtrap INT
     clear; tput cup $(($(tput lines)/3)); tput bold
@@ -470,6 +477,7 @@ map msf push :sudo-mkfile<space>
 map chm chmod
 map cho chown
 
+map mta mount_adata
 map mnt mount
 map mo! unmount
 map mtp mtp-mount
@@ -506,12 +514,13 @@ map yd $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
 map <enter> shell
 map <c-z> $ kill -STOP $PPID
 map sfs sshfs-f
-map I depkg
+map dpkg depkg
 map sfm spacefm-open
 map gtd git-download
 map R reload
 map ow push :open-with<space>
 # map W $setsid -f $TERMINAL >/dev/null 2>&1
+map i set preview!
 
 # Navigation
 map g/ cd /
