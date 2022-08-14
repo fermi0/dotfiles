@@ -22,7 +22,7 @@
 					}
 				],
 				"visible": true,
-				"width": 349
+				"width": 297
 			},
 			{
 				"key": "tempContainer-FRA8zkRro2y6k6L8TVQ1Ly",
@@ -53,6 +53,7 @@
 		"visible": true
 	},
 	"noteVisiblePanes": [
+		"editor",
 		"viewer"
 	],
 	"editor.codeView": true,
