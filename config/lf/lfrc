@@ -28,9 +28,11 @@ cmd sudo-mkfile $sudo vim "$(echo $* | tr ' ' '\ ')"
 cmd sshfs-f $sshfs fermi@192.168.1.64:/sdcard /media/oppenheimer/Fermion-sshfs
 cmd dragon %dragon -a -x $fx
 cmd dragon-stay %dragon -a $fx
+cmd dragon-target %dragon -t
 cmd dlfile %dlfile
 cmd bulkrename $vidir $fx
 cmd open-with %"$@" "$fx"
+
 # cmd setbg "$1"
 
 # zoxide integration
@@ -411,6 +413,21 @@ cmd depkg ${{
     fi
 }}
 
+cmd toaudio ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+	printf "extract audio?[Y/n]"
+	read ans
+	if [ $ans = "n" ]; then
+        exit 1
+    else
+        for i in "$fx"
+            do
+                ffmpeg -i "$i" -c:a copy -b:a 256 -ac 2 -map a "$(basename $i).mp3"
+            done
+    fi
+}}
 
 #Unmap Defaults
 map e
@@ -464,9 +481,11 @@ map syn rsync
 map dr dragon
 map ds dragon-stay
 map dl dlfile
+map dt dragon-target
 
 map E extract
 map C compress
+map Vta toaudio
 
 map mdf newfold
 map mdr push :mkdir<space>
