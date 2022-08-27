@@ -57,12 +57,12 @@
             "state": "true",
             "input-gain": "0",
             "output-gain": "0",
-            "amount": "6.8999999999999915",
+            "amount": "8.8999999999999844",
             "harmonics": "9.9999999999999947",
-            "scope": "108",
+            "scope": "89",
             "floor": "120",
             "blend": "10",
-            "floor-active": "false",
+            "floor-active": "true",
             "listen": "false"
         },
         "compressor": {
@@ -126,7 +126,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "4",
+                    "gain": "2",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -136,7 +136,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "2",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -146,7 +146,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2",
+                    "gain": "1",
                     "frequency": "119.24354052777788",
                     "q": "1.5047602375372451"
                 },
@@ -228,7 +228,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "4",
+                    "gain": "2",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -238,7 +238,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "2",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -248,7 +248,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "2",
+                    "gain": "1",
                     "frequency": "119.24354052777788",
                     "q": "1.5047602375372451"
                 },
@@ -546,7 +546,7 @@
             "ir-width": "100"
         },
         "crystalizer": {
-            "state": "false",
+            "state": "true",
             "aggressive": "false",
             "input-gain": "0",
             "output-gain": "0",
