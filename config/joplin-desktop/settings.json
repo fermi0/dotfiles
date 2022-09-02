@@ -13,8 +13,7 @@
 				"children": [
 					{
 						"key": "noteList",
-						"visible": true,
-						"height": 165
+						"visible": true
 					},
 					{
 						"key": "sideBar",
@@ -53,6 +52,7 @@
 		"visible": true
 	},
 	"noteVisiblePanes": [
+		"editor",
 		"viewer"
 	],
 	"editor.codeView": true,
@@ -89,5 +89,6 @@
 	"markdown.plugin.katex": true,
 	"sync.maxConcurrentConnections": 5,
 	"style.editor.contentMaxWidth": 0,
-	"trackLocation": false
+	"trackLocation": false,
+	"markdown.plugin.footnote": true
 }
