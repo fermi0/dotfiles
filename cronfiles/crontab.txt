@@ -4,15 +4,15 @@ XDG_RUNTIME_DIR=/run/user/1000
 PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/go/bin:~/.local/bin
 
 # m h  dom mon dow(0=Sunday)   command
-0 */12 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
-0 */12 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
+# 0 */12 * * * crontab -l > ~/Documents/Configs/dotfiles/cronfiles/crontab.txt
+# 0 */12 * * * notify-send -i ~/Documents/Configs/images/serve.png -u critical "$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)" "<i><b>Cron Back up ready.</b></i>"
 
 # time-keeping
-20,40 7,8,9,10,11,13,14,15,16,17,19,20,21,22,23 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
-20,40 7,8,9,10,11,13,14,15,16,17,19,20,21,22,23 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69 
+20,40 7,8,9,10,11,13,14,15,16,17,19,20,21,22,23 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%H\%M\ \Hours)</b></i>"
+20,40 7,8,9,10,11,13,14,15,16,17,19,20,21,22,23 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%H\ \hundred\ \hours\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
 
-0 5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,0 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%I:\%M\ \%P)</b></i>"
-0 5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23,0 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%l:\%M\ \%P\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
+0 5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23 * * * notify-send -i ~/Documents/Configs/images/clock.png -t 500000 "Hyperfine Transition Frequency in Microwave:" "<i><b>$(date +\%d\ \%B\ \%A\ \%H\%M\ \Hours)</b></i>"
+0 5,6,7,8,9,10,11,12,13,14,15,17,18,19,20,21,22,23 * * * cd ~/Documents/Configs/dotfiles/cronfiles && date +\%H\ \hundred\ \hours\ \%A\ \%d > date.txt && gtts-cli -f date.txt | mpv mp3 - --volume=69
 
 # alarm
 0 5 * * * xfce4-terminal -e "tmux new -s 'alarm 5:00' 'mpv --volume=130 --loop ~/Documents/Configs/sounds/morningmood.mp3'"
