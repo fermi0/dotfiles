@@ -13,7 +13,8 @@
 				"children": [
 					{
 						"key": "noteList",
-						"visible": true
+						"visible": true,
+						"height": 150
 					},
 					{
 						"key": "sideBar",
@@ -21,7 +22,7 @@
 					}
 				],
 				"visible": true,
-				"width": 297
+				"width": 234
 			},
 			{
 				"key": "tempContainer-FRA8zkRro2y6k6L8TVQ1Ly",
