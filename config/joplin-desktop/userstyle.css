@@ -85,11 +85,11 @@
 
   /* GENERAL *********************************************** */
   /* base font group:  all elements that other than monospace font group */
-  --base-font: "FantasqueSansMono Nerd Font Mono", sans-serif; /* by default, it's also affects to --print-base-font */
+  --base-font: "Unifont"; /* by default, it's also affects to --print-base-font */
   --base-font-size: 16px;
 
   /* monospace font group:  code block | pre | code | footnote ref no. */
-  --monospace-font: "Unifont", monospace; /* by default, it's also affects to --print-monospace-font */
+  --monospace-font: "Unifont"; /* by default, it's also affects to --print-monospace-font */
   --monospace-font-size: 15px;
   
   /* render viewer background ------------------------------ */
@@ -973,6 +973,7 @@ background-image: var(--h2-border-color);
 #rendered-md li,
 #rendered-md li > p {
   margin: 20px 0;
+  line-height: 1.5em !important;
   color: var(--list-text-color);
 }
 #rendered-md li:not(id^="fn") {
@@ -2320,3 +2321,11 @@ important::before {
 /* vvvvvvvvv             CUSTOM CODE              vvvvvvvvvv */
 /* ********************************************************* */
 /* Add your custom code below here to avoid confusing with OhmineDT's code. */
+#rendered-md sup, sub {
+	vertical-align: baseline;
+	position: relative;
+	top: -0.4em;
+}
+#rendered-md sub { 
+    top: 0.4em;
+}
