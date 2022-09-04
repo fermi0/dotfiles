@@ -1,0 +1,14 @@
+{
+	"version": 2,
+	"currentProfileId": "default",
+	"profiles": [
+		{
+			"name": "Default",
+			"id": "default"
+		},
+		{
+			"name": "testing",
+			"id": "sm1lbz39"
+		}
+	]
+}
