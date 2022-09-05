@@ -3,7 +3,7 @@
 	"locale": "en_US",
 	"api.token": "4bec0e769d55ce2d6126be1d2513a138f91b4b798d519a5f4a26bcc7dfe11ecc92f58e4380b132ed9d23e594f51b9f98b8910a68ce2329b73381fbefdcd53a15",
 	"markdown.plugin.softbreaks": false,
-	"markdown.plugin.typographer": false,
+	"markdown.plugin.typographer": true,
 	"spellChecker.language": "en-US",
 	"ui.layout": {
 		"key": "root",
@@ -82,7 +82,7 @@
 	"richTextBannerDismissed": true,
 	"showTrayIcon": true,
 	"notes.sortOrder.reverse": false,
-	"style.editor.fontFamily": "Unifont",
+	"style.editor.fontFamily": "FantasqueSansMono Nerd Font Mono",
 	"style.editor.monospaceFontFamily": "Unifont",
 	"editor": "/usr/bin/vim.gtk3",
 	"windowContentZoomFactor": 100,
