@@ -29,8 +29,8 @@
   /* SWITCHER FOR RENDER VIEWER **************************** */
   /* change the below css property values to control the style effects on render viewer & rich text editor */
 
-  --switcher-h1-font-variant: none; /* ON: "small-caps;" | OFF: "none;" | turn on/off the small-caps effect of h1 heading */
-  --switcher-h1-text-fill-color: transparent; /* ON: "transparent;" | OFF: "none;" | turn on/off heading gradient color effect */
+  --switcher-h1-font-variant: none /* ON: "small-caps;" | OFF: "none;" | turn on/off the small-caps effect of h1 heading */
+  --switcher-h1-text-fill-color: none; /* ON: "transparent;" | OFF: "none;" | turn on/off heading gradient color effect */
   --switcher-h1-border-display: block; /* SHOW: "block;" | HIDE: "none;" | show/hide h1 heading border */
 
   --switcher-h2-rice-icon-display: none; /* SHOW: "inline-block;" | HIDE: "none;" | show/hide h2 heading rice icon */
@@ -41,7 +41,7 @@
   --switcher-h5-border-width: 1px; /* SHOW: "1px;" | HIDE: "0;" | show/hide h5 heading border */
   --switcher-h6-border-width: 1px; /* SHOW: "1px;" | HIDE: "0;" | show/hide h6 heading border */
   
-  --switcher-paragraph-text-align: none; /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of paragraph content*/
+  --switcher-paragraph-text-align: justify; /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of paragraph content*/
   --switcher-list-text-align: none;  /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of list */
   --switcher-footnote-text-align: none;  /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of footnote content */
   
@@ -85,12 +85,12 @@
 
   /* GENERAL *********************************************** */
   /* base font group:  all elements that other than monospace font group */
-  --base-font: "Unifont"; /* by default, it's also affects to --print-base-font */
+  --base-font: "FantasqueSansMono Nerd Font Mono", avenir, arial, sans-serif; /* by default, it's also affects to --print-base-font */
   --base-font-size: 16px;
 
   /* monospace font group:  code block | pre | code | footnote ref no. */
-  --monospace-font: "Unifont"; /* by default, it's also affects to --print-monospace-font */
-  --monospace-font-size: 15px;
+  --monospace-font: "Unifont", monospace, "unifont"; /* by default, it's also affects to --print-monospace-font */
+  --monospace-font-size: 14px;
   
   /* render viewer background ------------------------------ */
   --render-viewer-background-color: #151b1a; /* by default, it's also affects to the table border color */
@@ -125,7 +125,7 @@
   --h6-font-size: 1.3em;
   
   /* heading: h1 ------------------------------------------- */
-  --h1-text-color: #b3b3b3; /* it's only valid when h1 background clip effect has been removed */
+  --h1-text-color: #32e2ac; /* it's only valid when h1 background clip effect has been removed */
   --h1-clip-text-color: linear-gradient(
     85deg,
     #3bfff7,
@@ -235,7 +235,7 @@
   
   /* BLOCKQUOTE ******************************************** */
   --blockquote-text-color: #a2998f;
-  --blockquote-border-color: #3d3832;
+  --blockquote-border-color: #b39674;
   
   
   
@@ -409,12 +409,12 @@
 
   /* GENERAL *********************************************** */
   /* print base font:  all elements that other than the print monospace font group */
-  --print-base-font: "Hellvetica";
+  --print-base-font: var(--base-font);
   --print-base-font-size: 16px;
 
   /* print monospace font:  codeblock | pre | code | inline code */
   --print-monospace-font: var(--monospace-font);
-  --print-monospace-font-size: 16px;
+  --print-monospace-font-size: 13px;
 
   /* print background -------------------------------------- */
   --print-background-color: white;
@@ -432,17 +432,17 @@
 
 
   /* PRINT HEADING ***************************************** */
-  --print-h1-font-size: 1.9em;
-  --print-h2-font-size: 1.7em;
-  --print-h3-font-size: 1.6em;
-  --print-h4-font-size: 1.5em;
-  --print-h5-font-size: 1.4em;
-  --print-h6-font-size: 1.3em;
+  --print-h1-font-size: 1.8em;
+  --print-h2-font-size: 1.6em;
+  --print-h3-font-size: 1.4em;
+  --print-h4-font-size: 1.3em;
+  --print-h5-font-size: 1.2em;
+  --print-h6-font-size: 1.1em;
 
   /* print heading: h1 ------------------------------------- */
   --print-h1-text-color: #000; /* it's only work when the --switcher-h1-text-fill-color effect is off */
   --print-h1-background-clip-text-color: var(--h1-clip-text-color);
-  --print-h1-border-background-color:  linear-gradient(to right, #3faba6 30%, #8dc1b2 60%);
+  --print-h1-border-background-color: var(--h1-border-color);
 
   /* print heading: h2 ------------------------------------- */
   --print-h2-text-color: #202020;
@@ -488,7 +488,7 @@
   --print-abbreviation-text-color: #54d077;
   
   /* print special text: inline code text ------------------ */
-  --inline-code-text-font-size: 98%;
+  --inline-code-text-font-size: 95%;
   --print-inline-code-text-color: #595959;
   --print-inline-code-border-color: #000;
 
@@ -715,7 +715,7 @@ explain,
 question,
 warning,
 keyword {
-  text-align: justify left;
+  text-align: justify-left;
   line-height: var(--paragraph-text-line-height);
   color: var(--paragraph-text-color);
 }
@@ -728,7 +728,7 @@ body {
   border: 0;
   width: auto;
   height: 1px;
-  margin: 6px 0;
+  margin: 0px 0;
   background-image: var(--hr-background-image-color);
 }
 
@@ -798,7 +798,7 @@ body {
   width: 100%;
   height: 1px;
   margin: 2px 0;
-background-image: var(--h2-border-color);
+  background-image: var(--h2-border-color);
 }
 
 /* heading: h3 --------------------------------------------- */
@@ -851,10 +851,10 @@ background-image: var(--h2-border-color);
 /* SPECIAL TEXT ******************************************** */
 /* special text: mark text --------------------------------- */
 #rendered-md mark {
-  padding: auto;
+  padding: 0 6px;
   color: var(--mark-text-color);
   background: var(--mark-text-background-color);
-  border-radius: none;
+  border-radius: 1em;
 }
 
 /* special text: search text ------------------------------- */
@@ -1009,32 +1009,28 @@ background-image: var(--h2-border-color);
 /* TABLE *************************************************** */
 /* table: container ---------------------------------------- */
 #rendered-md > table {
-  font-family: var(--base-font) !important;
   width: 100%;
+  font-family: var(--base-font) !important;
   margin: 30px auto;
 }
 /* table: table header ------------------------------------- */
 #rendered-md > table > thead > tr > th {
-  font-family: var(--base-font) !important;
   color: var(--table-th-text-color);
   border: 3px solid var(--table-th-border-color);
   background: var(--table-th-background-color);
 }
 /* table: table data --------------------------------------- */
 #rendered-md > table > tbody > tr > td {
-  font-family: var(--base-font) !important;
   color: var(--table-td-text-color);
   border: 3px solid var(--table-td-border-color);
 }
 /* table: table row ---------------------------------------- */
 .jop-tinymce table tr:nth-child(even),
 table > tbody > tr:nth-child(even) {
-  font-family: var(--base-font) !important;
   background-color: var(--table-tr-odd-background-color);
 }
 .jop-tinymce table tr:nth-child(odd),
 table > tbody > tr:nth-child(odd) {
-  font-family: var(--base-font) !important;
   background-color: var(--table-tr-even-background-color);
 }
 
@@ -1896,8 +1892,10 @@ important::before {
   /* PRINT SPECIAL TEXT ************************************ */
   /* print special text: mark text ------------------------- */
   #rendered-md mark {
-    color: var(--print-mark-text-color);
-    background: var(--print-mark-text-background-color);
+    padding: 0 6px;
+    color: var(--mark-text-color);
+    background: var(--mark-text-background-color);
+    border-radius: 1em;
   }
 
   /* print special text: emphasize text -------------------- */
@@ -2324,6 +2322,7 @@ important::before {
 #rendered-md sup, sub {
 	vertical-align: baseline;
 	position: relative;
+    font-size: 1em;
 	top: -0.4em;
 }
 #rendered-md sub { 
