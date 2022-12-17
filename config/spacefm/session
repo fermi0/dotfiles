@@ -12,8 +12,8 @@ tool_icon_size=2
 no_execute=0
 
 [Window]
-width=1910
-height=1070
+width=1270
+height=995
 maximized=0
 
 [Desktop]
@@ -76,8 +76,8 @@ panel1_show-x=1
 panel1_show-key=49
 panel1_show-keymod=4
 panel1_show-b=2
-panel2_show-s=////home/oppenheimer/Downloads////media/oppenheimer/fermion/Phone/Movies
-panel2_show-x=1
+panel2_show-s=////home/oppenheimer/Downloads////home/oppenheimer////home/oppenheimer
+panel2_show-x=2
 panel2_show-key=50
 panel2_show-keymod=4
 panel2_show-b=1
@@ -98,6 +98,7 @@ root_bar-b=1
 view_thumb-b=1
 plug_cverb-b=1
 main_help-key=65470
+main_dev-b=1
 task_col_status-x=0
 task_col_status-y=130
 task_col_status-b=1
@@ -460,7 +461,7 @@ panel2_detcol_perm0-b=2
 panel2_detcol_owner0-b=2
 panel2_detcol_date0-b=2
 panel2_slider_positions0-s=0
-panel2_slider_positions0-x=285
+panel2_slider_positions0-x=392
 panel2_slider_positions0-y=0
 panel1_tool_s-child=cstm_315a79a8
 cstm_315a79a8-next=cstm_1fe5e1ae

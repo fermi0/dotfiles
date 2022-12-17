@@ -503,7 +503,11 @@
   color: var(--hr-text-color);
 }
 
-
+.CodeMirror-sizer {
+  margin-right: auto !important;
+  margin-left: auto !important;
+  max-width: 700px !important;
+}
 
 /* HEADINGS ************************************************ */
 /* headings group: h1 to h6 -------------------------------- */
@@ -1356,7 +1360,7 @@ i.fas.fa-caret-down {
 span.updated-time-label,
 .updated-time-label ~ .editor-toolbar {
   background: var(--eh-background-color) !important;
-  border-radius: 0 !important;
+  border-radius: 999 !important;
 }
 
 /* editor header: note title input bar --------------------- */

@@ -14,18 +14,25 @@
 					{
 						"key": "noteList",
 						"visible": true,
-						"height": 151
+						"height": 459
 					},
 					{
 						"key": "sideBar",
 						"visible": true
+					},
+					{
+						"key": "plugin-view-ylc395.noteLinkSystem-panel",
+						"context": {
+							"pluginId": "ylc395.noteLinkSystem"
+						},
+						"visible": false
 					}
 				],
 				"visible": true,
-				"width": 262
+				"width": 179
 			},
 			{
-				"key": "tempContainer-FRA8zkRro2y6k6L8TVQ1Ly",
+				"key": "tempContainer-P8aELjS8pqo21cpxGaYXK6",
 				"children": [
 					{
 						"key": "plugin-view-joplin.plugin.note.tabs-note.tabs.panel",
@@ -43,9 +50,9 @@
 				"visible": true
 			},
 			{
-				"key": "plugin-view-ylc395.noteLinkSystem-panel",
+				"key": "plugin-view-com.github.joplin.kanban-kanban",
 				"context": {
-					"pluginId": "ylc395.noteLinkSystem"
+					"pluginId": "com.github.joplin.kanban"
 				},
 				"visible": false
 			}
@@ -62,7 +69,7 @@
 	"sync.5.path": "https://ppp.woelkli.com/remote.php/webdav/Joplin",
 	"sync.5.username": "corvus.expelliarmus@gmail.com",
 	"dateFormat": "YYYY.MM.DD",
-	"timeFormat": "h:mm A",
+	"timeFormat": "HH:mm",
 	"editor.keyboardMode": "vim",
 	"editor.spellcheckBeta": false,
 	"theme": 2,
@@ -82,14 +89,15 @@
 	"richTextBannerDismissed": true,
 	"showTrayIcon": true,
 	"notes.sortOrder.reverse": false,
-	"style.editor.fontFamily": "FantasqueSansMono Nerd Font Mono",
+	"style.editor.fontFamily": "Cerdarville Cursive",
 	"style.editor.monospaceFontFamily": "Unifont",
 	"editor": "/usr/bin/vim.gtk3",
 	"windowContentZoomFactor": 100,
-	"style.editor.fontSize": 16,
+	"style.editor.fontSize": 22,
 	"markdown.plugin.katex": true,
-	"sync.maxConcurrentConnections": 5,
-	"style.editor.contentMaxWidth": 0,
+	"sync.maxConcurrentConnections": 20,
+	"style.editor.contentMaxWidth": 1000,
 	"trackLocation": false,
-	"markdown.plugin.footnote": true
+	"markdown.plugin.footnote": true,
+	"layoutButtonSequence": 3
 }

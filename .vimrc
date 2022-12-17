@@ -68,6 +68,9 @@ let g:airline#extensions#tabline#formatter = 'default'
 let g:airline_theme='jellybeans'
 let g:airline_powerline_fonts = 1
 let g:EasyMotion_do_mapping = 0 " Disable default mappings"
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
 
 " nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-h> <C-w>h

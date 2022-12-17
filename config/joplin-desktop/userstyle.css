@@ -42,7 +42,7 @@
   --switcher-h6-border-width: 1px; /* SHOW: "1px;" | HIDE: "0;" | show/hide h6 heading border */
   
   --switcher-paragraph-text-align: justify; /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of paragraph content*/
-  --switcher-list-text-align: none;  /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of list */
+  --switcher-list-text-align: justify;  /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of list */
   --switcher-footnote-text-align: none;  /* ON: "justify;" | OFF: "none;" | turn on/off the justify text effect of footnote content */
   
   --switcher-link-bracket-display: none; /* ON: "inline;" | OFF: "none;" | turn on/off the effect of automatically adding the monospace bracket to links */
@@ -85,8 +85,8 @@
 
   /* GENERAL *********************************************** */
   /* base font group:  all elements that other than monospace font group */
-  --base-font: "FantasqueSansMono Nerd Font Mono", avenir, arial, sans-serif; /* by default, it's also affects to --print-base-font */
-  --base-font-size: 16px;
+  --base-font: "Cedarville Cursive", avenir, arial, sans-serif; /* by default, it's also affects to --print-base-font */
+  --base-font-size: 24px;
 
   /* monospace font group:  code block | pre | code | footnote ref no. */
   --monospace-font: "Unifont", monospace, "unifont"; /* by default, it's also affects to --print-monospace-font */
@@ -125,9 +125,9 @@
   --h6-font-size: 1.3em;
   
   /* heading: h1 ------------------------------------------- */
-  --h1-text-color: #32e2ac; /* it's only valid when h1 background clip effect has been removed */
+  --h1-text-color: #d2d2d2; /* it's only valid when h1 background clip effect has been removed */
   --h1-clip-text-color: linear-gradient(
-    85deg,
+    #85deg,
     #3bfff7,
     #16d0c1,
     #7cffcd,
@@ -141,7 +141,6 @@
 
   /* heading: h2 ------------------------------------------- */
   --h2-text-color: #d2d2d2;
-  --h2-rice-icon-color: var(--h2-text-color); 
   --h2-border-color: linear-gradient(to right, #dadada 30%, #545454 60%); /* by default, it's also affects to h3 & h4 border color */
 
   /* heading: h3 ------------------------------------------- */
@@ -694,8 +693,8 @@ body {
 }
 
 /* rich text editor side padding --------------------------- */
-#tinymce > #rendered-md {
-  padding: 0 10px;
+#rendered-md {
+  padding: 160px;
 }
 
 /* exported note title ------------------------------------- */
@@ -706,7 +705,8 @@ body {
 /* paragraph ----------------------------------------------- */
 #rendered-md > p {
   padding: 0;
-  margin: 20px 0 20px 3px;
+  margin: 0px;
+  text-align: justify;
 }
 #rendered-md > p,
 note,
@@ -851,10 +851,10 @@ body {
 /* SPECIAL TEXT ******************************************** */
 /* special text: mark text --------------------------------- */
 #rendered-md mark {
-  padding: 0 6px;
+  padding: 0px;
   color: var(--mark-text-color);
   background: var(--mark-text-background-color);
-  border-radius: 1em;
+  border-radius: 1px;
 }
 
 /* special text: search text ------------------------------- */
@@ -975,9 +975,10 @@ body {
   margin: 20px 0;
   line-height: 1.5em !important;
   color: var(--list-text-color);
+  text-align: justify;
 }
 #rendered-md li:not(id^="fn") {
-  text-align: var(--switcher-list-text-align);
+  text-align: justify;
 }
 
 /* list margin group: unordered list | order list ---------- */
@@ -1043,9 +1044,11 @@ table > tbody > tr:nth-child(odd) {
   border-left: 7px solid var(--blockquote-border-color);
   opacity: 1;
   border-radius: 0.5em;
+  text-align: justify;
 }
 #rendered-md > blockquote > p {
   color: var(--blockquote-text-color);
+  text-align: justify;
 }
 
 
@@ -1892,10 +1895,10 @@ important::before {
   /* PRINT SPECIAL TEXT ************************************ */
   /* print special text: mark text ------------------------- */
   #rendered-md mark {
-    padding: 0 6px;
+    padding: 0px;
     color: var(--mark-text-color);
     background: var(--mark-text-background-color);
-    border-radius: 1em;
+    border-radius: none;
   }
 
   /* print special text: emphasize text -------------------- */

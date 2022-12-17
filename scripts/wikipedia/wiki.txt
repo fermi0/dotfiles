@@ -1,21 +1,36 @@
-Routine may refer to:
+A petrol engine (gasoline engine in American English) is an internal combustion engine designed to run on petrol (gasoline). Petrol engines can often be adapted to also run on fuels such as liquefied petroleum gas and ethanol blends (such as E10 and E85).
+Most petrol engines use spark ignition, unlike diesel engines which typically use compression ignition. Another key difference to diesel engines is that petrol engines typically have a lower compression ratio.
 
-Arts, entertainment, and media
-"Routine" (SWT), the first of four stories in the second issue of the Star Wars Tales series
-Choreographed routine, orchestrated dance involving several performers
-Comedy routine, comedic act or part of an act
-The Routine (album), by Hotwire, 2003
-"The Routine", the first episode of the HBO series Oz
-"Routine", a bonus track by Alan Walker from his 2018 album Different World
+Design
+Thermodynamic cycle
+Most petrol engines use either the four-stroke Otto cycle or the two-stroke cycle. Petrol engines have also been produced using the Miller cycle and Atkinson cycle.
 
-Computing
-Routine, another name for a computer program
-Coroutine, generalized reentrant computer subroutine having multiple entry points
-Subroutine, a routine inside another routine
+Layout
+Most petrol-powered piston engines are straight engines or V engines. However, flat engines, W engines and other layouts are sometimes used. 
+Wankel engines are classified by the number of rotors used.
 
-Other uses
-Ethnomethodology, sociological discipline focused on the methods groups use to create societal order
-Routine activity theory, sub-field of criminology
-Routinization of authority, the process through which a charismatic authority becomes a bureaucracy
-Schedule, or timetable, a basic time-management tool to formalize or develop a routine
-Visual routine, visual cognitive means of extracting information from a scene
+Compression ratio
+Cooling
+Petrol engines are either air-cooled or water-cooled.
+
+Ignition
+Petrol engines use spark ignition and high voltage current for the spark may be provided by a magneto or an ignition coil.  In modern car engines the ignition timing is managed by an electronic Engine Control Unit.
+
+Power output and efficiency
+The power output of small- and medium-sized petrol engines (along with equivalent engines using other fuels) is usually measured in kilowatts or horsepower.
+Typically, petrol engines have a thermodynamic efficiency of about 20% (approximately half that of some diesel engines).
+
+Applications
+Applications of petrol engines include automobiles, motorcycles, aircraft, motorboats and small engines (such as lawn mowers, chainsaws and portable generators).
+
+History
+The first practical petrol engine was built in 1876 in Germany by Nicolaus August Otto, although there had been earlier attempts by Étienne Lenoir in 1860,: p15  Siegfried Marcus in 1864: p79  and George Brayton in 1876.: pp413–414
+
+See also
+Diesel engine
+Electric motor
+Hydrogen engine
+Jet engine
+
+
+== References ==
