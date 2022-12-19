@@ -31,10 +31,10 @@ bindsym $mod+Shift+d exec rofi -show window \
 		-config ~/.config/rofi/rofidmenu.rasi
 
 # Power Profiles menu switcher (rofi)
-# bindsym $mod+Shift+p exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/power-profiles
+# bindsym $mod+Shift+p exec /home/fermi/Documents/Configs/dotfiles/scripts/power-profiles
 
 # keybinding in fancy rofi (automated):
-# bindsym $mod+Mod1+d exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/keyhint-2
+# bindsym $mod+Mod1+d exec /home/fermi/Documents/Configs/dotfiles/scripts/keyhint-2
 
 # change focus
 bindsym $mod+h focus left
@@ -174,21 +174,21 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec light -A 3      # increase screen brightness
-bindsym XF86MonBrightnessDown exec light -U 3    # decrease screen brightness
+bindsym XF86MonBrightnessUp exec light -A 5      # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 5    # decrease screen brightness
 
 # redshift modes
  bindsym $mod+b mode "$mode_redshift"
  set $mode_redshift Set colour temperature: (a)uto, (r)eset, (2)500K, (3)500K, (4)000K, (5)000K (6)000K
  set $kill_redshift pkill -9 redshift;
  mode "$mode_redshift" {
-     bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -m randr:crtc=0 -b 0.8:0.6 -P -t 4300:3800; redshift -l 27.717245:85.323959 -m randr:crtc=2 -b 0.57:0.4 -P -t 4200:3800", mode "default"
+     bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -m randr:crtc=0 -b 0.8:0.6 -P -t 4300:3800; redshift -l 27.717245:85.323959 -m randr:crtc=1 -b 0.8:0.6 -P -t 4200:3800", mode "default"
      bindsym r exec --no-startup-id "$kill_redshift redshift -x", mode "default"
-     bindsym 2 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 3500; redshift -m randr:crtc=2 -b 0.2 -P -O 3500", mode "default"
-     bindsym 3 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4000; redshift -m randr:crtc=2 -b 0.4 -P -O 4000", mode "default"
-     bindsym 4 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4500; redshift -m randr:crtc=2 -b 0.4 -P -O 4500", mode "default"
-     bindsym 5 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5000; redshift -m randr:crtc=2 -b 0.4 -P -O 5000", mode "default"
-     bindsym 6 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5500; redshift -m randr:crtc=2 -b 0.4 -P -O 5500", mode "default"
+     bindsym 2 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 3500; redshift -m randr:crtc=1 -b 0.2 -P -O 3500", mode "default"
+     bindsym 3 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4000; redshift -m randr:crtc=1 -b 0.4 -P -O 4000", mode "default"
+     bindsym 4 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4500; redshift -m randr:crtc=1 -b 0.4 -P -O 4500", mode "default"
+     bindsym 5 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5000; redshift -m randr:crtc=1 -b 0.4 -P -O 5000", mode "default"
+     bindsym 6 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5500; redshift -m randr:crtc=1 -b 0.4 -P -O 5500", mode "default"
 
      # exit mode: "Enter" or "Escape"
      bindsym Return mode "default"
@@ -209,9 +209,9 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # set wallpaper(download feh)
-exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
-# bindsym Ctrl+Shift+w exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
-bindsym Scroll_Lock exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/update_walls.sh
+exec /home/fermi/Documents/Configs/dotfiles/scripts/update_walls.sh
+# bindsym Ctrl+Shift+w exec /home/fermi/Documents/Configs/dotfiles/scripts/update_walls.sh
+bindsym Scroll_Lock exec /home/fermi/Documents/Configs/dotfiles/scripts/update_walls.sh
 
 # colors
 set $red     		#ff0000
@@ -243,8 +243,10 @@ client.urgent           $red                       $pencildark            $red
 # Start i3bar to display a workspace bar
 bar {
 	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-	output LVDS-1
-    tray_output LVDS-1
+	# output eDP-1
+    # tray_output eDP-1
+	output HDMI-1-1
+    tray_output HDMI-1-1
     	colors {
 	    separator           $magenta
 	    background          $black
@@ -258,7 +260,9 @@ bar {
 
 bar {
 	status_command i3blocks -c ~/.config/i3blocks/i3blocksHDMI.conf
-	output HDMI-1
+	# output HDMI-1-1
+	output eDP-1
+    # tray_output eDP-1
 	mode hide
 	hidden_state hide
 	modifier Mod4
@@ -308,23 +312,23 @@ bindsym $mod+Shift+Ctrl+r exec "reboot"
 # bindsym Pause exec "killall play"
 bindsym $mod+Home exec xfce4-terminal -e "tmux new -s 'lf.manager' 'lf'"
 bindsym Mod1+Home exec xfce4-terminal -e "tmux neww -n 'lf' 'lf'"
-bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/oppenheimer/notes/hints'"
-bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh" 
-bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/oppenheimer/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
+bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/fermi/notes/hints'"
+bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh" 
+bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
 
 # transparency
-exec_always --no-startup-id picom --config /home/oppenheimer/.config/picom/picom.conf
+exec_always --no-startup-id picom --config /home/fermi/.config/picom/picom.conf
 
 # thin borders
 hide_edge_borders both
 for_window [class="^.*"] border none
 
 # i3-gapps
-gaps inner 3
-gaps outer 3
+gaps inner 2
+gaps outer 2
 
 # i3lock(install i3lock, download icon create ~/.xlock save it)
-bindsym $mod+Ctrl+l exec /home/oppenheimer/Documents/Configs/dotfiles/scripts/lock.sh
+bindsym $mod+Ctrl+l exec /home/fermi/Documents/Configs/dotfiles/scripts/lock.sh
 
 # startup(artha, kdeconnect)
 exec --no-startup-id artha
@@ -335,7 +339,7 @@ exec --no-startup-id artha
 exec_always --no-startup-id kdeconnect-indicator
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
-exec_always --no-startup-id xrandr --output LVDS-1 --off --output VGA-1 --mode 1280x1024 --refresh 75.02 --pos 1920x0 --rotate normal --output HDMI-1 --primary --mode 1920x1080 --refresh 60 --pos 0x0 --rotate normal --output DP-1 --off
+exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1-1 --primary --mode 1920x1080 --pos 1920x0 --rotate normal
 exec --no-startup-id xdman
 # exec --no-startup-id guake
 # exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core

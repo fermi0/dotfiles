@@ -1,0 +1,12 @@
+[Unit]
+Description=FUSE filesystem over Google Drive
+After=network.target
+
+[Service]
+ExecStart=google-drive-ocamlfuse -label Obsidian-sync /media/fermi/zournal
+ExecStop=fusermount -u /media/fermi/zournal
+Restart=always
+Type=forking
+
+[Install]
+WantedBy=default.target

@@ -25,7 +25,7 @@ cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
 cmd sudo-mkdir $sudo mkdir -p "$(echo $* | tr ' ' '\ ')"
 cmd mkfile $vim "$(echo $* | tr ' ' '\ ')"
 cmd sudo-mkfile $sudo vim "$(echo $* | tr ' ' '\ ')"
-cmd sshfs-f $sshfs fermi@192.168.1.64:/sdcard /media/oppenheimer/Fermion-sshfs
+cmd sshfs-f $sshfs fermi@192.168.1.64:/sdcard /media/fermi/Fermion-sshfs
 cmd dragon %dragon -a -x $fx
 cmd dragon-stay %dragon -a $fx
 cmd dragon-target %dragon -t
@@ -119,7 +119,7 @@ cmd chown ${{
     if [[ $ans = "~" ]]; then
         for file in "$fx"
         do
-          sudo chown oppenheimer:oppenheimer $file
+          sudo chown fermi:fermi $file
         done
     fi
     if [[ $ans = "/" ]]; then
@@ -253,18 +253,18 @@ cmd mount ${{
     printf "mountpoint directory name: "
     read ans
 
-    if [ -d "/media/oppenheimer/$ans" ]; then
-        echo "/media/oppenheimer/$ans already exist!"
-        sudo mount $fx /media/oppenheimer/$ans
-        echo "/media/oppenheimer/$ans mounted!"
+    if [ -d "/media/fermi/$ans" ]; then
+        echo "/media/fermi/$ans already exist!"
+        sudo mount $fx /media/fermi/$ans
+        echo "/media/fermi/$ans mounted!"
         sleep 2;
     fi
 
-    if [ ! -d "/media/oppenheimer/$ans" ]; then
-        mkdir /media/oppenheimer/$ans
-        echo "mounting on /media/oppenheimer/$ans"
-        sudo mount $fx /media/oppenheimer/$ans
-        echo "/media/oppenheimer/$ans mounted!"
+    if [ ! -d "/media/fermi/$ans" ]; then
+        mkdir /media/fermi/$ans
+        echo "mounting on /media/fermi/$ans"
+        sudo mount $fx /media/fermi/$ans
+        echo "/media/fermi/$ans mounted!"
         sleep 2;
     fi
 
@@ -274,7 +274,7 @@ cmd mount ${{
 cmd mount_adata ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    /home/oppenheimer/Documents/Configs/dotfiles/scripts/mntadata.sh
+    /home/fermi/Documents/Configs/dotfiles/scripts/mntadata.sh
     lf -remote 'send reload'
 }}
 
@@ -287,24 +287,24 @@ cmd mtp-mount ${{
     sleep 15;
     #bashtrap()
     #{
-    #    echo "Mounting /media/oppenheimer/$ans"
+    #    echo "Mounting /media/fermi/$ans"
     #    }
     #for i in `seq 1 2`; do
     printf "mountpoint directory name: "
     read ans
     #if [ x"$quit" = xy ]; then
-    if [ -d "/media/oppenheimer/$ans" ]; then
-        echo "/media/oppenheimer/$ans already exist!"
-        jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
-        echo "/media/oppenheimer/$ans mounted!"
+    if [ -d "/media/fermi/$ans" ]; then
+        echo "/media/fermi/$ans already exist!"
+        jmtpfs -o allow_other,auto_unmount /media/fermi/$ans
+        echo "/media/fermi/$ans mounted!"
     fi
 
-    if [ ! -d "/media/oppenheimer/$ans" ]; then
-        mkdir /media/oppenheimer/$ans
-        echo "mounting on /media/oppenheimer/$ans"
+    if [ ! -d "/media/fermi/$ans" ]; then
+        mkdir /media/fermi/$ans
+        echo "mounting on /media/fermi/$ans"
         sleep 1;
-        jmtpfs -o allow_other,auto_unmount /media/oppenheimer/$ans
-        echo "/media/oppenheimer/$ans mounted!"
+        jmtpfs -o allow_other,auto_unmount /media/fermi/$ans
+        echo "/media/fermi/$ans mounted!"
     fi
 
     lf -remote 'send reload'
@@ -544,35 +544,35 @@ map i set preview!
 # Navigation
 map g/ cd /
 map gr cd /root
-map gh cd /home/oppenheimer
-map gdc cd /home/oppenheimer/Documents
-map gdl cd /home/oppenheimer/Downloads
-map gvi cd /home/oppenheimer/Videos
-map gmu cd /home/oppenheimer/Music
-map gpc cd /home/oppenheimer/Pictures
-map gnt cd /home/oppenheimer/notes
+map gh cd /home/fermi
+map gdc cd /home/fermi/Documents
+map gdl cd /home/fermi/Downloads
+map gvi cd /home/fermi/Videos
+map gmu cd /home/fermi/Music
+map gpc cd /home/fermi/Pictures
+map gnt cd /home/fermi/notes
 
-map gtr cd /home/oppenheimer/.local/share/Trash/files
-map glb cd /home/oppenheimer/.local/bin
+map gtr cd /home/fermi/.local/share/Trash/files
+map glb cd /home/fermi/.local/bin
 
-map gcf cd /home/oppenheimer/.config
-map glf cd /home/oppenheimer/.config/lf
+map gcf cd /home/fermi/.config
+map glf cd /home/fermi/.config/lf
 
-map gw1 cd /home/oppenheimer/Pictures/walls
-map gw2 cd /home/oppenheimer/Pictures/walls-2
-map gsc cd /home/oppenheimer/Pictures/Screenshots
+map gw1 cd /home/fermi/Pictures/walls
+map gw2 cd /home/fermi/Pictures/walls-2
+map gsc cd /home/fermi/Pictures/Screenshots
 
-map gpr cd /home/oppenheimer/Documents/Projects
-map gdt cd /home/oppenheimer/Documents/Configs/dotfiles
-map gak cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/Journalorigin
-map gbb cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/My_Books
-map gbc cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Computers
-map gbm cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Mathematics
-map gbp cd /home/oppenheimer/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Physics
+map gpr cd /home/fermi/Documents/Projects
+map gdt cd /home/fermi/Documents/Configs/dotfiles
+map gak cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/Journalorigin
+map gbb cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/My_Books
+map gbc cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Computers
+map gbm cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Mathematics
+map gbp cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Physics
 
-map gtl cd /home/oppenheimer/Downloads/Tools
-map gds cd /home/oppenheimer/Downloads/Softwares
-map gf2 cd /home/oppenheimer/Downloads/Archives/f22
+map gtl cd /home/fermi/Downloads/Tools
+map gds cd /home/fermi/Downloads/Softwares
+map gf2 cd /home/fermi/Downloads/Archives/f22
 
 map gtc cd /etc
 map gpt cd /opt
@@ -581,4 +581,4 @@ map gub cd /usr/bin
 map gul cd /usr/local/bin
 map gtm cd /tmp
 map gdv cd /dev
-map gmo cd /media/oppenheimer
+map gmo cd /media/fermi
