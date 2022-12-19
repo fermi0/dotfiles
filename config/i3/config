@@ -243,9 +243,9 @@ client.urgent           $red                       $pencildark            $red
 # Start i3bar to display a workspace bar
 bar {
 	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-	output VGA-1
-    tray_output VGA-1
-	colors {
+	output LVDS-1
+    tray_output LVDS-1
+    	colors {
 	    separator           $magenta
 	    background          $black
 	    statusline          $pencildarkest
