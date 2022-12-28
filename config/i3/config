@@ -10,7 +10,7 @@ set $mod Mod4
 floating_modifier $mod
 
 # font(download fonts-hack-ttf, download fontawesome-webfont.ttf, fontawesome-regular/brand/solid, mkdir ~/.fonts cp // ~/.fonts)
-font pango:FantasqueSansMono Nerd Font Mono 9
+font pango:FantasqueSansMono Nerd Font Mono 11
 
 # NetworkManager using nm-applet
 exec_always --no-startup-id nm-applet
@@ -23,7 +23,7 @@ bindsym $mod+q kill
 bindsym --release $mod+x exec xkill
 
 # Application menu handled by rofi:
-bindsym $mod+d exec rofi -show run \
+bindsym $mod+d exec rofi -modi drun -show drun \
 		-config ~/.config/rofi/rofidmenu.rasi
 
 # rofi bindings for window menu ($mod+t /F10 optional disabled))
@@ -43,10 +43,10 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # rotate screen
-bindsym $mod+Shift+Left exec "xrandr --output HDMI-1 --rotate left"
-bindsym $mod+Shift+Down exec "xrandr --output HDMI-1 --rotate normal"
-bindsym $mod+Shift+Up exec "xrandr --output HDMI-1 --rotate inverted"
-bindsym $mod+Shift+Right exec "xrandr --output HDMI-1 --rotate right"
+bindsym $mod+Shift+Left exec "xrandr --output HDMI-1-0 --rotate left"
+bindsym $mod+Shift+Down exec "xrandr --output HDMI-1-0 --rotate normal"
+bindsym $mod+Shift+Up exec "xrandr --output HDMI-1-0 --rotate inverted"
+bindsym $mod+Shift+Right exec "xrandr --output HDMI-1-0 --rotate right"
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -120,6 +120,8 @@ bindsym $mod+s scratchpad show
 # applications in default workspace
 # ssign [class="Brave-browser"] $ws1
 assign [class="firefox-beta"] $ws1
+assign [class="Firefox-beta"] $ws1
+assign [class="Eog"] $ws2
 assign [class="VirtualBox Machine"] $ws7
 # assign [class="Joplin"] $ws2
 assign [class="Code"] $ws2
@@ -133,6 +135,7 @@ assign [class="Wireshark"] $ws7
 assign [class="mpv"] $ws8
 # assign [class="Vlc"] $ws8
 assign [class="Spotify"] $ws5
+assign [class="spotify"] $ws5
 assign [class="TelegramDesktop"] $ws5
 assign [class="Pulseeffects"] $ws5
 
@@ -243,10 +246,10 @@ client.urgent           $red                       $pencildark            $red
 # Start i3bar to display a workspace bar
 bar {
 	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-	# output eDP-1
-    # tray_output eDP-1
-	output HDMI-1-1
-    tray_output HDMI-1-1
+	output eDP-1
+    tray_output eDP-1
+	# output HDMI-1-0
+    # tray_output HDMI-1-0
     	colors {
 	    separator           $magenta
 	    background          $black
@@ -260,9 +263,8 @@ bar {
 
 bar {
 	status_command i3blocks -c ~/.config/i3blocks/i3blocksHDMI.conf
-	# output HDMI-1-1
-	output eDP-1
-    # tray_output eDP-1
+    font pango:FantasqueSansMono Nerd Font Mono 8
+	output HDMI-1-0
 	mode hide
 	hidden_state hide
 	modifier Mod4
@@ -317,7 +319,7 @@ bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki spea
 bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
 
 # transparency
-exec_always --no-startup-id picom --config /home/fermi/.config/picom/picom.conf
+exec_always --no-startup-id picom --config /home/fermi/.config/picom/picom.conf --experimental-backends
 
 # thin borders
 hide_edge_borders both
@@ -325,7 +327,7 @@ for_window [class="^.*"] border none
 
 # i3-gapps
 gaps inner 2
-gaps outer 2
+gaps outer 8
 
 # i3lock(install i3lock, download icon create ~/.xlock save it)
 bindsym $mod+Ctrl+l exec /home/fermi/Documents/Configs/dotfiles/scripts/lock.sh
@@ -334,13 +336,15 @@ bindsym $mod+Ctrl+l exec /home/fermi/Documents/Configs/dotfiles/scripts/lock.sh
 exec --no-startup-id artha
 # exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergyd
 # exec --no-startup-id ~/Documents/Configs/synergy-core/build/bin/synergy
-# exec --no-startup-id pulseeffects
+exec --no-startup-id pulseeffects
 # exec_always --no-startup-id indicator-kdeconnect
+exec --no-startup-id /usr/lib/x86_64-linux-gnu/libexec/kdeconnectd
 exec_always --no-startup-id kdeconnect-indicator
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
-exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1-1 --primary --mode 1920x1080 --pos 1920x0 --rotate normal
+exec_always --no-startup-id /home/fermi/.screenlayout/layout.sh
 exec --no-startup-id xdman
+exec --no-startup-id arandr
 # exec --no-startup-id guake
 # exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core
 

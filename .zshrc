@@ -113,9 +113,9 @@ cat $HOME/.config/ascii/jwst
 export EDITOR=/usr/bin/vim.gtk3
 export QT_QPA_PLATFORMTHEME=qt5ct
 export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:/home/oppenheimer/.local/bin
-export PATH=$PATH:/home/oppenheimer/bin
-export LF_BOOKMARK_PATH=/home/oppenheimer/.config/lf/bookmarks
+export PATH=$PATH:/home/fermi/.local/bin
+export PATH=$PATH:/home/fermi/bin
+export LF_BOOKMARK_PATH=/home/fermi/.config/lf/bookmarks
 
 #zoxide
 export _ZO_DATA_DIR=$HOME/.local/share

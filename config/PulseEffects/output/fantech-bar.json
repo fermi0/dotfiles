@@ -518,7 +518,7 @@
             }
         },
         "stereo_tools": {
-            "state": "true",
+            "state": "false",
             "input-gain": "0",
             "output-gain": "0",
             "balance-in": "0",
