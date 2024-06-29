@@ -106,7 +106,7 @@ bindkey '^e' edit-command-line
 #[ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
-cat $HOME/.config/ascii/jwst
+cat $HOME/.config/ascii/batman | lolcat
 
 #cat ~/asciii.txt | lolcat 
 
@@ -234,4 +234,4 @@ ex=🎯:\
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 
 # Load zsh-syntax-highlighting; should be last.
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2> /dev/null
