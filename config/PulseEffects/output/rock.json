@@ -126,7 +126,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "4",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -136,7 +136,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "4",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -146,7 +146,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "4",
                     "frequency": "119.24354052777788",
                     "q": "1.5047602375372451"
                 },
@@ -228,7 +228,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "4",
                     "frequency": "29.952623149688797",
                     "q": "1.5047602375372451"
                 },
@@ -238,7 +238,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "4",
                     "frequency": "59.763340205038524",
                     "q": "1.5047602375372453"
                 },
@@ -248,7 +248,7 @@
                     "slope": "x1",
                     "solo": "false",
                     "mute": "false",
-                    "gain": "3",
+                    "gain": "4",
                     "frequency": "119.24354052777788",
                     "q": "1.5047602375372451"
                 },
@@ -534,7 +534,7 @@
             "middle-level": "0",
             "middle-panorama": "0",
             "stereo-base": "0",
-            "delay": "0",
+            "delay": "5",
             "sc-level": "1",
             "stereo-phase": "0"
         },

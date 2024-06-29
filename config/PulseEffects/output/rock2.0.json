@@ -518,7 +518,7 @@
             }
         },
         "stereo_tools": {
-            "state": "false",
+            "state": "true",
             "input-gain": "0",
             "output-gain": "0",
             "balance-in": "0",
@@ -534,7 +534,7 @@
             "middle-level": "0",
             "middle-panorama": "0",
             "stereo-base": "0",
-            "delay": "0",
+            "delay": "4.9999999999999378",
             "sc-level": "1",
             "stereo-phase": "0"
         },
@@ -546,7 +546,7 @@
             "ir-width": "100"
         },
         "crystalizer": {
-            "state": "true",
+            "state": "false",
             "aggressive": "true",
             "input-gain": "0",
             "output-gain": "0",
