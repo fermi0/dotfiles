@@ -1,7 +1,8 @@
 .fonts/.uuid
 .fonts/*/.uuid
 .fonts/*/*/.uuid
-.BurpSuite/burpbrowser
+.fonts/joypixels-6.6-free-fonts/
+.BurpSuite/burpbrowser/
 
 cronfiles/date.txt
 cronfiles/sucrontab.txt
