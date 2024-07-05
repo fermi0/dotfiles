@@ -13,10 +13,16 @@ floating_modifier $mod
 font pango:FantasqueSansMono Nerd Font Mono 11
 
 # NetworkManager using nm-applet
+exec --no-startup-id bluetoothctl connect F7:0F:8A:25:EE:1F
 exec_always --no-startup-id nm-applet
+# exec_always --no-startup-id dropbox
+exec_always killall polybar
+exec_always --no-startup-id polybar -c ~/.config/polybar/melissa/config.ini mel-bar
+# exec_always --no-startup-id polybar -c ~/.config/polybar/melissa/config.ini mel2-bar
+
 
 # start terminals(download xfce4-terminal, Gnome-terminal)
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+q kill
@@ -75,16 +81,16 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # workspaces
-set $ws1 "1:🦊 "
-set $ws2 "2:🖥️ "
-set $ws3 "3:🔖 "
-set $ws4 "4:🔬 "
-set $ws5 "5:☕ "
-set $ws6 "6:👁️ "
-set $ws7 "7:🐞 "
-set $ws8 "8:🎬 "
-set $ws9 "9:📡 "
-set $ws10 "10:🔭 "
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -119,8 +125,7 @@ bindsym $mod+s scratchpad show
 
 # applications in default workspace
 # ssign [class="Brave-browser"] $ws1
-assign [class="firefox-beta"] $ws1
-assign [class="Firefox-beta"] $ws1
+# assign [class="firefox-beta"] $ws1
 assign [class="Eog"] $ws2
 assign [class="VirtualBox Machine"] $ws7
 # assign [class="Joplin"] $ws2
@@ -135,9 +140,9 @@ assign [class="Wireshark"] $ws7
 assign [class="mpv"] $ws8
 # assign [class="Vlc"] $ws8
 assign [class="Spotify"] $ws5
-assign [class="spotify"] $ws5
 assign [class="TelegramDesktop"] $ws5
 assign [class="Pulseeffects"] $ws5
+assign [class="Pavucontrol"] $ws5
 
 # reload the configuration file
 bindsym $mod+Shift+a reload
@@ -177,26 +182,26 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec light -A 5      # increase screen brightness
-bindsym XF86MonBrightnessDown exec light -U 5    # decrease screen brightness
+bindsym XF86MonBrightnessUp exec light -A 15      # increase screen brightness
+bindsym XF86MonBrightnessDown exec light -U 15    # decrease screen brightness
 
 # redshift modes
- bindsym $mod+b mode "$mode_redshift"
- set $mode_redshift Set colour temperature: (a)uto, (r)eset, (2)500K, (3)500K, (4)000K, (5)000K (6)000K
- set $kill_redshift pkill -9 redshift;
- mode "$mode_redshift" {
-     bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -m randr:crtc=0 -b 0.8:0.6 -P -t 4300:3800; redshift -l 27.717245:85.323959 -m randr:crtc=1 -b 0.8:0.6 -P -t 4200:3800", mode "default"
-     bindsym r exec --no-startup-id "$kill_redshift redshift -x", mode "default"
-     bindsym 2 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 3500; redshift -m randr:crtc=1 -b 0.2 -P -O 3500", mode "default"
-     bindsym 3 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4000; redshift -m randr:crtc=1 -b 0.4 -P -O 4000", mode "default"
-     bindsym 4 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4500; redshift -m randr:crtc=1 -b 0.4 -P -O 4500", mode "default"
-     bindsym 5 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5000; redshift -m randr:crtc=1 -b 0.4 -P -O 5000", mode "default"
-     bindsym 6 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5500; redshift -m randr:crtc=1 -b 0.4 -P -O 5500", mode "default"
+bindsym $mod+b mode "$mode_redshift"
+set $mode_redshift Set colour temperature: (a)uto, (r)eset, (2)500K, (3)500K, (4)000K, (5)000K (6)000K
+set $kill_redshift pkill -9 redshift;
+mode "$mode_redshift" {
+    bindsym a exec --no-startup-id "$kill_redshift redshift -l 27.717245:85.323959 -m randr:crtc=0 -b 0.8:0.6 -P -t 4300:3800; redshift -l 27.717245:85.323959 -m randr:crtc=1 -b 0.8:0.6 -P -t 4200:3800", mode "default"
+    bindsym r exec --no-startup-id "$kill_redshift redshift -x", mode "default"
+    bindsym 2 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 3500; redshift -m randr:crtc=1 -b 0.2 -P -O 3500", mode "default"
+    bindsym 3 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4000; redshift -m randr:crtc=1 -b 0.4 -P -O 4000", mode "default"
+    bindsym 4 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 4500; redshift -m randr:crtc=1 -b 0.4 -P -O 4500", mode "default"
+    bindsym 5 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5000; redshift -m randr:crtc=1 -b 0.4 -P -O 5000", mode "default"
+    bindsym 6 exec --no-startup-id "$kill_redshift redshift -m randr:crtc=0 -b 0.6 -P -O 5500; redshift -m randr:crtc=1 -b 0.4 -P -O 5500", mode "default"
 
-     # exit mode: "Enter" or "Escape"
-     bindsym Return mode "default"
-     bindsym Escape mode "default"
-     }
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    }
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -244,48 +249,49 @@ client.focused_inactive $darkbluegrey              $pencildark            $light
 client.urgent           $red                       $pencildark            $red
 
 # Start i3bar to display a workspace bar
-bar {
-	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-	output eDP-1
-    tray_output eDP-1
-	# output HDMI-1-0
-    # tray_output HDMI-1-0
-    	colors {
-	    separator           $magenta
-	    background          $black
-	    statusline          $pencildarkest
-        #                  border             background         text
-        focused_workspace  $pink              $darkbluegrey      $pink
-        inactive_workspace $lightbluegrey 	  $pencildark	     $gray
-        urgent_workspace   $red	      	      $pencildark 	     $red
-	}
-}
+# bar {
+# 	status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
+# 	output eDP-1
+#     tray_output eDP-1
+# 	# output HDMI-1-0
+#     # tray_output HDMI-1-0
+#     	colors {
+# 	    separator           $magenta
+# 	    background          $black
+# 	    statusline          $pencildarkest
+#         #                  border             background         text
+#         focused_workspace  $pink              $darkbluegrey      $pink
+#         inactive_workspace $lightbluegrey 	  $pencildark	     $gray
+#         urgent_workspace   $red	      	      $pencildark 	     $red
+# 	}
+# }
 
-bar {
-	status_command i3blocks -c ~/.config/i3blocks/i3blocksHDMI.conf
-    font pango:FantasqueSansMono Nerd Font Mono 8
-	output HDMI-1-0
-	mode hide
-	hidden_state hide
-	modifier Mod4
-	colors {
-	    separator           $magenta
-	    background          $black
-	    statusline          $pencildarkest
-        #                  border             background         text
-        focused_workspace  $pink              $darkbluegrey      $pink
-        inactive_workspace $lightbluegrey 	  $pencildark	     $gray
-        urgent_workspace   $red	      	      $pencildark 	     $red
-	}
-}
+# bar {
+# 	status_command i3blocks -c ~/.config/i3blocks/i3blocksHDMI.conf
+#     font pango:FantasqueSansMono Nerd Font Mono 8
+# 	output HDMI-1-0
+# 	mode hide
+# 	hidden_state hide
+# 	modifier Mod4
+#     tray_output none
+# 	colors {
+# 	    separator           $magenta
+# 	    background          $black
+# 	    statusline          $pencildarkest
+#         #                  border             background         text
+#         focused_workspace  $pink              $darkbluegrey      $pink
+#         inactive_workspace $lightbluegrey 	  $pencildark	     $gray
+#         urgent_workspace   $red	      	      $pencildark 	     $red
+# 	}
+# }
 
 # screenshot with scrot
 #all monitor
 bindsym Print exec "scrot --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
 # active window
-bindsym Shift+Print exec "scrot -ub --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
+bindsym Shift+Print exec "scrot --quality 100 -ub -e 'mv $f ~/Pictures/Screenshots'"
 # selected area
-bindsym --release Ctrl+Shift+Print exec "scrot -s --quality 100 -e 'mv $f ~/Pictures/Screenshots'"
+bindsym --release Ctrl+Shift+Print exec "scrot --quality 100 -s -e 'mv $f ~/Pictures/Screenshots'"
 
 # hovering cursor focus
 focus_follows_mouse yes
@@ -300,14 +306,19 @@ for_window [class="Nm-connection-editor"] floating enable
 for_window [class="VirtualBox Manager"] floating enable
 for_window [class="Artha"] floating enable
 for_window [class="xdman-Main"] floating enable
+for_window [class="xdm-app"] floating enable
+for_window [class="Xdm-app"] floating enable
 # for_window [class="Gufw.py"] floating enable
 # for_window [class="conky"] floating enable
 # for_window [class="yakuake"] floating enable
-for_window [class="Xfce4-terminal"] floating enable
+# for_window [class="Xfce4-terminal"] floating enable
 # for_window [class="^.*"] floating enable
 
 # keybindings
 # bindsym F12 exec "guake-toggle"
+
+bindsym $mod+Mod1+b exec --no-startup-id bluetoothctl connect F7:0F:8A:25:EE:1F
+bindsym $mod+Mod1+s exec spotify-noad
 bindsym $mod+Pause exec "shutdown now"
 bindsym $mod+F2 exec tilda -c "tmux new -s 'commands'"
 bindsym $mod+Shift+Ctrl+r exec "reboot"
@@ -319,7 +330,7 @@ bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki spea
 bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
 
 # transparency
-exec_always --no-startup-id picom --config /home/fermi/.config/picom/picom.conf --experimental-backends
+exec_always --no-startup-id picom --config /home/fermi/.config/picom/picom.conf
 
 # thin borders
 hide_edge_borders both
@@ -327,7 +338,7 @@ for_window [class="^.*"] border none
 
 # i3-gapps
 gaps inner 2
-gaps outer 8
+gaps outer 2
 
 # i3lock(install i3lock, download icon create ~/.xlock save it)
 bindsym $mod+Ctrl+l exec /home/fermi/Documents/Configs/dotfiles/scripts/lock.sh
@@ -343,8 +354,9 @@ exec_always --no-startup-id kdeconnect-indicator
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.78:0.69 --brightness 1
 # exec_always --no-startup-id xrandr --output LVDS-1 --gamma 1:0.69:0.59 --brightness 1
 exec_always --no-startup-id /home/fermi/.screenlayout/layout.sh
-exec --no-startup-id xdman
+# exec --no-startup-id xdman
 exec --no-startup-id arandr
+exec --no-startup-id pavucontrol
 # exec --no-startup-id guake
 # exec --no-startup-id conky -q;conky -q -d -c ~/.conky/nordcore/conkyrc2core
 
