@@ -1,4 +1,4 @@
-# Basic vars
+# Basic Configuration
 set shell zsh
 set shellopts '-euy'
 set ifs "\n"
@@ -6,36 +6,131 @@ set scrolloff 10
 set icons
 set drawbox
 set period 1
+set color256
 set hidden
-set cleaner ctpvclear
 set previewer ctpv
-set preview
+set cleaner ctpvclear
 set info size:time
 set sortby natural
+set sortby ext
 set dircounts
+set dirpreviews
 set ignorecase
 set smartcase
 set relativenumber
-%[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
-&ctpv -s $id
-cmd on-quit $ctpv -e $id
+set sixel true
 
-# cmds/functions
+%[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
+
+&ctpv -s $id
+&ctpvquit $id
+
+# Misc
 cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
 cmd sudo-mkdir $sudo mkdir -p "$(echo $* | tr ' ' '\ ')"
 cmd mkfile $vim "$(echo $* | tr ' ' '\ ')"
 cmd sudo-mkfile $sudo vim "$(echo $* | tr ' ' '\ ')"
-cmd sshfs-f $sshfs fermi@192.168.1.64:/sdcard /media/fermi/Fermion-sshfs
+cmd sshfs ${{
+    set -f
+	clear; tput cup $(($(tput lines)/3)); tput bold
+    vared -p "Enter SSH target host (user@host): " -c t_host
+    vared -p "Enter SSH target port: " -c t_port
+    vared -p "Enter target destination: " -c t_dest
+    sshfs -p $t_port $t_host:$t_dest /media/$(whoami)/sshfs
+}}
+# cmd sshfs-f $sshfs -p 8022 bohr@192.168.1.239:/storage/emulated/150/Download /media/fermi/Fermion-sshfs
 cmd dragon %dragon -a -x $fx
 cmd dragon-stay %dragon -a $fx
 cmd dragon-target %dragon -t
 cmd dlfile %dlfile
-cmd bulkrename $vidir $fx
-cmd open-with %"$@" "$fx"
+cmd bulkrename $vimv $fx
+cmd open-with %"$@" $fx
+cmd filesize ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    du -sh $fx
+    trap SIGINT
+    while true; do 
+        sleep 1
+    done
+}}
 
-# cmd setbg "$1"
+cmd setbg ${{
+    feh -B white --bg-fill $fx
+}}
 
-# zoxide integration
+cmd shell-put ${{
+    cd $PWD
+    $SHELL
+}}
+
+cmd git-download ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    vared -p "URL: " -c url
+    vared -p "File/directory: " -c Path
+    svn export $url/trunk/$Path
+    printf "$Path downloaded!"
+    sleep 1;
+}}
+
+cmd nautilus-open ${{
+    nautilus $PWD
+}}
+
+cmd depkg ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+	vared -p "install?[Y/n]" -c ans
+	[[ $ans = "n" ]] || sudo dpkg -i "$fx"
+}}
+
+cmd toaudio ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+	vared -p "extract audio?[Y/n]" -c ans
+	[[ $ans = "n" ]] || ffmpeg -i "$fx" -c:a libmp3lame -b:a 256k -ac 2 -map a "$(basename "${fx%.*}").mp3"
+}}
+
+cmd video_preview ${{
+    mpv --vo=tct --hwdec=auto --title='Playing "$fx"' "$fx"
+}}
+
+cmd image_preview ${{
+    cache="$(mktemp "${TMPDIR:-/tmp}/thumb_cache.XXXXX")"
+    ffmpegthumbnailer -i "$f" -o "$cache" -s 0 -s 1080 -q 10
+    # ~/.config/lf/draw_img.sh "$cache"
+}}
+
+cmd pager_split ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+	vared -p "Use Lynx?[Y/n]" -c ans
+	if [ $ans = "n" ]; then
+        tmux neww -n 'pager' "$HOME/Documents/Configs/dotfiles/scripts/test.sh"
+    else
+        lynx $f
+    fi
+    # i=1
+    # for j in "$fx"
+    #     do
+    #         ck_pane="$(tmux list-panes | awk -F" " '{ print $1 }')"
+            
+    #         if [ "$ck_pane" != "2:" ]; then
+    #             # tmux split-window -h \;
+    #             tmux split-window -h "batcat $j" &
+    #         # fi
+    #         else
+    #         # if [ "$ck_pane" = "2:" ]; then
+    #             tmux send-keys -t $i "batcat $j"
+    #             ((i++))
+    #         fi
+    #     done
+}}
+
+# Zoxide integration
 # cmd z %{{
 #     result="$(zoxide query --exclude '${PWD}' -- '$1')"
 #     lf -remote "send ${id} cd '${result}'"
@@ -46,15 +141,17 @@ cmd open-with %"$@" "$fx"
 #     lf -remote "send ${id} cd '${result}'"
 # }}
 
-# newfolder with selected items
+
+# Newfolder with selected items
 cmd newfold ${{
     set -f
-	printf "%s\n\t" "$fx"
-    read newd
-    printf "Directory name: "
-    mkdir -- "$newd"
-    mv -- $fx "$newd"
+    clear; tput cup $(($(tput lines)/3)); tput bold
+	printf "%s\n" $fx
+    vared -p "Directory name: " -c newd
+    mkdir -- $newd
+    mv -- $fx $newd
 }}
+
 
 # Searchable bookmarks
 cmd bookmark_jump ${{
@@ -62,24 +159,19 @@ cmd bookmark_jump ${{
     lf -remote "send $id cd \"$res\""
 }}
 
-cmd bookmark_create ${{
+cmd mark_create ${{
     read ans
     echo $PWD > $LF_BOOKMARK_PATH/$ans
 }}
 
-# Trash cli bindings
+
+# Manage Trash
 cmd trash ${{
   files=$(printf "$fx" | tr '\n' ';')
-  while [ "$files" ]; do
-    # extract the substring from start of string up to delimiter.
-    # this is the first "element" of the string.
+  while [[ "$files" ]]; do
     file=${files%%;*}
-
     trash-put "$(basename "$file")"
-    # if there's only one element left, set `files` to an empty string.
-    # this causes us to exit this `while` loop.
-    # else, we delete the first "element" of the string from files, and move onto the next.
-    if [ "$files" = "$file" ]; then
+    if [[ "$files" = "$file" ]]; then
       files=''
     else
       files="${files#*;}"
@@ -88,23 +180,35 @@ cmd trash ${{
 }}
 
 cmd clear_trash %trash-empty
+cmd restore_trash %trash-restore
 
-cmd restore_trash ${{
-      trash-restore
-      }}
 
 # Manage permissions
+cmd sudochmod ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n" $fx
+    vared -p "Mode Bits: " -c ans
+    sudo chmod -Rv $ans $fx
+
+    lf -remote 'send reload'
+}}
+
 cmd chmod ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
-	printf "%s\n\t" "$fx"
-    printf "Mode Bits: "
-    read ans
+	printf "%s\n" $fx
+    if [[ -d $fx ]]; then
+        vared -p "Mode Bits[Dirs]: " -c dir
+        vared -p "Mode Bits[files]: " -c file
+        chmod -v $dir $fx
+    elif [[ -f $fx ]]; then
+        vared -p "Mode Bits[files]: " -c file
+        chmod -v $file $fx
+    fi
+    find $fx -type d -exec chmod -v $dir {} \;
+    find $fx -type f -exec chmod -v $file {} \;
 
-    for file in "$fx"
-    do
-      sudo chmod $ans $file
-    done
 
     lf -remote 'send reload'
 }}
@@ -112,200 +216,145 @@ cmd chmod ${{
 cmd chown ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
-	printf "%s\n\t" "$fx"
-    printf "owner:group: "
-    read ans
-
+	printf "%s\n" $fx
+    vared -p "owner:group: " -c ans
     if [[ $ans = "~" ]]; then
-        for file in "$fx"
-        do
-          sudo chown fermi:fermi $file
-        done
-    fi
-    if [[ $ans = "/" ]]; then
-        for file in "$fx"
-        do
-          sudo chown root:root $file
-        done
-    fi
-    if [[ $ans == *":"* ]]; then
-        for file in "$fx"
-        do
-          sudo chown $ans $file
-        done
-    fi
-    if [[ -z $ans ]]; then
-        exit 1
+        sudo chown -Rv fermi:fermi $fx
+    elif [[ $ans = "/" ]]; then
+        sudo chown -Rv root:root $fx
+    elif [[ $ans == *":"* ]]; then
+        sudo chown -Rv $ans $fx
     else
-        for file in "$fx"
-        do
-          sudo chown $ans':'$ans $file
-        done
+        sudo chown -Rv $ans:$ans $fx
     fi
 
     lf -remote 'send reload'
 }}
 
+
 # Extract & Compress
 cmd extract ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
-	printf "%s\n\t" "$fx"
-	printf "Extract?[Y/n]"
-	read ans
-	if [ $ans = "n" ]; then
-        exit 1
-    else
-        aunpack $fx
-    fi
+	printf "%s\n\t" $fx
+    vared -p "Extract?[Y/n]: " -c ans
+    [[ $ans = "n" ]] || aunpack $fx
+    printf "Press any key to exit!"
+    read ans
+
     lf -remote 'send reload'
 }}
 
 cmd compress ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
-	printf "%s\n\t" "$fx"
-	printf "Compress?[Y/n]"
-	read ans
-	if [[ $ans = "n" ]]; then
-        exit 1
-    else
-        vared -p "Output zip: " -c ask
-        zip -r9vA -Zdeflate $ask $fx
-    fi
+	printf "%s\n" $fx
+    vared -p "Compress?[Y/n]: " -c ans
+    [[ $ans = "n" ]] || {
+        vared -p "Output zip: " -c zip
+        zip -r9vA -Zdeflate $zip $fx
+    }
+    printf "Press any key to exit!"
+    read ans
+
     lf -remote 'send reload'
 }}
 
-# symlinks
+
+# Symlinks
 cmd symlink ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
     for i in $fx; do
-        printf "%s\n\t" "$i"
+        printf "%s\n\t" $i
         vared -p "Destination for symlink: " -c des
         sudo ln -s $i $des/$(basename $i)
     done
-    sleep 2;
-    }}
-
+    printf "Press any key to exit!"
+    read ans
+    # trap SIGINT
+    # while true; do
+    #     sleep 1
+    # done
+}}
 # y (select for copy) and P to paste soft-link
 # d (select for cut) and P to paste hard-link
 cmd link %{{
     set -- $(cat ~/.local/share/lf/files)
     mode="$1"
     shift
-    if [ "$#" -lt 1 ]; then
-        lf -remote "send $id echo no files to link"
-        exit 0
-    fi
-    case "$mode" in
-        # symbolically copy mode is indicating a soft link
-        copy) ln -sr -t . -- "$@";;
-        # while a move mode is indicating a hard link
-        move) ln -t . -- "$@";;
+    [[ $# -lt 1 ]] && { lf -remote "send $id echo no files to link"; exit 0; }
+    case $mode in
+        copy) ln -sr -t . -- $@;;
+        move) ln -t . -- $@;;
     esac
     rm ~/.local/share/lf/files
+
     lf -remote "send clear"
 }}
 
-# delete
+
+# Delete
 cmd sudodelete ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
-	printf "%s\n\t" "$fx"
-	printf "delete?[Y/n]"
-	read ans
-	if [ $ans = "n" ]; then
-        exit 1
-    else
-        sudo rm -rfv -- $fx
-    fi
+	printf "%s\n" $fx
+    vared -p "Delete?[Y/n]: " -c ans
+    [[ $ans = "n" ]] || sudo rm -rfv -- $fx
+
     lf -remote 'send reload'
 }}
 
 cmd delete ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
-	set -f
-	printf "%s\n\t" "$fx"
-	printf "delete?[Y/n]"
-	read ans
-	if [ $ans = "n" ]; then
-        exit 1
-    else
-        rm -rfv -- $fx
-    fi
+	printf "%s\n" $fx
+    vared -p "Delete?[Y/n]: " -c ans
+    [[ $ans = "n" ]] || rm -rfv -- $fx
+
     lf -remote 'send reload'
 }}
 
-#SHELL
-cmd shell-put ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    cd $PWD
-    $SHELL
-}}
 
-# mounting
+# Mounting/Unmount
 cmd mount ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    printf "%s\n\t" "$fx"
-    printf "mountpoint directory name: "
+    printf "%s\n\t" $fx
+    vared -p "Mountpoint directory name: " -c ans
+    [[ -d /media/$(whoami)/$ans ]] || mkdir /$(whoami)/$ans
+    sudo mount $fx /media/$(whoami)/$ans
+    echo "/media/$(whoami)/$ans mounted!"
+    printf "Press any key to exit!"
     read ans
-
-    if [ -d "/media/fermi/$ans" ]; then
-        echo "/media/fermi/$ans already exist!"
-        sudo mount $fx /media/fermi/$ans
-        echo "/media/fermi/$ans mounted!"
-        sleep 2;
-    fi
-
-    if [ ! -d "/media/fermi/$ans" ]; then
-        mkdir /media/fermi/$ans
-        echo "mounting on /media/fermi/$ans"
-        sudo mount $fx /media/fermi/$ans
-        echo "/media/fermi/$ans mounted!"
-        sleep 2;
-    fi
+    # trap SIGINT
+    # while true; do
+    #     sleep 1
+    # done
 
     lf -remote 'send reload'
 }}
 
 cmd mount_adata ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    /home/fermi/Documents/Configs/dotfiles/scripts/mntadata.sh
+    $HOME/Documents/Configs/dotfiles/scripts/mntadata.sh
     lf -remote 'send reload'
 }}
 
 cmd mtp-mount ${{
-    #trap bashtrap INT
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
     echo "[+] mtp is loading..."
     mtp-connect&
-    sleep 15;
-    #bashtrap()
-    #{
-    #    echo "Mounting /media/fermi/$ans"
-    #    }
-    #for i in `seq 1 2`; do
-    printf "mountpoint directory name: "
+    wait;
+    vared -p "mountpoint directory name: " -c ans
+    [[ -d /media/fermi/$ans ]] || mkdir /media/fermi/$ans
+    jmtpfs -o auto_unmount /media/fermi/$ans
+    echo "/media/fermi/$ans mounted!"
+    printf "Press any key to exit!"
     read ans
-    #if [ x"$quit" = xy ]; then
-    if [ -d "/media/fermi/$ans" ]; then
-        echo "/media/fermi/$ans already exist!"
-        jmtpfs -o allow_other,auto_unmount /media/fermi/$ans
-        echo "/media/fermi/$ans mounted!"
-    fi
-
-    if [ ! -d "/media/fermi/$ans" ]; then
-        mkdir /media/fermi/$ans
-        echo "mounting on /media/fermi/$ans"
-        sleep 1;
-        jmtpfs -o allow_other,auto_unmount /media/fermi/$ans
-        echo "/media/fermi/$ans mounted!"
-    fi
+    # trap SIGINT
+    # while true; do
+    #     sleep 1
+    # done
 
     lf -remote 'send reload'
 }}
@@ -313,58 +362,180 @@ cmd mtp-mount ${{
 cmd unmount ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-    printf "%s\n\t" "$fx"
-    printf "unmount?[Y/n] "
+    printf "%s\n\t" $fx
+    vared -p "Unmount?[Y/n]: " -c ans
+    [[ $ans = "n" ]] || { sudo umount -l $fx && \
+    sudo rm -rfv -- "$fx"; }
+    printf "Press any key to exit!"
     read ans
-	if [ $ans = "n" ]; then
-        exit 1
-    else
-        sudo umount -l $fx && sleep 5 && sudo rm -rfv -- $fx
-    fi
+    # trap SIGINT
+    # while true; do
+    #     sleep 1
+    # done
+
     lf -remote 'send reload'
 }}
 
-# handle kdecinnect 
+
+# Handle Kdeconnect
 cmd kdeconnect ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-	printf "%s\n\t" "$fx"
-    printf "Destination(Fermion=y or specify): "
-    read ans
-    if [ -z $ans ]; then
-        for i in $fx
-            do
-                kdeconnect-cli --share $i --name Fermion
-            done
-    else
-        for i in $fx
-            do
-                kdeconnect-cli --share $i --name $ans
-            done
+    printf "%s\n" "$fx"
+    # vared -p "Destination(Default Fermion): " -c ans
+    # if [[ -z $ans ]]; then
+    #     ans="Fermion"
+    # fi
+    kde_devs=$(kdeconnect-cli --list-available 2> /dev/null | grep "(paired and reachable)" | awk -F: '{print $1}' | sed 's/- //')
+    if [[ -z $kde_devs ]]; then
+        echo "No devices found"
+        exit 1
     fi
+    echo "Available devices:"
+    echo "$kde_devs" | nl
+    vared -p "Select device number: " -c dev_num
+    device=$(echo "$kde_devs" | sed -n "${dev_num}p")
+
+    sanitize_filename() {
+        local filename="$1"
+        sanitize=$(basename "$filename" | sed 's/[^a-zA-Z0-9 ._-]/_/g' | tr -s ' ')
+        sanitize=$(echo "$sanitize" | sed 's/^_*//;s/_*$//;s/__*/_/g')
+        echo "$sanitize"
+    }
+
+    rename_files_in_directory() {
+        local dir="$1"
+        find "$dir" -type f | while read -r file; do
+            pathname=$(dirname "$file")
+            sanitize=$(sanitize_filename "$file")
+            new_path="$pathname/$sanitize"
+            if [[ "$file" != "$new_path" ]]; then
+                mv "$file" "$new_path"
+                if [[ $? -ne 0 ]]; then
+                    echo "Error renaming $file to $new_path"
+                    new_path="$file"
+                fi
+            fi
+            send_files "$new_path"
+        done
+    }
+
+    send_files() {
+        for i in "$@"; do
+            if [[ -d "$i" ]]; then
+                find "$i" -type f -size +1c \
+                -exec kdeconnect-cli --share {} --name "$device" 2> /dev/null \;
+            elif [[ -f "$i" ]]; then
+                if [[ $(stat -c%s "$i") -gt 1 ]]; then
+                    kdeconnect-cli --share "$i" --name "$device" 2> /dev/null
+                fi
+            fi
+        done
+    }
+    for i in $fx; do
+        if [[ -d "$i" ]]; then
+            rename_files_in_directory "$i"
+        elif [[ -f "$i" ]]; then
+            sanitize=$(sanitize_filename "$i")
+            pathname=$(dirname "$i")
+            new_path="$pathname/$sanitize"
+            if [[ "$i" != "$new_path" ]]; then
+                mv "$i" "$new_path"
+                if [[ $? -ne 0 ]]; then
+                    echo "Error renaming $i to $new_path"
+                    new_path="$i"
+                fi
+            fi
+            send_files "$new_path"
+        fi
+    done
+    printf "Press any key to exit!"
+    read ans
+    # trap SIGINT
+    # while true; do
+    #     sleep 1
+    # done
 }}
 
-# handle rsync
+
+# Handle ADB
+cmd adb ${{
+    clear; tput cup $(($(tput lines)/3)); tput bold
+	printf "%s\n" $fx
+    # vared -p "IP (default 192.168.1.65): " -c ip
+    # if [ -z "$ip" ]; then
+    #     ip="192.168.1.65"
+    # fi
+    # vared -p "Port: " -c port
+    # if [ -z "$port" ]; then
+    # else
+    #     device="${ip}:${port}"
+    # fi
+    adb_devices=$(adb devices | awk 'NR>1 && $2=="device" {print $1}')
+    if [[ -z $adb_devices ]]; then
+        echo "No devices found"
+        exit 1
+    fi
+    adb_devices_array=($adb_devices)
+    echo "Available devices:"
+    echo "$adb_devices" | nl
+    vared -p "Select device number: " -c dev_id
+    if ! [[ "$dev_id" =~ ^[0-9]+$ ]] || ((dev_id < 1 || dev_id > ${#adb_devices_array[@]})); then
+        echo "Invalid selection"
+        exit 1
+    fi
+    device=${adb_devices_array[$((dev_id))]}
+    echo "Selected device: $device"
+    send_files() {
+        set -f
+        vared -p "Specify destination: " -c dest
+        # if [[ -z $dest ]]; then
+        #     dest="/sdcard/Download"
+        # fi
+        for i in $fx; do
+            # if [[ $(stat -c%s "$i") -gt 1 ]]; then
+            if [[ -e $i && -s $i ]]; then
+                sanitize=$(basename "$i" | sed 's/[^a-zA-Z0-9 .,_-]/ /g' | tr -s ' ')
+                sanitize=$(echo "$sanitize" | sed 's/^_*//;s/_*$//;s/__*/_/g')
+                adb -s "$device" push $i /sdcard/Download/$dest/$sanitize
+            else
+                echo "File $i does not exist or is empty, skipping."
+            fi
+        done
+        printf "Press any key to exit!"
+        read ans
+        # trap SIGINT
+        # while true; do
+        #     sleep 1
+        # done
+    }
+
+    send_files $fx
+}} # OK
+
+
+# Handle Rsync
 cmd rsync ${{
     clear; tput cup $(($(tput lines)/3)); tput bold
     set -f
-	printf "%s\n\t" "$fx"
-    vared -p "rsync to Fermion?[Y/n] " -c myd
-    if [[ $myd = "n" ]]; then
-        vared -p "Destination path: " -c dest
-        tmux neww -n "rsyncing to $dest" rsync -ausvxhP --ignore-existing $fx $dest
+	printf "%s\n" $fx
+    vared -p "Path[$HOME]: " -c dest
+    # if [[ -z $dest ]]; then
+    #     dest="bohr@192.168.1.65:sdcard/Download"
+    # fi
+    [[ -d $HOME/$dest ]] || mkdir -p $HOME/$dest
+    rsync -ausxhP -e ssh -vv --ignore-existing $fx $HOME/$dest
+    if [[ $? -eq 0 ]]; then
+        printf "%s\n" "[+] Rsync transfer complete"
+        read ans
     fi
-    if [[ -z "$myd" ]] || [[ $myd = "y" ]]; then
-        vared -p "Destination path: " -c des
-        if [[ -z "$des" ]]; then
-            tmux neww -n "rsyncing to /sdcard" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard
-        else
-            tmux neww -n "rsyncing to /sdcard/$des" rsync -e 'ssh -p 22' -ausvxhP --ignore-existing $fx fermi@192.168.1.64:/sdcard/$des
-        fi
-    fi
+    # trap SIGINT
+    # while true; do 
+    #     sleep 1
+    # done
 }}
 
-# show progress while pasting
+# Show progress while pasting
 cmd paste &{{
     set -- $(cat ~/.local/share/lf/files)
     mode="$1"
@@ -383,53 +554,10 @@ cmd paste &{{
     lf -remote "send clear"
 }}
 
-# git download
-cmd git-download ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    vared -p "URL: " -c url
-    vared -p "File/directory: " -c path
-    svn export $url/trunk/$path
-    printf "$path downloaded!"
-    sleep 1;
-}}
 
-cmd spacefm-open ${{
-    set -f
-    spacefm $PWD
-}}
 
-# dpkg
-cmd depkg ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    printf "%s\n\t" "$fx"
-	printf "install?[Y/n]"
-	read ans
-	if [ $ans = "n" ]; then
-        exit 1
-    else
-        sudo dpkg -i $fx
-    fi
-}}
 
-cmd toaudio ${{
-    clear; tput cup $(($(tput lines)/3)); tput bold
-    set -f
-    printf "%s\n\t" "$fx"
-	printf "extract audio?[Y/n]"
-	read ans
-	if [ $ans = "n" ]; then
-        exit 1
-    else
-        for i in "$fx"
-            do
-                ffmpeg -i "$i" -c:a copy -b:a 256 -ac 2 -map a "$(basename $i).mp3"
-            done
-    fi
-}}
-
-#Unmap Defaults
+#Unmap defaults
 map e
 map d
 map f
@@ -447,20 +575,19 @@ map st
 map gh
 map '"'
 
-# Bindings
-map f $lf -remote "send $id select '$(fzf)'"
+# Keybindings
+map fz $lf -remote "send $id select '$(fzf)'"
 map rr rename
-# Edit filename before the extension
-map re ${{
-	filename="${f##*/}"
-	filename="$(printf '%q' "$filename")"
-	filename="${filename// /<space>}"
-	lf -remote "send $id push :rename<space>$filename<a-b><c-b>"
-}}
 map br bulkrename
-
+map I push rr<c-a> # beginning
+map re push rr<a-b><a-b><a-f> # before extension
+map bg setbg
 # map z. z
 # map zi zi
+
+map fi filter
+map du filesize
+map f! setfilter
 
 map DS sudodelete
 map DD delete
@@ -475,8 +602,9 @@ map pp paste
 map cc clear
 map u unselect
 
-map send kdeconnect
-map syn rsync
+map K kdeconnect
+map A adb
+map cp rsync
 
 map dr dragon
 map ds dragon-stay
@@ -485,15 +613,16 @@ map dt dragon-target
 
 map E extract
 map C compress
-map Vta toaudio
+map ta toaudio
 
-map mdf newfold
-map mdr push :mkdir<space>
+map mtd newfold
+map mkd push :mkdir<space>
 map mds push :sudo-mkdir<space>
 map mfl push :mkfile<space>
-map msf push :sudo-mkfile<space>
+map mfs push :sudo-mkfile<space>
 
 map chm chmod
+map chms sudochmod
 map cho chown
 
 map mta mount_adata
@@ -506,18 +635,19 @@ map swa !$fx
 map sas &$fx
 map sio %$fx
 
-map oo &mimeopen $fx && disown
-map O $tmux neww mimeopen --ask $fx
-map do $tmux neww mimeopen --ask-default $fx
+map oo &mimeopen "$fx" && disown
+# map O !mimeopen --ask "$fx"
+map O !mimeopen --ask-default "$fx"
+map ox &xdg-open "$fx" && disown
 
-map ee $tmux neww -n "$(basename "$fx")" /usr/bin/vim.gtk3 $fx
-map see $sudo /usr/bin/vim.gtk3 $fx
+map ee $tmux neww -n "$(basename $fx)" /usr/bin/vim.gtk3 "$fx"
+map see $sudo /usr/bin/vim.gtk3 "$fx"
 
 map H top
 map M middle
 map L bottom
 
-map mc bookmark_create
+map mc mark_create
 map ms mark-save
 map mr mark-remove
 map "'" mark-load
@@ -526,25 +656,30 @@ map '"' bookmark_jump
 map sln symlink
 map slp :link
 
-map yp $printf "%s" "$fx" | xclip -selection clipboard
+map yf $printf "%s" "$fx" | xclip -selection clipboard
 map yb $printf $(basename "$fx") | xclip -selection clipboard
-map yd $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+map yp $dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
 
 map <enter> shell
 map <c-z> $ kill -STOP $PPID
-map sfs sshfs-f
+map sfs sshfs
 map dpkg depkg
-map sfm spacefm-open
+map opn nautilus-open
 map gtd git-download
 map R reload
 map ow push :open-with<space>
 # map W $setsid -f $TERMINAL >/dev/null 2>&1
-map i set preview!
+map i :set preview!
+map - :image_preview
+map + :video_preview
+map pa $batcat "$f"
+map ps pager_split
 
 # Navigation
 map g/ cd /
 map gr cd /root
 map gh cd /home/fermi
+map gdk cd /home/fermi/Desktop
 map gdc cd /home/fermi/Documents
 map gdl cd /home/fermi/Downloads
 map gvi cd /home/fermi/Videos
@@ -557,6 +692,7 @@ map glb cd /home/fermi/.local/bin
 
 map gcf cd /home/fermi/.config
 map glf cd /home/fermi/.config/lf
+map gvl cd /home/fermi/.config/vivaldi
 
 map gw1 cd /home/fermi/Pictures/walls
 map gw2 cd /home/fermi/Pictures/walls-2
@@ -564,15 +700,8 @@ map gsc cd /home/fermi/Pictures/Screenshots
 
 map gpr cd /home/fermi/Documents/Projects
 map gdt cd /home/fermi/Documents/Configs/dotfiles
-map gak cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/Journalorigin
-map gbb cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/My_Books
-map gbc cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Computers
-map gbm cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Mathematics
-map gbp cd /home/fermi/Documents/ARCHIVES_of_KNOWLEDGE/studylist/Physics
 
 map gtl cd /home/fermi/Downloads/Tools
-map gds cd /home/fermi/Downloads/Softwares
-map gf2 cd /home/fermi/Downloads/Archives/f22
 
 map gtc cd /etc
 map gpt cd /opt
