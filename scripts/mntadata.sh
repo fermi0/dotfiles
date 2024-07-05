@@ -4,8 +4,8 @@ for i in {b..z};
     do
         if [ -e "/dev/sd${i}1" ]; then
             echo "Mounting /dev/sd${i}1"
-            sudo mount "/dev/sd${i}1" "/media/oppenheimer/adata"
-            echo "/media/oppenheimer/adata mounted!"
+            sudo mount "/dev/sd${i}1" "/media/fermi/adata"
+            echo "/media/fermi/adata mounted!"
             sleep 3;
             break
         else
