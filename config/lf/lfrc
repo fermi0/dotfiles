@@ -100,7 +100,7 @@ cmd video_preview ${{
 cmd image_preview ${{
     cache="$(mktemp "${TMPDIR:-/tmp}/thumb_cache.XXXXX")"
     ffmpegthumbnailer -i "$f" -o "$cache" -s 0 -s 1080 -q 10
-    # ~/.config/lf/draw_img.sh "$cache"
+    ~/.config/lf/draw_img.sh "$cache"
 }}
 
 cmd pager_split ${{
@@ -576,7 +576,7 @@ map gh
 map '"'
 
 # Keybindings
-map fz $lf -remote "send $id select '$(fzf)'"
+map fz $lf -remote "send $id select \"$(fzf --border --preview=$HOME/./fzf-preview.sh\ {})\""
 map rr rename
 map br bulkrename
 map I push rr<c-a> # beginning

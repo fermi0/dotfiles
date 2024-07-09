@@ -13,9 +13,8 @@ floating_modifier $mod
 font pango:FantasqueSansMono Nerd Font Mono 11
 
 # NetworkManager using nm-applet
-exec --no-startup-id bluetoothctl connect F7:0F:8A:25:EE:1F
+exec --no-startup-id blueman-applet
 exec_always --no-startup-id nm-applet
-# exec_always --no-startup-id dropbox
 exec_always killall polybar
 exec_always --no-startup-id polybar -c ~/.config/polybar/melissa/config.ini mel-bar
 # exec_always --no-startup-id polybar -c ~/.config/polybar/melissa/config.ini mel2-bar
