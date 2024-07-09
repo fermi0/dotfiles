@@ -1,0 +1,15 @@
+[Unit]
+Description=nightly backups
+
+[Service]
+ExecStart=/home/oppenheimer/Documents/My_Documents/My_Configuration_Files/scripts/nightly/./nightly_backup.sh
+Restart=always
+RestartSec=1
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nightly_backup
+User=oppenheimer
+Group=oppenheimer
+
+[Install]
+WantedBy=multi-user.target
