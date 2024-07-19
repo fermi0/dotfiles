@@ -20,6 +20,7 @@ set cursorline
 set wildmenu
 set incsearch
 set modifiable
+set showmatch
 "set spell!
 set spelllang=en_us
 " let NERDTreeShowLineNumbers=1
