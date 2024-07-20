@@ -21,3 +21,4 @@ config/lf/marks
 
 !config/spacefm/session
 !config/tilda/config_0
+.vim/plugged/
