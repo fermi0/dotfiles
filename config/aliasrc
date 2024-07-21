@@ -2,6 +2,12 @@ alias ll='ls -ahl --color=always'
 alias la='ls -ha --color=always'
 alias ls='ls -hl --color=always'
 
+alias ezl='eza -lbh@ --group --git --absolute --group-directories-first -s name --icons'
+alias eza='eza -labh@ --group --git --absolute --group-directories-first -s name --icons'
+alias ezd='eza -labh@D --group --git --absolute --group-directories-first -s name --icons'
+alias ezf='eza -labh@f --group --git --absolute --group-directories-first -s name --icons'
+alias ezr='eza -labhR@ --group --git --absolute --group-directories-first -s name --icons'
+
 alias u='sudo apt update -y && sudo apt full-upgrade -y && sudo apt autopurge -y && sudo apt autoclean -y && sudo apt clean -y'
 alias i='sudo apt install'
 alias sui='su -i'
