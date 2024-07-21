@@ -123,11 +123,13 @@ bindsym $mod+m move scratchpad
 bindsym $mod+s scratchpad show
 
 # applications in default workspace
-# ssign [class="Brave-browser"] $ws1
-# assign [class="firefox-beta"] $ws1
-assign [class="Eog"] $ws2
+assign [class="vivaldi-stable"] $ws1
+assign [class="firefox-beta"] $ws1
+assign [class="Eog"] $ws8
+# assign [class="kitty"] $ws2
 assign [class="VirtualBox Machine"] $ws7
 # assign [class="Joplin"] $ws2
+assign [class="obsidian"] $ws4
 assign [class="Code"] $ws2
 # assign [class="dolphin"] $ws3
 # assign [class="Org.gnome.Nautilus"] $ws5
@@ -137,7 +139,7 @@ assign [class="Wireshark"] $ws7
 # assign [class="akregator"] $ws4
 # assign [class="VirtualBox Manager"] $ws10
 assign [class="mpv"] $ws8
-# assign [class="Vlc"] $ws8
+assign [class="Vlc"] $ws8
 assign [class="Spotify"] $ws5
 assign [class="TelegramDesktop"] $ws5
 assign [class="Pulseeffects"] $ws5
@@ -307,6 +309,7 @@ for_window [class="Artha"] floating enable
 for_window [class="xdman-Main"] floating enable
 for_window [class="xdm-app"] floating enable
 for_window [class="Xdm-app"] floating enable
+for_window [class="kitty"] floating enable, resize set 1600 840, move position center
 # for_window [class="Gufw.py"] floating enable
 # for_window [class="conky"] floating enable
 # for_window [class="yakuake"] floating enable
@@ -319,14 +322,14 @@ for_window [class="Xdm-app"] floating enable
 bindsym $mod+Mod1+b exec --no-startup-id bluetoothctl connect F7:0F:8A:25:EE:1F
 bindsym $mod+Mod1+s exec spotify-noad
 bindsym $mod+Pause exec "shutdown now"
-bindsym $mod+F2 exec tilda -c "tmux new -s 'commands'"
+# bindsym $mod+F2 exec tilda -c "tmux new -s 'commands'"
 bindsym $mod+Shift+Ctrl+r exec "reboot"
 # bindsym Pause exec "killall play"
-bindsym $mod+Home exec xfce4-terminal -e "tmux new -s 'lf.manager' 'lf'"
-bindsym Mod1+Home exec xfce4-terminal -e "tmux neww -n 'lf' 'lf'"
-bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/fermi/notes/hints'"
-bindsym $mod+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'wiki speak' -n 'wiki' /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh" 
-bindsym Mod1+XF86AudioRaiseVolume exec xfce4-terminal -e "tmux new -s 'Wiki Query' 'vim /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/query.txt'"
+# bindsym $mod+Home exec xfce4-terminal -e "tmux new -s 'lf.manager' 'lf'"
+# bindsym Mod1+Home exec xfce4-terminal -e "tmux neww -n 'lf' 'lf'"
+# bindsym $mod+Mod1+h exec xfce4-terminal -e "tmux new -s 'hints' 'vim /home/fermi/notes/hints'"
+bindsym $mod+XF86AudioRaiseVolume exec kitty tmux new -s "wiki speak" -n "wiki" "/home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/wiki.sh"
+bindsym Mod1+XF86AudioRaiseVolume exec kitty tmux new -s "Wiki Query" "vim /home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/query.txt"
 
 # transparency
 exec_always --no-startup-id picom --config /home/fermi/.config/picom/picom.conf
