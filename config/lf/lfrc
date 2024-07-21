@@ -18,7 +18,7 @@ set dirpreviews
 set ignorecase
 set smartcase
 set relativenumber
-set sixel true
+set sixel false
 
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
@@ -195,23 +195,42 @@ cmd sudochmod ${{
 }}
 
 cmd chmod ${{
-	clear; tput cup $(($(tput lines)/3)); tput bold
-	set -f
-	printf "%s\n" $fx
-    if [[ -d $fx ]]; then
-        vared -p "Mode Bits[Dirs]: " -c dir
-        vared -p "Mode Bits[files]: " -c file
-        chmod -v $dir $fx
-    elif [[ -f $fx ]]; then
-        vared -p "Mode Bits[files]: " -c file
-        chmod -v $file $fx
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
+    printf "%s\n" $fx
+    
+    dir_mode=""
+    file_mode=""
+    
+    if [ -d "$(echo "$fx" | head -n1)" ]; then
+        vared -p "Mode Bits[Dirs]: " dir_mode
+        vared -p "Mode Bits[Files]: " file_mode
+    elif [ -f "$(echo "$fx" | head -n1)" ]; then
+        vared -p "Mode Bits[Files]: " file_mode
+    else
+        echo "Invalid selection"
+        exit 1
     fi
-    find $fx -type d -exec chmod -v $dir {} \;
-    find $fx -type f -exec chmod -v $file {} \;
-
-
+    
+    for f in $fx; do
+        if [ -d "$f" ]; then
+            if [ -n "$dir_mode" ]; then
+                chmod -v $dir_mode "$f"
+                find "$f" -type d -exec chmod -v $dir_mode {} +
+            fi
+            if [ -n "$file_mode" ]; then
+                find "$f" -type f -exec chmod -v $file_mode {} +
+            fi
+        elif [ -f "$f" ]; then
+            if [ -n "$file_mode" ]; then
+                chmod -v $file_mode "$f"
+            fi
+        fi
+    done
+    
     lf -remote 'send reload'
 }}
+
 
 cmd chown ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
