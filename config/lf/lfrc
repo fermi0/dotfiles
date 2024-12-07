@@ -215,15 +215,15 @@ cmd chmod ${{
     for f in $fx; do
         if [ -d "$f" ]; then
             if [ -n "$dir_mode" ]; then
-                chmod -v $dir_mode "$f"
-                find "$f" -type d -exec chmod -v $dir_mode {} +
+                sudo chmod -Rv $dir_mode "$f"
+                find "$f" -type d -exec chmod -Rv $dir_mode {} +
             fi
             if [ -n "$file_mode" ]; then
-                find "$f" -type f -exec chmod -v $file_mode {} +
+                find "$f" -type f -exec chmod -Rv $file_mode {} +
             fi
         elif [ -f "$f" ]; then
             if [ -n "$file_mode" ]; then
-                chmod -v $file_mode "$f"
+                sudo chmod -Rv $file_mode "$f"
             fi
         fi
     done
@@ -281,21 +281,37 @@ cmd compress ${{
 
 
 # Symlinks
+#cmd symlink ${{
+#	clear; tput cup $(($(tput lines)/3)); tput bold
+#	set -f
+#    for i in $fx; do
+#        printf "%s\n\t" $i
+#        vared -p "Destination for symlink: " -c des
+#        sudo ln -s $i $des/$(basename $i)
+#    done
+#    printf "Press any key to exit!"
+#    read ans
+#    # trap SIGINT
+#    # while true; do
+#    #     sleep 1
+#    # done
+#}}
+
 cmd symlink ${{
-	clear; tput cup $(($(tput lines)/3)); tput bold
-	set -f
+    clear; tput cup $(($(tput lines)/3)); tput bold
+    set -f
     for i in $fx; do
-        printf "%s\n\t" $i
-        vared -p "Destination for symlink: " -c des
-        sudo ln -s $i $des/$(basename $i)
+        printf "%s\n\t" "$i"
+        vared -p "Destination for symlink (/usr/bin): " -c des
+        if [[ -z "$des" ]]; then
+            des="/usr/bin"
+        fi
+        sudo ln -s "$i" "$des/$(basename "$i")"
     done
     printf "Press any key to exit!"
-    read ans
-    # trap SIGINT
-    # while true; do
-    #     sleep 1
-    # done
+    read -n 1 ans
 }}
+
 # y (select for copy) and P to paste soft-link
 # d (select for cut) and P to paste hard-link
 cmd link %{{

@@ -14,6 +14,7 @@ font pango:FantasqueSansMono Nerd Font Mono 11
 
 # NetworkManager using nm-applet
 exec --no-startup-id blueman-applet
+exec --no-startup-id dropbox
 exec_always --no-startup-id nm-applet
 exec_always killall polybar
 exec_always --no-startup-id polybar -c ~/.config/polybar/melissa/config.ini mel-bar
@@ -22,6 +23,7 @@ exec_always --no-startup-id polybar -c ~/.config/polybar/melissa/config.ini mel-
 
 # start terminals(download xfce4-terminal, Gnome-terminal)
 bindsym $mod+Return exec kitty
+bindsym $mod+z exec /home/fermi/Downloads/Programs/zen-specific.AppImage
 
 # kill focused window
 bindsym $mod+q kill
@@ -123,8 +125,9 @@ bindsym $mod+m move scratchpad
 bindsym $mod+s scratchpad show
 
 # applications in default workspace
-assign [class="vivaldi-stable"] $ws1
+assign [class="Vivaldi-stable"] $ws1
 assign [class="firefox-beta"] $ws1
+assign [class="zen-alpha"] $ws1
 assign [class="Eog"] $ws8
 # assign [class="kitty"] $ws2
 assign [class="VirtualBox Machine"] $ws7
