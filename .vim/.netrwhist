@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =0
+let g:netrw_dirhistcnt =1
+let g:netrw_dirhist_1='/home/fermi/.mozilla/firefox/gt75dg75.Default User'
 let g:netrw_dirhist_0='/etc/apt'
 let g:netrw_dirhist_9='/home/fermi/Downloads/Compressed/tor-browser/Browser/TorBrowser/Data/Browser/profile.default'
 let g:netrw_dirhist_8='/home/fermi/Documents/Configs/dotfiles/config/lf'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_5='/home/fermi/Documents/Configs/dotfiles/config/polybar/mel
 let g:netrw_dirhist_4='/home/fermi/Documents/Configs/dotfiles/config/polybar/melissa/modules'
 let g:netrw_dirhist_3='/home/oppenheimer/Documents/Projects/Python projects/django-ecommerce'
 let g:netrw_dirhist_2='/home/oppenheimer/notes/Scribbles'
-let g:netrw_dirhist_1='/home/oppenheimer/Documents/Configs/scripts/wikipedia'
