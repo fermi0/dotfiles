@@ -1,8 +1,8 @@
 #!/usr/bin/zsh
 
-WIKI="/home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/wiki.txt"
-QUERY="/home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/query.txt"
-QUERY_LOG="/home/fermi/Documents/Configs/dotfiles/scripts/wikipedia/log_query.txt"
+WIKI="$HOME/scripts/wikipedia/wiki.txt"
+QUERY="$HOME/scripts/wikipedia/query.txt"
+QUERY_LOG="$HOME/scripts/wikipedia/log_query.txt"
 # log_count=1
 
 query_exec () {
