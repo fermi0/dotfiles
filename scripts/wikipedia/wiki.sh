@@ -26,7 +26,7 @@ query_exec () {
 wiki_speak () {
     if ! grep -q "Page not found" "$WIKI" && [ -s "$WIKI" ]; then 
         mpv \
-            ~/Documents/Configs/dotfiles/scripts/wikipedia/interesting_wiki.mp3 \
+            ~/scripts/wikipedia/interesting_wiki.mp3 \
             --speed=1.2
     else
         tmux select-window \
