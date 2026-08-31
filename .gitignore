@@ -1,0 +1,30 @@
+# Ignore patterns for the dotfiles repo
+
+# ── legacy / staged content under review (do not commit until reviewed) ──
+scripts/legacy/
+
+# ── runtime data (the *.db files live in /home/shared/data/ via symlink) ──
+data/**/*.db
+data/**/*.db-shm
+data/**/*.db-wal
+data/**/*.db-journal
+
+# ── backups created by the migration itself ──
+Backups/
+*.bak
+*.backup
+
+# ── editor / OS junk ──
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# ── standard build / install artifacts (defensive) ──
+node_modules/
+__pycache__/
+*.pyc
+.cache/
