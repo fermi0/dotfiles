@@ -1,0 +1,13 @@
+[Unit]
+Description=llama-server raw runtime (%i)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/work/.local/bin/llama-serve %i
+Restart=on-failure
+RestartSec=3
+# stop = SIGTERM to process = clean VRAM release (no daemon, no leaks)
+
+[Install]
+WantedBy=default.target

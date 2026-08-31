@@ -1,0 +1,75 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Minimal agnoster-style prompt: work@Messier dir branch ❯
+# Plain text — no powerline blocks. Features kept: directory, git,
+# language versions, docker, cmd duration, exit-code-colored arrow.
+
+add_newline = false
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$maven\
+$nodejs\
+$bun\
+$nim\
+$python\
+$rust\
+$scala\
+$docker_context\
+$cmd_duration\
+$line_break\
+$character"""
+
+[username]
+show_always = true
+style_user = "bold green"
+style_root = "bold red"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "bold green"
+format = "[@$hostname]($style) "
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = true
+truncation_symbol = "…/"
+read_only = " 🔒"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+symbol = ""
+style = "bold purple"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold red"
+format = "[$all_status$ahead_behind]($style) "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+# Normal vi mode: explicit N badge (insert mode hides it)
+vimcmd_symbol = "[N ❯](bold cyan)"
+
+[cmd_duration]
+min_time = 2000
+format = "[⏱ $duration](bold yellow) "
+
+[docker_context]
+symbol = "🐳 "
+format = "via [$symbol$context]($style) "

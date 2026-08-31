@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenCode Job: vault-maintenance
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/work
+Environment="PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+ExecStart="/usr/bin/perl" "/home/work/.config/opencode/scheduler/supervisor.pl" "/home/work/.config/opencode/scheduler/scopes/work-aee1aaee713c/jobs/vault-maintenance.json"
+StandardOutput=append:/home/work/.config/opencode/logs/scheduler/work-aee1aaee713c/vault-maintenance.log
+StandardError=append:/home/work/.config/opencode/logs/scheduler/work-aee1aaee713c/vault-maintenance.log
+
+[Install]
+WantedBy=default.target

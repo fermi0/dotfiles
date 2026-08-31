@@ -1,0 +1,37 @@
+[Default Applications]
+x-scheme-handler/http=zen.desktop
+x-scheme-handler/https=zen.desktop
+x-scheme-handler/chrome=zen.desktop
+text/html=zen.desktop
+application/x-extension-htm=zen.desktop
+application/x-extension-html=zen.desktop
+application/x-extension-shtml=zen.desktop
+application/xhtml+xml=zen.desktop
+application/x-extension-xhtml=zen.desktop
+application/x-extension-xht=zen.desktop
+x-scheme-handler/postman=Postman.desktop
+
+[Added Associations]
+x-scheme-handler/http=zen.desktop;
+x-scheme-handler/https=zen.desktop;
+x-scheme-handler/chrome=zen.desktop;
+text/html=zen.desktop;
+application/x-extension-htm=zen.desktop;
+application/x-extension-html=zen.desktop;
+application/x-extension-shtml=zen.desktop;
+application/xhtml+xml=zen.desktop;
+application/x-extension-xhtml=zen.desktop;
+application/x-extension-xht=zen.desktop;
+application/x-7z-compressed=cherrytree-usercreated-1.desktop;
+audio/mpeg=mpv.desktop;
+video/webm=mpv.desktop;
+video/x-matroska=mpv.desktop;
+message/rfc822=chromium-usercreated-1.desktop;
+image/heif=imv.desktop;
+video/quicktime=mpv.desktop;
+application/vnd.openxmlformats-officedocument.presentationml.presentation=chromium-usercreated-1.desktop;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox-usercreated-1.desktop;
+video/mp4=mpv.desktop;
+image/jpeg=imagemagick-usercreated-1.desktop;
+application/pdf=loupe-usercreated-1.desktop;
+image/png=imv.desktop;

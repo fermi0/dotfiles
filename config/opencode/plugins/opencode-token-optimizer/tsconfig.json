@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "solid-js",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+ "paths": {
+ "@opencode-ai/plugin": ["./node_modules/@opencode-ai/plugin"],
+ "@opentui/core": ["../../node_modules/@opentui/core"],
+ "@opentui/solid": ["../../node_modules/@opentui/solid"]
+ }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

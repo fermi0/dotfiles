@@ -1,0 +1,806 @@
+# =========================
+# Core
+# =========================
+set shell zsh
+set shellopts '-euy'
+set ifs "\n"
+set scrolloff 10
+set icons
+set drawbox
+set period 1
+set color256
+set hidden
+set previewer ctpv
+set cleaner ctpvclear
+set info size:time
+set sortby natural
+set dircounts
+set dirpreviews
+set ignorecase
+set smartcase
+set relativenumber
+set sixel false
+
+%[ "${LF_LEVEL:-0}" -eq 1 ] || echo "Warning: You're in a nested lf instance!"
+
+# ctpv integration
+&ctpv -s "$id"
+&ctpvquit "$id"
+
+# =========================
+# Helpers (terminal / editor)
+# =========================
+# We intentionally don't "set" these, we just use env vars with fallbacks.
+# Terminal launchers differ; we support common ones via a small chooser.
+
+cmd term-open ${{
+    # usage: :term-open <command...>
+    # Opens a new terminal window and runs the given command.
+    # Respects $TERMINAL if it supports -e; otherwise tries common terminals.
+    set -f
+    if [[ -n "${TERMINAL:-}" ]]; then
+        # Most terminals support: $TERMINAL -e <cmd...>
+        "$TERMINAL" -e "$@" & disown
+        exit 0
+    fi
+
+    # fallback list (edit to your preference)
+    for t in foot alacritty kitty wezterm konsole gnome-terminal xterm; do
+        if command -v "$t" >/dev/null 2>&1; then
+            case "$t" in
+                gnome-terminal) gnome-terminal -- "$@" & disown;;
+                konsole)        konsole -e "$@" & disown;;
+                wezterm)        wezterm start -- "$@" & disown;;
+                foot)           foot -e "$@" & disown;;
+                *)              "$t" -e "$@" & disown;;
+            esac
+            exit 0
+        fi
+    done
+
+    echo "No terminal found. Set \$TERMINAL or install one (foot/alacritty/kitty/wezterm/...)."
+}}
+
+cmd edit ${{
+    # open current file in nvim in a new terminal window
+    lf -remote "send $id :term-open nvim \"$f\""
+}}
+
+cmd edit-sudo ${{
+    lf -remote "send $id :term-open sudo -E nvim \"$f\""
+}}
+
+# =========================
+# Misc
+# =========================
+cmd mkdir ${{ mkdir -p -- "$@"; }}
+cmd sudo-mkdir ${{ sudo mkdir -p -- "$@"; }}
+
+cmd mkfile ${{
+    # creates and opens files in nvim
+    for p in "$@"; do
+        mkdir -p -- "$(dirname -- "$p")" 2>/dev/null || true
+        : > "$p"
+    done
+    lf -remote "send $id :term-open nvim \"$1\""
+}}
+
+cmd sudo-mkfile ${{
+    for p in "$@"; do
+        sudo mkdir -p -- "$(dirname -- "$p")" 2>/dev/null || true
+        sudo sh -c ": > \"$p\""
+    done
+    lf -remote "send $id :term-open sudo -E nvim \"$1\""
+}}
+
+cmd dragon %dragon-drop -a -x $fx
+cmd dragon-stay %dragon-drop -a $fx
+cmd dragon-target %dragon-drop -t
+cmd dlfile %dlfile
+cmd bulkrename $vimv $fx
+
+cmd open-with %"$@" $fx
+
+cmd filesize ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    du -sh -- $fx
+    printf "\nPress any key to exit!"
+    read -n 1
+}}
+
+cmd setbg ${{
+    feh -B white --bg-fill "$f"
+}}
+
+cmd shell-put ${{ cd -- "$PWD"; "${SHELL:-zsh}"; }}
+
+cmd nautilus-open ${{ nautilus "$PWD" & disown; }}
+
+# =========================
+# Git download (svn export)
+# =========================
+cmd git-download ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    vared -p "URL: " -c url
+    vared -p "File/directory (repo path): " -c Path
+    svn export "$url/trunk/$Path"
+    printf "%s\n" "$Path downloaded!"
+    sleep 1
+}}
+
+# =========================
+# Deb (not using debian based OS) / Audio
+# =========================
+#cmd depkg ${{
+#    clear; tput cup $(( $(tput lines)/3 )); tput bold
+#    set -f
+#    printf "%s\n\t" "$fx"
+#    vared -p "install?[Y/n] " -c ans
+#    [[ "$ans" == "n" ]] || sudo dpkg -i -- "$fx"
+#}}
+
+cmd toaudio ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n\t" "$fx"
+    vared -p "extract audio?[Y/n] " -c ans
+    [[ "$ans" == "n" ]] || {
+        for x in $fx; do
+            out="$(basename -- "${x%.*}").mp3"
+            ffmpeg -i "$x" -c:a libmp3lame -b:a 256k -ac 2 -map a "$out"
+        done
+    }
+}}
+
+# =========================
+# Preview helpers
+# =========================
+cmd video_preview ${{ mpv --vo=tct --hwdec=auto --title="Playing $f" "$f"; }}
+
+cmd image_preview ${{
+    cache="$(mktemp "${TMPDIR:-/tmp}/thumb_cache.XXXXX.png")"
+    ffmpegthumbnailer -i "$f" -o "$cache" -s 1080 -q 10
+    ~/.config/lf/draw_img.sh "$cache"
+}}
+
+# =========================
+# Pager (no tmux)
+# =========================
+cmd pager ${{
+    # open file in a new terminal with bat (fallback to less)
+    if command -v bat >/dev/null 2>&1; then
+        lf -remote "send $id :term-open sh -lc 'bat --paging=always -- \"$f\"'"
+    elif command -v less >/dev/null 2>&1; then
+        lf -remote "send $id :term-open sh -lc 'less -R -- \"$f\"'"
+    else
+        lf -remote "send $id :term-open sh -lc 'cat -- \"$f\"; echo; read -n 1'"
+    fi
+}}
+
+cmd lynx-open ${{
+    lf -remote "send $id :term-open lynx \"$f\""
+}}
+
+# =========================
+# New folder with selected items
+# =========================
+cmd newfold ${{
+    set -f
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    printf "%s\n" $fx
+    vared -p "Directory name: " -c newd
+    mkdir -p -- "$newd"
+    mv -- $fx "$newd"
+}}
+
+# =========================
+# Searchable bookmarks
+# =========================
+cmd bookmark_jump ${{
+    sel="$(ls "$LF_BOOKMARK_PATH" 2>/dev/null | fzf)"
+    [[ -n "$sel" ]] || exit 0
+    res="$(cat "$LF_BOOKMARK_PATH/$sel")"
+    lf -remote "send $id cd \"$res\""
+}}
+
+cmd mark_create ${{
+    read ans
+    [[ -n "$ans" ]] || exit 0
+    echo "$PWD" > "$LF_BOOKMARK_PATH/$ans"
+}}
+
+# =========================
+# Trash (safer)
+# =========================
+cmd trash ${{
+    # Requires trash-cli (trash-put)
+    for file in $fx; do
+        trash-put -- "$file"
+    done
+}}
+
+cmd clear_trash %trash-empty
+cmd restore_trash %trash-restore
+
+# =========================
+# Permissions
+# =========================
+cmd sudochmod ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n" $fx
+    vared -p "Mode Bits: " -c ans
+    sudo chmod -Rv -- "$ans" $fx
+    lf -remote "send $id reload"
+}}
+
+cmd chmod ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n" $fx
+
+    first="$(echo "$fx" | head -n1)"
+    if [[ -d "$first" ]]; then
+        vared -p "Mode Bits[Dirs]: " -c dir_mode
+        vared -p "Mode Bits[Files]: " -c file_mode
+        for path in $fx; do
+            [[ -n "${dir_mode:-}" ]] && find "$path" -type d -exec chmod -v -- "$dir_mode" {} +
+            [[ -n "${file_mode:-}" ]] && find "$path" -type f -exec chmod -v -- "$file_mode" {} +
+        done
+    elif [[ -f "$first" ]]; then
+        vared -p "Mode Bits[Files]: " -c file_mode
+        for path in $fx; do
+            chmod -v -- "$file_mode" "$path"
+        done
+    else
+        echo "Invalid selection"
+        exit 1
+    fi
+
+    lf -remote "send $id reload"
+}}
+
+cmd chown ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n" $fx
+    vared -p "owner:group (or ~ for user:user, / for root:root): " -c ans
+
+    if [[ "$ans" == "~" ]]; then
+        sudo chown -Rv $(whoami):$(whoami) $fx
+    elif [[ "$ans" == "/" ]]; then
+        sudo chown -Rv root:root $fx
+    elif [[ "$ans" == *":"* ]]; then
+        sudo chown -Rv -- "$ans" $fx
+    else
+        sudo chown -Rv -- "$ans:$ans" $fx
+    fi
+
+    lf -remote "send $id reload"
+}}
+
+# =========================
+# Extract & Compress
+# =========================
+cmd extract ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n\t" $fx
+    vared -p "Extract?[Y/n]: " -c ans
+    [[ "$ans" == "n" ]] || aunpack -- $fx
+    printf "Press any key to exit!"
+    read -n 1
+    lf -remote "send $id reload"
+}}
+
+cmd compress ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n" $fx
+    vared -p "Compress?[Y/n]: " -c ans
+    [[ "$ans" == "n" ]] || {
+        vared -p "Output zip: " -c zip
+        zip -r9vA -Zdeflate "$zip" $fx
+    }
+    printf "Press any key to exit!"
+    read -n 1
+    lf -remote "send $id reload"
+}}
+
+# =========================
+# Symlinks
+# =========================
+cmd symlink ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    for i in $fx; do
+        printf "%s\n\t" "$i"
+        vared -p "Destination for symlink (/usr/bin): " -c des
+        [[ -z "$des" ]] && des="/usr/bin"
+        sudo ln -sf -- "$i" "$des/$(basename -- "$i")"
+    done
+    printf "Press any key to exit!"
+    read -n 1
+}}
+
+# =========================
+# Delete
+# =========================
+cmd sudodelete ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n" $fx
+    vared -p "Delete?[Y/n]: " -c ans
+    [[ "$ans" == "n" ]] || sudo rm -rfv -- $fx
+    lf -remote "send $id reload"
+}}
+
+cmd delete ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    printf "%s\n" $fx
+    vared -p "Delete?[Y/n]: " -c ans
+    [[ "$ans" == "n" ]] || rm -rfv -- $fx
+    lf -remote "send reload"
+}}
+
+# =========================
+# Mounting/Unmount (fixes mkdir bug)
+# =========================
+cmd mount ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n\t" $fx
+    vared -p "Mountpoint directory name: " -c ans
+    mp="/media/$(whoami)/$ans"
+    [[ -d "$mp" ]] || mkdir -p -- "$mp"
+    sudo mount -- "$f" "$mp"
+    echo "$mp mounted!"
+    printf "Press any key to exit!"
+    read -n 1
+    lf -remote "send $id reload"
+}}
+
+cmd mount_adata ${{ "$HOME/dotfiles/scripts/mntadata.sh"; lf -remote "send $id reload"; }}
+
+cmd mtp-mount ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    echo "[+] mtp is loading..."
+    mtp-connect &
+    wait
+    vared -p "mountpoint directory name: " -c ans
+    mp="/mnt/$ans"
+    [[ -d "$mp" ]] || mkdir -p -- "$mp"
+    jmtpfs -o auto_unmount "$mp"
+    echo "$mp mounted!"
+    printf "Press any key to exit!"
+    read -n 1
+    lf -remote "send $id reload"
+}}
+
+cmd unmount ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n\t" $fx
+    vared -p "Unmount?[Y/n]: " -c ans
+    [[ "$ans" == "n" ]] || {
+        sudo umount -l -- "$f" && sudo rm -rfv -- "$f"
+    }
+    printf "Press any key to exit!"
+    read -n 1
+    lf -remote "send $id reload"
+}}
+
+# =========================
+# SSHFS (safer)
+# =========================
+cmd sshfs ${{
+    set -f
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    vared -p "Enter SSH target host (user@host): " -c t_host
+    vared -p "Enter SSH target port: " -c t_port
+    vared -p "Enter target destination: " -c t_dest
+    mp="/media/$(whoami)/sshfs"
+    [[ -d "$mp" ]] || mkdir -p -- "$mp"
+    sshfs -p "$t_port" "$t_host:$t_dest" "$mp"
+}}
+
+# =========================
+# KDE Connect
+# =========================
+cmd kdeconnect ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    set -f
+    printf "%s\n" "$fx"
+
+    kde_devs=$(kdeconnect-cli --list-available 2>/dev/null | grep "(paired and reachable)" | awk -F: '{print $1}' | sed 's/- //')
+    [[ -n "$kde_devs" ]] || { echo "No devices found"; exit 1; }
+
+    echo "Available devices:"
+    echo "$kde_devs" | nl
+    vared -p "Select device number: " -c dev_num
+    device=$(echo "$kde_devs" | sed -n "${dev_num}p")
+    [[ -n "$device" ]] || { echo "Invalid selection"; exit 1; }
+
+    sanitize_filename() {
+        local filename="$1"
+        local base="$(basename -- "$filename")"
+        local s="$(echo "$base" | sed 's/[^a-zA-Z0-9 ._-]/_/g' | tr -s ' ')"
+        s="$(echo "$s" | sed 's/^_*//;s/_*$//;s/__*/_/g')"
+        echo "$s"
+    }
+
+    send_files() {
+        for i in "$@"; do
+            if [[ -d "$i" ]]; then
+                find "$i" -type f -size +1c -exec kdeconnect-cli --share {} --name "$device" 2>/dev/null \;
+            elif [[ -f "$i" ]]; then
+                [[ $(stat -c%s -- "$i") -gt 1 ]] && kdeconnect-cli --share "$i" --name "$device" 2>/dev/null
+            fi
+        done
+    }
+
+    for i in $fx; do
+        if [[ -d "$i" ]]; then
+            find "$i" -type f | while read -r file; do
+                pathname="$(dirname -- "$file")"
+                s="$(sanitize_filename "$file")"
+                new_path="$pathname/$s"
+                if [[ "$file" != "$new_path" ]]; then
+                    mv -- "$file" "$new_path" 2>/dev/null || new_path="$file"
+                fi
+                send_files "$new_path"
+            done
+        elif [[ -f "$i" ]]; then
+            pathname="$(dirname -- "$i")"
+            s="$(sanitize_filename "$i")"
+            new_path="$pathname/$s"
+            if [[ "$i" != "$new_path" ]]; then
+                mv -- "$i" "$new_path" 2>/dev/null || new_path="$i"
+            fi
+            send_files "$new_path"
+        fi
+    done
+
+    printf "Press any key to exit!"
+    read -n 1
+}}
+
+# =========================
+# ADB (safer indexing)
+# =========================
+cmd adb ${{
+    clear; tput cup $(( $(tput lines)/3 )); tput bold
+    printf "%s\n" $fx
+
+    adb_devices=$(adb devices | awk 'NR>1 && $2=="device" {print $1}')
+    [[ -n "$adb_devices" ]] || { echo "No devices found"; exit 1; }
+
+    adb_devices_array=(${=adb_devices})
+    echo "Available devices:"
+    echo "$adb_devices" | nl
+    vared -p "Select device number: " -c dev_id
+
+    if ! [[ "$dev_id" =~ ^[0-9]+$ ]] || ((dev_id < 1 || dev_id > ${#adb_devices_array[@]})); then
+        echo "Invalid selection"
+        exit 1
+    fi
+
+    device="${adb_devices_array[$dev_id]}"
+    echo "Selected device: $device"
+
+    vared -p "Specify destination (relative under /sdcard/Download): " -c dest
+    [[ -z "$dest" ]] && dest=""
+
+    for i in $fx; do
+        if [[ -e "$i" && -s "$i" ]]; then
+            s="$(basename -- "$i" | sed 's/[^a-zA-Z0-9 .,_-]/ /g' | tr -s ' ')"
+            s="$(echo "$s" | sed 's/^_*//;s/_*$//;s/__*/_/g')"
+            adb -s "$device" push -- "$i" "/sdcard/Download/$dest/$s"
+        else
+            echo "File $i missing/empty, skipping."
+        fi
+    done
+
+    printf "Press any key to exit!"
+    read -n 1
+}}
+
+# =========================
+# Rsync to home dir
+# =========================
+cmd rsync ${{
+    clear
+    tput cup $(( $(tput lines) / 3 ))
+    tput bold
+    
+    # Handle filenames with spaces properly
+    set -f
+    IFS="$(printf '\n\t')"
+    
+    printf "Selected files:\n%s\n\n" "$fx"
+    
+    vared -p "Destination path (relative to \$HOME): " -c dest
+    
+    [ -z "$dest" ] && dest="."
+    dest_full="$HOME/$dest"
+    
+    if [ ! -d "$dest_full" ]; then
+        printf "Creating directory: %s\n" "$dest_full"
+        mkdir -p -- "$dest_full" || {
+            printf "Error: Failed to create destination\n"
+            read -k 1
+            exit 1
+        }
+    fi
+    
+    vared -p "Remote host (empty for local): " -c remote_host
+    
+    printf "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    printf "IMPORTANT: Trailing slash behavior\n"
+    printf "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    printf "WITH slash    (folder/):  Copies CONTENTS into destination\n"
+    printf "WITHOUT slash (folder):   Copies FOLDER itself into destination\n"
+    printf "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+    
+    if [ -n "$remote_host" ]; then
+        printf "[*] Starting remote rsync to %s:%s\n\n" "$remote_host" "$dest_full"
+        
+        # Remote transfer - use compression and explicit ssh
+        rsync -auzh -e ssh --progress \
+            --no-perms --no-owner --no-group \
+            $fx "$remote_host:$dest_full/"
+        
+        rsync_status=$?
+        
+        if [ $rsync_status -eq 0 ]; then
+            printf "\n[+] Transfer complete\n"
+            
+            remote_user="${remote_host%%@*}"
+            [ "$remote_user" = "$remote_host" ] && remote_user="$USER"
+            
+            printf "[*] Changing ownership to %s on remote...\n" "$remote_user"
+            ssh "$remote_host" "chown -R '$remote_user:$remote_user' '$dest_full'" && {
+                printf "[+] Ownership updated\n"
+            } || {
+                printf "[!] Warning: Ownership change failed\n"
+            }
+        else
+            printf "\n[!] Rsync failed (exit code: %d)\n" "$rsync_status"
+        fi
+    else
+        # Local transfer - validate y/n input
+        while true; do
+            vared -p "Transfer to different user account? (y/n): " -c yn
+            case $yn in
+                [Yy] )
+                    vared -p "Enter target username: " -c target_user
+                    
+                    if ! id "$target_user" &>/dev/null; then
+                        printf "[!] Error: User '%s' does not exist\n" "$target_user"
+                        read -k 1
+                        exit 1
+                    fi
+                    
+                    target_home=$(eval echo ~"$target_user")
+                    dest_full="$target_home/$dest"
+                    
+                    printf "\n[*] Starting local rsync to %s (user: %s)\n\n" "$dest_full" "$target_user"
+                    
+                    if [ ! -d "$dest_full" ]; then
+                        sudo mkdir -p -- "$dest_full" || {
+                            printf "Error: Failed to create destination\n"
+                            read -k 1
+                            exit 1
+                        }
+                    fi
+                    
+                    # Local cross-user with full flags
+                    sudo rsync -ausxhP $fx "$dest_full/"
+                    rsync_status=$?
+                    
+                    if [ $rsync_status -eq 0 ]; then
+                        printf "\n[+] Transfer complete\n"
+                        printf "[*] Changing ownership to %s...\n" "$target_user"
+                        
+                        sudo chown -R "$target_user:$target_user" "$dest_full" && {
+                            printf "[+] Ownership updated\n"
+                        } || {
+                            printf "[!] Warning: Ownership change failed\n"
+                        }
+                    else
+                        printf "\n[!] Rsync failed (exit code: %d)\n" "$rsync_status"
+                    fi
+                    break
+                    ;;
+                [Nn] )
+                    # Local same-user transfer
+                    printf "\n[*] Starting local rsync to %s\n\n" "$dest_full"
+                    
+                    rsync -ausxhP $fx "$dest_full/"
+                    rsync_status=$?
+                    
+                    if [ $rsync_status -eq 0 ]; then
+                        printf "\n[+] Transfer complete\n"
+                    else
+                        printf "\n[!] Rsync failed (exit code: %d)\n" "$rsync_status"
+                    fi
+                    break
+                    ;;
+                * )
+                    printf "Invalid input. Please enter 'y' or 'n'\n"
+                    ;;
+            esac
+        done
+    fi
+    
+    printf "\n"
+    read -k 1
+}}
+
+# =========================
+# Paste with progress (NEW)
+# =========================
+# This replaces your paste so you can SEE details.
+# It opens a new terminal window showing rsync progress2 (ETA/elapsed).
+cmd paste ${{
+    lf -remote "send $id :term-open lf-paste-progress"
+}}
+
+# =========================
+# Unmap defaults
+# =========================
+map e
+map d
+map f
+map y
+map p
+map m
+map r
+map c
+map t
+# map w
+map sa
+map se
+map sn
+map ss
+map st
+map gh
+map '"'
+
+# =========================
+# Keybindings
+# =========================
+map fz $lf -remote "send $id select \"$(fzf)\""
+map rr rename
+map br bulkrename
+
+map fi filter
+map fs filesize
+map f! setfilter #toggle
+
+map DS sudodelete
+map DD delete
+
+map <delete> trash
+map trr restore_trash
+map trc clear_trash
+
+map dd cut
+map yy copy
+map pp paste
+map cc clear
+map uu unselect
+
+map K kdeconnect
+map A adb
+map rnc rsync
+
+map dr dragon
+map ds dragon-stay
+map dl dlfile
+map dt dragon-target
+
+map E extract
+map C compress
+map tau toaudio
+
+map mtd newfold
+map mkd push :mkdir<space>
+map mds push :sudo-mkdir<space>
+map mfl push :mkfile<space>
+map mfs push :sudo-mkfile<space>
+
+map chm chmod
+map chms sudochmod
+map cho chown
+
+map mta mount_adata
+map mnt mount
+map mo! unmount
+map mtp mtp-mount
+
+map sex $$fx #exec
+map swa !$fx #exec and wait
+map sas &$fx #exec in background
+map sio %$fx #exec and show output in lf 
+ 
+map oo &mimeopen "$fx" && disown
+map O !mimeopen --ask-default "$fx"
+map ox &xdg-open "$fx" && disown
+
+# "ee" / "see" open new terminal window with nvim
+map ee edit
+map see edit-sudo
+
+map H top
+map M middle
+map L bottom
+
+map mc mark_create
+map mr mark-remove
+map "'" mark-load
+map '"' bookmark_jump
+
+map sln symlink
+map slp :link
+
+map yf $printf "%s" "$fx" | wl-copy | cliphist store
+map yb $printf "%s" "$(basename -- "$f")" | wl-copy | cliphist store
+map yp $dirname -- "$f" | head -c-1 | wl-copy | cliphist store
+
+map <enter> shell
+map <c-z> $ kill -STOP $PPID
+
+map sfs sshfs
+# map dpkg depkg # not using debian based OS
+map opn "pcmanfm --one-screen"
+map gtd git-download
+
+map R reload
+map ow push :open-with<space>
+
+map i :set preview!
+map - :image_preview
+map + :video_preview
+
+map pa pager
+map ps lynx-open
+
+# =========================
+# Navigation
+# =========================
+map g/ cd /
+map gr cd /root
+map gh cd ~
+map dsk cd ~/Desktop
+map doc cd ~/Documents
+map dow cd ~/Downloads
+map vid cd ~/Videos
+map mus cd ~/Music
+map pic cd ~/Pictures
+map nt cd ~/notes
+
+map tr cd ~/.local/share/Trash/files
+map .l/b cd ~/.local/bin
+
+map cfg cd ~/.config
+map glf cd ~/.config/lf
+
+map bg cd ~/Pictures/wallpapers
+map ss cd ~/Pictures/Screenshots
+
+map pj cd ~/Documents/Projects
+# map dot cd ~/dotfiles #not my dotfiles
+# map cfg cd ~/dotfiles/config
+
+map tls cd ~/Downloads/Tools
+
+map etc cd /etc
+map opt cd /opt
+map u/b cd /usr/bin
+map ulb cd /usr/local/bin
+map tmp cd /tmp
+map dev cd /dev
+map mnt cd /mnt

@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenCode Job: daily-planning
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/work
+Environment="PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+ExecStart="/usr/bin/perl" "/home/work/.config/opencode/scheduler/supervisor.pl" "/home/work/.config/opencode/scheduler/scopes/work-aee1aaee713c/jobs/daily-planning.json"
+StandardOutput=append:/home/work/.config/opencode/logs/scheduler/work-aee1aaee713c/daily-planning.log
+StandardError=append:/home/work/.config/opencode/logs/scheduler/work-aee1aaee713c/daily-planning.log
+
+[Install]
+WantedBy=default.target

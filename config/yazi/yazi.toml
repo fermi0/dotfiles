@@ -1,0 +1,90 @@
+# yazi.toml — Yazi 26.8.15 · EndeavourOS/Hyprland/kitty
+# Docs: https://yazi-rs.github.io/docs/configuration/yazi
+
+[mgr]
+ratio          = [1, 3, 5]        # parent : current : preview
+sort_by        = "natural"
+sort_dir_first = true
+sort_sensitive = false
+show_hidden    = true
+show_symlink   = true
+scrolloff      = 8
+linemode       = "mtime"
+mouse_events   = []               # keyboard-first; commands run under $SHELL (zsh)
+
+[preview]
+wrap           = "yes"
+tab_size       = 2
+max_width      = 1920
+max_height     = 1920
+image_filter   = "triangle"       # kitty adaptor auto-detected (native graphics + DnD)
+
+[opener]
+edit = [
+  { run = 'nvim %s', block = true, desc = "nvim", for = "linux" },
+]
+open = [
+  { run = 'xdg-open %s', desc = "xdg-open", for = "linux" },
+]
+image = [
+  { run = 'imv %s', orphan = true, desc = "imv", for = "linux" },
+]
+video = [
+  { run = 'mpv --force-window=yes %s', orphan = true, desc = "mpv", for = "linux" },
+]
+audio = [
+  { run = 'mpv --no-video %s', orphan = true, desc = "mpv", for = "linux" },
+]
+pdf = [
+  { run = 'zathura %s', orphan = true, desc = "zathura", for = "linux" },
+]
+
+[open]
+rules = [
+  { url = "*.{png,jpg,jpeg,webp,avif,gif,bmp,tiff,heic,heif}", use = "image" },
+  { url = "*.{mp4,mkv,webm,avi,mov,ts,flv}", use = "video" },
+  { url = "*.{mp3,opus,ogg,m4a,flac,wav}", use = "audio" },
+  { mime = "application/pdf", use = "pdf" },
+  { mime = "text/*", use = ["edit", "open"] },
+  { mime = "image/*", use = ["image", "open"] },
+  { mime = "audio/*", use = ["audio", "open"] },
+  { mime = "video/*", use = ["video", "open"] },
+  { mime = "application/{json,x-yaml,toml,x-shellscript}", use = ["edit", "open"] },
+  { url = "*", use = ["open", "edit"] },
+]
+
+[plugin]
+# fast mime from extension DB (file(1) stays as fallback)
+[[plugin.prepend_fetchers]]
+url   = "local://*"
+run   = "mime-ext.local"
+prio  = "high"
+group = "mime"
+
+# piper-powered previews where the builtin lacks:
+# HEIC/HEIF/AVIF/JXL: yazi's native decoder can't read them → magick preset
+# previewer converts via ImageMagick (libheif 1.23 present ✓)
+[[plugin.prepend_previewers]]
+mime = "image/{avif,hei?,jxl}"
+run = "magick"
+
+[[plugin.prepend_previewers]]
+url = "*.{tar,tgz,tar.gz,tar.bz2,tbz2,tar.xz,txz,tar.zst,tzst}"
+run = 'piper --format=url -- tar tf "$1"'
+
+[[plugin.prepend_previewers]]
+url = "*.{zip,7z,rar,cab,iso}"
+run = 'piper -- 7z l "$1"'
+
+[[plugin.prepend_previewers]]
+url = "*.csv"
+run = 'piper -- bat -p --color=always "$1"'
+
+[tasks]
+bizarre_retry = 5
+
+[input]
+cursor_blink = true
+
+[log]
+enabled = false

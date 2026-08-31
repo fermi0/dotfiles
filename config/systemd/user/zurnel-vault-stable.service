@@ -1,0 +1,6 @@
+[Unit]
+Description=Zurnel vault: promote backup branch + git bundle (daily)
+
+[Service]
+Type=oneshot
+ExecStart=%h/scripts/zurnel-snapshot.sh --stable

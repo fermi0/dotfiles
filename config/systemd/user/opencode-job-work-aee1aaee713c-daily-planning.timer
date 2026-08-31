@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer for OpenCode Job: daily-planning
+
+[Timer]
+OnCalendar=*-*-* 07:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

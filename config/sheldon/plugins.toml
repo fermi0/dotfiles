@@ -1,0 +1,51 @@
+# `sheldon` configuration file
+# ----------------------------
+#
+# You can modify this file directly or you can use one of the following
+# `sheldon` commands which are provided to assist in editing the config file:
+#
+# - `sheldon add` to add a new plugin to the config file
+# - `sheldon edit` to open up the config file in the default editor
+# - `sheldon remove` to remove a plugin from the config file
+#
+# See the documentation for more https://github.com/rossmacarthur/sheldon#readme
+
+shell = "zsh"
+
+[plugins.git]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/git"
+use = ["*.plugin.zsh"]
+
+[plugins.archlinux]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/archlinux"
+use = ["*.plugin.zsh"]
+
+[plugins.zoxide]
+github = "ohmyzsh/ohmyzsh"
+dir = "plugins/zoxide"
+use = ["*.plugin.zsh"]
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+
+# Reminds you of existing aliases when you type the long form (2026-08-26)
+[plugins.you-should-use]
+github = "MichaelAquilina/zsh-you-should-use"
+
+# Type a fragment, press Up/Down to search history by substring.
+# MUST load after zsh-syntax-highlighting (appended last on purpose).
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+
+# Vim-parity editing: text objects, surround ops, per-mode cursor shapes.
+# Loaded LAST on purpose — it inherits existing keybindings into insert mode.
+[plugins.zsh-vi-mode]
+github = "jeffreytse/zsh-vi-mode"

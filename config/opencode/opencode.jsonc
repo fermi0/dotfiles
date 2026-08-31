@@ -1,0 +1,1057 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["~/.config/opencode/AGENTS.md", "~/Work/Zurnel/Intentions.md"],
+  "provider": {
+    "local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local llama-server (raw llama.cpp)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "models": {
+        "ornith-35b-a3b": {
+          "name": "Ornith-1.5-35B-A3B APEX-Quality - agentic RL-tuned MoE, ctx 256k (KV q8_0)",
+          "limit": {
+            "context": 262144,
+            "output": 8192
+          },
+          "stream": true,
+          "options": {
+            "temperature": 0.6
+          },
+          "variants": {
+            "precise": {
+              "temperature": 0.2,
+              "top_p": 0.9,
+              "min_p": 0.05
+            },
+            "balanced": {
+              "temperature": 0.6,
+              "top_p": 0.95,
+              "min_p": 0.1
+            },
+            "creative": {
+              "temperature": 0.8,
+              "top_p": 0.95
+            },
+            "benchmark": {
+              "temperature": 1.0
+            }
+          }
+        }
+      }
+    },
+    "openrouter": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Open Router",
+      "options": {
+        "baseURL": "https://openrouter.ai/api/v1",
+        "timeout": 900000,
+        "chunkTimeout": 120000,
+        "apiKey": "{env:OPENROUTER_API_KEY}"
+      },
+      "blacklist": [
+        "aion-labs/aion-2.0",
+        "aion-labs/aion-3.0",
+        "aion-labs/aion-3.0-mini",
+        "aion-labs/aion-rp-llama-3.1-8b",
+        "amazon/nova-2-lite-v1",
+        "amazon/nova-lite-v1",
+        "amazon/nova-micro-v1",
+        "amazon/nova-premier-v1",
+        "amazon/nova-pro-v1",
+        "anthracite-org/magnum-v4-72b",
+        "anthropic/claude-3-haiku",
+        "anthropic/claude-fable-5",
+        "anthropic/claude-fable-5:batch",
+        "anthropic/claude-haiku-4.5",
+        "anthropic/claude-haiku-4.5:batch",
+        "anthropic/claude-opus-4",
+        "anthropic/claude-opus-4.1",
+        "anthropic/claude-opus-4.1:batch",
+        "anthropic/claude-opus-4.5",
+        "anthropic/claude-opus-4.5:batch",
+        "anthropic/claude-opus-4.6",
+        "anthropic/claude-opus-4.6:batch",
+        "anthropic/claude-opus-4.7",
+        "anthropic/claude-opus-4.7-fast",
+        "anthropic/claude-opus-4.7:batch",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-opus-4.8-fast",
+        "anthropic/claude-opus-4.8:batch",
+        "anthropic/claude-opus-5",
+        "anthropic/claude-opus-5-fast",
+        "anthropic/claude-opus-5:batch",
+        "anthropic/claude-sonnet-4",
+        "anthropic/claude-sonnet-4.5",
+        "anthropic/claude-sonnet-4.5:batch",
+        "anthropic/claude-sonnet-4.6",
+        "anthropic/claude-sonnet-4.6:batch",
+        "anthropic/claude-sonnet-5",
+        "anthropic/claude-sonnet-5:batch",
+        "arcee-ai/trinity-large-thinking",
+        "baidu/ernie-4.5-vl-424b-a47b",
+        "bytedance-seed/seed-1.6",
+        "bytedance-seed/seed-1.6-flash",
+        "bytedance-seed/seed-2-1-turbo",
+        "bytedance-seed/seed-2.0-code",
+        "bytedance-seed/seed-2.0-lite",
+        "bytedance-seed/seed-2.0-mini",
+        "bytedance/ui-tars-1.5-7b",
+        "cognitivecomputations/dolphin-mistral-24b-venice-edition",
+        "cohere/command-a",
+        "cohere/command-r-08-2024",
+        "cohere/command-r-plus-08-2024",
+        "cohere/command-r7b-12-2024",
+        "deepseek/deepseek-chat",
+        "deepseek/deepseek-chat-v3-0324",
+        "deepseek/deepseek-chat-v3.1",
+        "deepseek/deepseek-r1",
+        "deepseek/deepseek-r1-0528",
+        "deepseek/deepseek-r1-distill-llama-70b",
+        "deepseek/deepseek-v3.1-terminus",
+        "deepseek/deepseek-v3.2",
+        "deepseek/deepseek-v3.2-exp",
+        "deepseek/deepseek-v4-flash",
+        "deepseek/deepseek-v4-flash-0731",
+        "deepseek/deepseek-v4-flash-0731:batch",
+        "deepseek/deepseek-v4-flash-vision-exp",
+        "deepseek/deepseek-v4-pro",
+        "deepseek/deepseek-v4-pro-0813",
+        "deepseek/deepseek-v4-pro-0813:batch",
+        "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash-image",
+        "google/gemini-2.5-flash-lite",
+        "google/gemini-2.5-flash-lite:batch",
+        "google/gemini-2.5-flash:batch",
+        "google/gemini-2.5-pro",
+        "google/gemini-2.5-pro-preview",
+        "google/gemini-2.5-pro-preview-05-06",
+        "google/gemini-2.5-pro:batch",
+        "google/gemini-3-flash-preview",
+        "google/gemini-3-flash-preview:batch",
+        "google/gemini-3-pro-image",
+        "google/gemini-3-pro-image-preview",
+        "google/gemini-3.1-flash-image",
+        "google/gemini-3.1-flash-image-preview",
+        "google/gemini-3.1-flash-lite",
+        "google/gemini-3.1-flash-lite-image",
+        "google/gemini-3.1-flash-lite-preview",
+        "google/gemini-3.1-flash-lite:batch",
+        "google/gemini-3.1-pro-preview",
+        "google/gemini-3.1-pro-preview-customtools",
+        "google/gemini-3.1-pro-preview:batch",
+        "google/gemini-3.5-flash",
+        "google/gemini-3.5-flash-lite",
+        "google/gemini-3.5-flash-lite:batch",
+        "google/gemini-3.5-flash:batch",
+        "google/gemini-3.6-flash",
+        "google/gemini-3.6-flash:batch",
+        "google/gemini-3.7-flash",
+        "google/gemini-3.7-flash:batch",
+        "google/gemma-2-27b-it",
+        "google/gemma-3-12b-it",
+        "google/gemma-3-27b-it",
+        "google/gemma-3-4b-it",
+        "google/gemma-4-26b-a4b-it",
+        "google/gemma-4-31b-it",
+        "google/gemma-4-31b-it:batch",
+        "gryphe/mythomax-l2-13b",
+        "ibm-granite/granite-4.0-h-micro",
+        "ibm-granite/granite-4.1-8b",
+        "inception/mercury-2",
+        "inclusionai/ling-3.0-flash",
+        "kwaipilot/kat-coder-air-v2.5",
+        "kwaipilot/kat-coder-pro-v2",
+        "kwaipilot/kat-coder-pro-v2.5",
+        "mancer/weaver",
+        "meituan/longcat-2.0",
+        "meta-llama/llama-3.1-70b-instruct",
+        "meta-llama/llama-3.1-8b-instruct",
+        "meta-llama/llama-3.2-1b-instruct",
+        "meta-llama/llama-3.2-3b-instruct",
+        "meta-llama/llama-3.3-70b-instruct",
+        "meta-llama/llama-4-maverick",
+        "meta-llama/llama-4-scout",
+        "meta-llama/llama-guard-4-12b",
+        "meta/muse-glimmer-30b",
+        "meta/muse-glimmer-30b:batch",
+        "meta/muse-spark-1.1",
+        "meta/muse-spark-1.2",
+        "meta/muse-spark-1.2-contributor",
+        "microsoft/phi-4",
+        "microsoft/wizardlm-2-8x22b",
+        "minimax/minimax-01",
+        "minimax/minimax-m1",
+        "minimax/minimax-m2",
+        "minimax/minimax-m2-her",
+        "minimax/minimax-m2.1",
+        "minimax/minimax-m2.5",
+        "minimax/minimax-m2.7",
+        "minimax/minimax-m3",
+        "minimax/minimax-m3:batch",
+        "mistralai/codestral-2508",
+        "mistralai/codestral-2508:batch",
+        "mistralai/devstral-2512",
+        "mistralai/ministral-14b-2512",
+        "mistralai/ministral-3b-2512",
+        "mistralai/ministral-8b-2512",
+        "mistralai/ministral-8b-2512:batch",
+        "mistralai/mistral-large",
+        "mistralai/mistral-large-2407",
+        "mistralai/mistral-large-2512",
+        "mistralai/mistral-large-2512:batch",
+        "mistralai/mistral-medium-3",
+        "mistralai/mistral-medium-3-5",
+        "mistralai/mistral-medium-3-5:batch",
+        "mistralai/mistral-medium-3.1",
+        "mistralai/mistral-medium-3.1:batch",
+        "mistralai/mistral-nemo",
+        "mistralai/mistral-saba",
+        "mistralai/mistral-small-24b-instruct-2501",
+        "mistralai/mistral-small-2603",
+        "mistralai/mistral-small-2603:batch",
+        "mistralai/mistral-small-3.1-24b-instruct",
+        "mistralai/mistral-small-3.2-24b-instruct",
+        "mistralai/mixtral-8x22b-instruct",
+        "mistralai/voxtral-small-24b-2507",
+        "moonshotai/kimi-k2",
+        "moonshotai/kimi-k2-0905",
+        "moonshotai/kimi-k2-thinking",
+        "moonshotai/kimi-k2.5",
+        "moonshotai/kimi-k2.6",
+        "moonshotai/kimi-k2.7-code",
+        "moonshotai/kimi-k3",
+        "moonshotai/kimi-k3:batch",
+        "morph/morph-v3-fast",
+        "morph/morph-v3-large",
+        "nex-agi/nex-n2-mini",
+        "nex-agi/nex-n2-pro",
+        "nousresearch/hermes-3-llama-3.1-405b",
+        "nousresearch/hermes-3-llama-3.1-70b",
+        "nousresearch/hermes-4-405b",
+        "nousresearch/hermes-4-70b",
+        "nvidia/nemotron-3-nano-30b-a3b",
+        "nvidia/nemotron-3-super-120b-a12b",
+        "nvidia/nemotron-3-ultra-550b-a55b",
+        "nvidia/nemotron-3-ultra-550b-a55b:batch",
+        "nvidia/nemotron-3.5-lightning",
+        "openai/gpt-3.5-turbo",
+        "openai/gpt-3.5-turbo-0613",
+        "openai/gpt-3.5-turbo-16k",
+        "openai/gpt-3.5-turbo-instruct",
+        "openai/gpt-4",
+        "openai/gpt-4-turbo",
+        "openai/gpt-4-turbo-preview",
+        "openai/gpt-4.1",
+        "openai/gpt-4.1-mini",
+        "openai/gpt-4.1-nano",
+        "openai/gpt-4o",
+        "openai/gpt-4o-2024-05-13",
+        "openai/gpt-4o-2024-08-06",
+        "openai/gpt-4o-2024-11-20",
+        "openai/gpt-4o-mini",
+        "openai/gpt-4o-mini-2024-07-18",
+        "openai/gpt-5",
+        "openai/gpt-5-image",
+        "openai/gpt-5-image-mini",
+        "openai/gpt-5-mini",
+        "openai/gpt-5-nano",
+        "openai/gpt-5-pro",
+        "openai/gpt-5.1",
+        "openai/gpt-5.1-codex",
+        "openai/gpt-5.1-codex-max",
+        "openai/gpt-5.1-codex-mini",
+        "openai/gpt-5.2",
+        "openai/gpt-5.2-chat",
+        "openai/gpt-5.2-codex",
+        "openai/gpt-5.2-pro",
+        "openai/gpt-5.3-codex",
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-image-2",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5.4-nano",
+        "openai/gpt-5.4-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.6-luna",
+        "openai/gpt-5.6-luna-pro",
+        "openai/gpt-5.6-sol",
+        "openai/gpt-5.6-sol-pro",
+        "openai/gpt-5.6-terra",
+        "openai/gpt-5.6-terra-pro",
+        "openai/gpt-audio",
+        "openai/gpt-audio-mini",
+        "openai/gpt-chat-latest",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-120b:batch",
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-20b:batch",
+        "openai/gpt-oss-safeguard-20b",
+        "openai/o1",
+        "openai/o1-pro",
+        "openai/o3",
+        "openai/o3-mini",
+        "openai/o3-mini-high",
+        "openai/o3-pro",
+        "openai/o4-mini",
+        "openai/o4-mini-high",
+        "openrouter/auto",
+        "openrouter/auto-beta",
+        "openrouter/bodybuilder",
+        "openrouter/fusion",
+        "openrouter/pareto-code",
+        "perceptron/perceptron-mk1",
+        "perplexity/sonar",
+        "perplexity/sonar-deep-research",
+        "perplexity/sonar-pro",
+        "perplexity/sonar-pro-search",
+        "perplexity/sonar-reasoning-pro",
+        "poolside/laguna-s-2.1",
+        "poolside/laguna-xs-2.1",
+        "qwen/qwen-2.5-72b-instruct",
+        "qwen/qwen-2.5-7b-instruct",
+        "qwen/qwen-2.5-coder-32b-instruct",
+        "qwen/qwen-plus",
+        "qwen/qwen-plus-2025-07-28",
+        "qwen/qwen2.5-vl-72b-instruct",
+        "qwen/qwen3-14b",
+        "qwen/qwen3-235b-a22b",
+        "qwen/qwen3-235b-a22b-2507",
+        "qwen/qwen3-235b-a22b-thinking-2507",
+        "qwen/qwen3-30b-a3b",
+        "qwen/qwen3-30b-a3b-instruct-2507",
+        "qwen/qwen3-30b-a3b-thinking-2507",
+        "qwen/qwen3-32b",
+        "qwen/qwen3-8b",
+        "qwen/qwen3-coder",
+        "qwen/qwen3-coder-30b-a3b-instruct",
+        "qwen/qwen3-coder-flash",
+        "qwen/qwen3-coder-next",
+        "qwen/qwen3-coder-plus",
+        "qwen/qwen3-max",
+        "qwen/qwen3-max-thinking",
+        "qwen/qwen3-next-80b-a3b-instruct",
+        "qwen/qwen3-next-80b-a3b-thinking",
+        "qwen/qwen3-vl-235b-a22b-instruct",
+        "qwen/qwen3-vl-235b-a22b-thinking",
+        "qwen/qwen3-vl-30b-a3b-instruct",
+        "qwen/qwen3-vl-30b-a3b-thinking",
+        "qwen/qwen3-vl-32b-instruct",
+        "qwen/qwen3-vl-8b-instruct",
+        "qwen/qwen3-vl-8b-thinking",
+        "qwen/qwen3.5-122b-a10b",
+        "qwen/qwen3.5-27b",
+        "qwen/qwen3.5-35b-a3b",
+        "qwen/qwen3.5-397b-a17b",
+        "qwen/qwen3.5-9b",
+        "qwen/qwen3.5-9b:batch",
+        "qwen/qwen3.5-flash-02-23",
+        "qwen/qwen3.5-plus-02-15",
+        "qwen/qwen3.5-plus-20260420",
+        "qwen/qwen3.6-27b",
+        "qwen/qwen3.6-35b-a3b",
+        "qwen/qwen3.6-flash",
+        "qwen/qwen3.6-max-preview",
+        "qwen/qwen3.6-plus",
+        "qwen/qwen3.7-flash",
+        "qwen/qwen3.7-max",
+        "qwen/qwen3.7-plus",
+        "qwen/qwen3.8-2.4t-a95b",
+        "qwen/qwen3.8-2.4t-a95b:batch",
+        "qwen/qwen3.8-27b",
+        "qwen/qwen3.8-flash",
+        "qwen/qwen3.8-max",
+        "rekaai/reka-edge",
+        "rekaai/reka-flash-3",
+        "relace/relace-apply-3",
+        "relace/relace-search",
+        "sakana/fugu-ultra",
+        "sakana/sakana-namazu",
+        "sao10k/l3-lunaris-8b",
+        "sao10k/l3.1-euryale-70b",
+        "sao10k/l3.3-euryale-70b",
+        "stepfun/step-3.5-flash",
+        "stepfun/step-3.7-flash",
+        "tencent/hunyuan-a13b-instruct",
+        "tencent/hy-mt2-1.8b",
+        "tencent/hy-mt2-30b-a3b",
+        "tencent/hy-mt2-7b",
+        "tencent/hy3",
+        "tencent/hy3-preview",
+        "tencent/hy4-preview",
+        "thedrummer/cydonia-24b-v4.1",
+        "thedrummer/skyfall-36b-v2",
+        "thedrummer/unslopnemo-12b",
+        "thinkingmachines/inkling",
+        "thinkingmachines/inkling-small",
+        "thinkingmachines/inkling-small:batch",
+        "thinkingmachines/inkling:batch",
+        "undi95/remm-slerp-l2-13b",
+        "upstage/solar-pro-3",
+        "upstage/solar-pro4",
+        "writer/palmyra-x5",
+        "x-ai/grok-4.20",
+        "x-ai/grok-4.20-multi-agent",
+        "x-ai/grok-4.3",
+        "x-ai/grok-4.5",
+        "x-ai/grok-4.6",
+        "x-ai/grok-build-0.1",
+        "xiaomi/mimo-v2.5",
+        "xiaomi/mimo-v2.5-pro",
+        "z-ai/glm-4.5",
+        "z-ai/glm-4.5-air",
+        "z-ai/glm-4.5v",
+        "z-ai/glm-4.6",
+        "z-ai/glm-4.6v",
+        "z-ai/glm-4.7",
+        "z-ai/glm-4.7-flash",
+        "z-ai/glm-5",
+        "z-ai/glm-5-turbo",
+        "z-ai/glm-5.1",
+        "z-ai/glm-5.3",
+        "z-ai/glm-5.3-flash",
+        "z-ai/glm-5.3-flash:batch",
+        "z-ai/glm-5v-turbo",
+        "~anthropic/claude-fable-latest",
+        "~anthropic/claude-haiku-latest",
+        "~anthropic/claude-opus-latest",
+        "~anthropic/claude-sonnet-latest",
+        "~deepseek/deepseek-v4-flash-latest",
+        "~google/gemini-flash-latest",
+        "~google/gemini-pro-latest",
+        "~moonshotai/kimi-latest",
+        "~openai/gpt-latest",
+        "~openai/gpt-mini-latest",
+        "~x-ai/grok-latest",
+        "~z-ai/glm-latest"
+      ]
+    },
+    "nim": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "NVIDIA NIM",
+      "options": {
+        "baseURL": "https://integrate.api.nvidia.com/v1",
+        "apiKey": "{env:NIM_API_KEY}",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "models": {
+        "nvidia/nemotron-3-ultra-550b-a55b": {
+          "name": "Nemotron 3 Ultra 550B (NIM) - Flagship",
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "nvidia/nemotron-3-super-120b-a12b": {
+          "name": "Nemotron 3 Super 120B (NIM) - High-End Agentic",
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "nvidia/nemotron-3.5-lightning-30b-a3b": {
+          "name": "Nemotron 3.5 Lightning 30B (NIM) - Fastest Agentic",
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "name": "Nemotron 3 Nano 30B (NIM) - Balanced Agentic",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+          "name": "Nemotron 3 Nano Omni 30B (NIM) - Multimodal Agentic",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "deepseek-ai/deepseek-v4-flash-0731": {
+          "name": "DeepSeek V4 Flash (NIM) - Fast Reasoning",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "moonshotai/kimi-k3": {
+          "name": "Kimi K3 (NIM) - Strong Agentic MoE",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "minimaxai/minimax-m3": {
+          "name": "MiniMax M3 (NIM) - High-Performance Agentic",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "openai/gpt-oss-120b": {
+          "name": "GPT-OSS 120B (NIM) - OpenAI Open Model",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95,
+            "top_k": 20,
+            "min_p": 0.0
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "openai/gpt-oss-20b": {
+          "name": "GPT-OSS 20B (NIM) - Fast Open Model",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95,
+            "top_k": 20,
+            "min_p": 0.0
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "meta/llama-3.2-90b-vision-instruct": {
+          "name": "Llama 3.2 90B Vision (NIM) - Multimodal",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "google/gemma-4-31b-it": {
+          "name": "Gemma 4 31B (NIM) - Google Open",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        }
+      }
+    },
+    "opencode": {
+      "blacklist": [
+        "Grok 4.6",
+        "GLM-5.3-Flash",
+        "GLM-5.3",
+        "GLM-5.2",
+        "GLM-5.1",
+        "GPT 5.6 Luna",
+        "Kimi K3",
+        "Kimi K2.7 Code",
+        "Kimi K2.6",
+        "LongCat-2.0",
+        "MiMo-V2.5",
+        "MiMo-V2.5-Pro",
+        "MiniMax M3",
+        "MiniMax M2.7",
+        "Muse Spark 1.2 Contributor",
+        "Qwen3.8 Max",
+        "Qwen3.8 Flash",
+        "Qwen3.7 Max",
+        "Qwen3.7 Plus",
+        "Qwen3.6 Plus",
+        "DeepSeek V4 Pro",
+        "DeepSeek V4 Flash",
+        "DeepSeek V4 Flash Vision Exp",
+        "Hy4 preview",
+        "Hy3",
+        "claude-fable-5",
+        "claude-haiku-4-5",
+        "claude-opus-4-5",
+        "claude-opus-4-6",
+        "claude-opus-4-7",
+        "claude-opus-4-8",
+        "claude-opus-5",
+        "claude-sonnet-4",
+        "claude-sonnet-4-5",
+        "claude-sonnet-4-6",
+        "claude-sonnet-5",
+        "deepseek-v4-flash",
+        "deepseek-v4-pro",
+        "gemini-3-flash",
+        "gemini-3.1-pro",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.6-flash",
+        "gemini-3.7-flash",
+        "glm-5",
+        "glm-5.1",
+        "glm-5.2",
+        "gpt-5",
+        "gpt-5-codex",
+        "gpt-5-nano",
+        "gpt-5.1",
+        "gpt-5.1-codex",
+        "gpt-5.1-codex-max",
+        "gpt-5.1-codex-mini",
+        "gpt-5.2",
+        "gpt-5.2-codex",
+        "gpt-5.3-codex",
+        "gpt-5.3-codex-spark",
+        "gpt-5.4",
+        "gpt-5.4-mini",
+        "gpt-5.4-nano",
+        "gpt-5.4-pro",
+        "gpt-5.5",
+        "gpt-5.5-pro",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "grok-4.5",
+        "grok-4.6",
+        "grok-build-0.1",
+        "kimi-k2.5",
+        "kimi-k2.6",
+        "kimi-k2.7-code",
+        "kimi-k3",
+        "minimax-m2.5",
+        "minimax-m2.7",
+        "minimax-m3",
+        "muse-spark-1.2",
+        "qwen3.5-plus",
+        "qwen3.6-plus",
+        "qwen3.7-plus",
+        "qwen3.7-max"
+      ]
+    }
+  },
+  "small_model": "nvidia/nemotron-3-nano-30b-a3b",
+  "enabled_providers": [
+    "local",
+    "openrouter",
+    "nim",
+    "opencode"
+  ],
+  "plugin": [
+ [
+  "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
+  {
+   "tokenOptimization": {
+    "rtk": {
+     "enabled": true
+    },
+    "dedup": {
+     "enabled": true,
+     "maxEntries": 200,
+     "ttlMs": 600000
+    },
+    "readCompact": {
+     "enabled": true,
+     "collapseRepeatedLines": true,
+     "trimTrailingWs": true
+    },
+    "wrap": {
+     "enabled": true,
+     "maxLineWidth": 120
+    },
+    "history": {
+     "enabled": false,
+     "keepLastTurns": 32
+    },
+    "systemPrompt": {
+     "enabled": true,
+     "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
+    }
+   }
+  }
+ ],
+ "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
+  "@thd3178/opencode-poorguy-ratelimit",
+  "@bdliyq/opencode-rate-limit-retry",
+  "opencode-swarm-plugin/plugin",
+ "opencode-throughput",
+ "opencode-bash-guard",
+ "opencode-scheduler",
+ "opencode-sentinel",
+ "opencode-ops",
+ "@openspoon/subtask2",
+ "opencode-todo-progress",
+ "@fleetingecho/opencode-handoff"
+],
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "ls *": "allow",
+      "cat *": "allow",
+      "echo *": "allow",
+      "grep *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "pwd": "allow",
+      "whoami": "allow",
+      "date": "allow",
+      "which *": "allow",
+      "wc *": "allow",
+      "file *": "allow",
+      "stat *": "allow",
+      "du *": "allow",
+      "df *": "allow",
+      "find *": "allow",
+      "git status": "allow",
+      "git status *": "allow",
+      "git log *": "allow",
+      "git diff *": "allow",
+      "git branch *": "allow",
+      "bun *": "allow",
+      "bunx *": "allow",
+      "node *": "allow",
+      "npx *": "allow",
+      "git push*": "ask",
+      "git pull*": "ask",
+      "rm *": "ask",
+      "mv *": "ask",
+      "cp *": "ask",
+      "chmod *": "ask",
+      "chown *": "ask",
+      "kill *": "ask",
+      "sudo *": "ask",
+      "curl *": "ask",
+      "wget *": "ask",
+      "ssh *": "ask",
+      "scp *": "ask",
+      "rsync *": "ask",
+      "npm *": "ask"
+    }
+  },
+  "tool_output": {
+    "max_lines": 5000,
+    "max_bytes": 200000
+  },
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp@0.0.79",
+        "--isolated",
+        "--browser",
+        "chromium"
+      ],
+      "enabled": true
+    },
+    "context7": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@upstash/context7-mcp@4.0.3"
+      ],
+      "enabled": true
+    },
+    "lemma": {
+      "type": "local",
+      "command": [
+        "node",
+        "/home/work/.config/opencode/node_modules/lemma-mcp/dist/index.js"
+      ],
+      "enabled": true
+    },
+    "with-context": {
+      "type": "local",
+      "command": [
+        "node",
+        "/home/work/apps/wcm-local/node_modules/with-context-mcp/dist/index.js"
+      ],
+      "enabled": true,
+      "environment": {
+        "OBSIDIAN_API_URL": "{env:OBSIDIAN_API_URL}",
+        "OBSIDIAN_API_KEY": "{env:OBSIDIAN_API_KEY}",
+        "OBSIDIAN_VAULT": "/home/work/Work/Zurnel",
+        "PROJECT_BASE_PATH": "/home/work/Work/Zurnel"
+      }
+    },
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem@2026.7.10",
+        "/home/work"
+      ],
+      "enabled": true
+    },
+    "fetch": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "fetch-mcp@0.0.5"
+      ],
+      "enabled": true
+    },
+    "git": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "git-mcp@1.0.0"
+      ],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking@2026.7.4"
+      ],
+      "enabled": true
+    },
+    "time": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "time-mcp@1.0.6"
+      ],
+      "enabled": true
+    },
+    "chrome-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@1.7.0",
+        "--slim"
+      ],
+      "enabled": false
+    },
+    "sqlite": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-sqlite@1.0.9",
+        "/home/work/data/business.db"
+      ],
+      "enabled": true
+    },
+    "searxng": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-searxng@1.16.0"
+      ],
+      "enabled": true,
+      "environment": {
+        "SEARXNG_URL": "http://localhost:8080"
+      }
+    },
+    "filesystem-zurnel": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem@2026.7.10",
+        "/home/work/Work/Zurnel"
+      ],
+      "enabled": true
+    },
+    "obsidian-rest": {
+      "type": "remote",
+      "url": "https://127.0.0.1:27124/mcp/",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {env:OBSIDIAN_API_KEY}"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenCode Job: nepal-daily-news-scan
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/work
+Environment="PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+ExecStart="/usr/bin/perl" "/home/work/.config/opencode/scheduler/supervisor.pl" "/home/work/.config/opencode/scheduler/scopes/work-aee1aaee713c/jobs/nepal-daily-news-scan.json"
+StandardOutput=append:/home/work/.config/opencode/logs/scheduler/work-aee1aaee713c/nepal-daily-news-scan.log
+StandardError=append:/home/work/.config/opencode/logs/scheduler/work-aee1aaee713c/nepal-daily-news-scan.log
+
+[Install]
+WantedBy=default.target

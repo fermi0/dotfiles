@@ -1,0 +1,14 @@
+[Unit]
+Description=SearXNG local meta-search (127.0.0.1:8080)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/work/apps/searxng
+Environment=SEARXNG_SETTINGS_PATH=/home/work/apps/searxng/searxng-settings.yml
+ExecStart=/home/work/apps/searxng/.venv/bin/python -m searx.webapp
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
