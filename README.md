@@ -40,7 +40,7 @@ dotfiles/
 
 | Stage | What | Status |
 |---|---|---|
-| 1 | init repo | done 2026-08-31 |
+| 1 | init repo | done 2026-08-31 (c495bc7) |
 | 2 | move ~/scripts/ | pending |
 | 3 | move /home/shared/scripts/ legacy | pending |
 | 4 | move ~/data/business.db | pending |
