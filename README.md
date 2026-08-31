@@ -44,6 +44,7 @@ dotfiles/
 | 2 | move ~/scripts/ | done 2026-08-31 (9997d05) |
 | 3 | move /home/shared/scripts/ legacy | done 2026-08-31 (no git diff; legacy/ is gitignored; 90 MB moved to scripts/legacy/) |
 | 4 | move ~/data/business.db | done 2026-08-31 (no git diff; real db is in shared/data/business/, top-level symlink to match opencode's --db-path) |
+| 5 | move ~/.lemma/ | done 2026-08-31 (no git diff; 36/40 memories preserved at first opencode restart; 4 recent memories in WAL are documented in vault reports) |
 | 4 | move ~/data/business.db | pending |
 | 5 | move ~/.lemma/ | pending |
 | 6 | disable opencode-mem + delete ~/.opencode-mem/ | pending |
