@@ -47,6 +47,7 @@ dotfiles/
 | 5 | move ~/.lemma/ | done 2026-08-31 (40→36 at first commit; 42 after post-restart re-adds of 4 truly-lost stage fragments; see Reports/Mind-Palace-Stage5-ReAdd-List-2026-08-31.md) |
 | 6 | disable opencode-mem | done 2026-08-31 (no git diff in dotfiles repo; removed `opencode-mem` from `~/.config/opencode/opencode.jsonc` plugin array; deleted `~/.opencode-mem/` 534 MB) |
 | 7 | delete 3 stale daily-reflection timer pairs | done 2026-08-31 (no git diff in dotfiles repo; stopped+disabled+removed 28/29/30 .service and .timer; only 31st remains) |
+| 8 | import hand-edited configs from ~/.config/ | done 2026-08-31 (`f71bb5e`, 637 files, 19 packages; all byte-identical; waybar symlinks fixed to be relative; verification report at `~/Work/Zurnel/Reports/Mind-Palace-Stage8-Verification-2026-08-31.md`) |
 | 4 | move ~/data/business.db | pending |
 | 5 | move ~/.lemma/ | pending |
 | 6 | disable opencode-mem + delete ~/.opencode-mem/ | pending |
