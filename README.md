@@ -45,6 +45,7 @@ dotfiles/
 | 3 | move /home/shared/scripts/ legacy | done 2026-08-31 (no git diff; legacy/ is gitignored; 90 MB moved to scripts/legacy/) |
 | 4 | move ~/data/business.db | done 2026-08-31 (no git diff; real db is in shared/data/business/, top-level symlink to match opencode's --db-path) |
 | 5 | move ~/.lemma/ | done 2026-08-31 (40→36 at first commit; 42 after post-restart re-adds of 4 truly-lost stage fragments; see Reports/Mind-Palace-Stage5-ReAdd-List-2026-08-31.md) |
+| 6 | disable opencode-mem | done 2026-08-31 (no git diff in dotfiles repo; removed `opencode-mem` from `~/.config/opencode/opencode.jsonc` plugin array; deleted `~/.opencode-mem/` 534 MB) |
 | 4 | move ~/data/business.db | pending |
 | 5 | move ~/.lemma/ | pending |
 | 6 | disable opencode-mem + delete ~/.opencode-mem/ | pending |
