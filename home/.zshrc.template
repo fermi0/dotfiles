@@ -1,0 +1,46 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="agnoster"
+
+# Initialize completion system
+autoload -Uz compinit
+compinit
+
+# Load Sheldon
+eval "$(sheldon source)"
+
+# Load pay-respects
+eval "$(pay-respects zsh --alias)"
+
+source $ZSH/oh-my-zsh.sh
+
+# Load awesome-fzf
+source $HOME/git/awesome-fzf/awesome-fzf.zsh
+
+# Load fzf-tab-completion
+source $HOME/git/fzf-tab-completion/zsh/fzf-zsh-completion.sh
+# source $HOME/git/fzf-tab-completion/python/fzf_python_completion.py
+
+# Load aliases if present
+[ -f "$HOME/.aliasrc" ] && source "$HOME/.aliasrc"
+
+# --- API keys (LOADED FROM ~/.env.local OR set manually) ---
+# Get from https://openrouter.ai/settings/keys
+# export OPENROUTER_API_KEY="sk-or-v1-..."
+
+# Get from https://build.nvidia.com (NIM)
+# export NIM_API_KEY="nvapi-..."
+
+# Used by opencode provider config
+# export OPENCODE_API_KEY="..."
+
+# --- OpenCode config ---
+# Force Code Mode for the opencode-token-optimizer plugin
+export OPENCODE_EXPERIMENTAL_CODE_MODE=1
+
+# Swarm: lite/coordination model for the opencode-swarm-plugin compaction prompt.
+# Verified free (no API key), fast, 1M ctx, returns clean tool calls.
+# export OPENCODE_LITE_MODEL="openrouter-free/nvidia/nemotron-3.5-lightning:free"

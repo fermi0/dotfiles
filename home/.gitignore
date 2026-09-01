@@ -1,0 +1,7 @@
+# Ignore .zshrc - it has API keys. Use .zshrc.template as the committed version.
+.zshrc
+# Ignore local secret files
+.env
+.env.local
+*.key
+*.secret
