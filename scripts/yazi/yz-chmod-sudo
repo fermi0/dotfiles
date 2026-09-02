@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# yz-chmod-sudo — interactive chmod WITH SUDO (root-owned files), rofi menus.
+# Usage: yz-chmod-sudo <file...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+mode=$(printf '%s\n' \
+  '644   rw-r--r-- (files)' \
+  '600   rw------- (private files)' \
+  '755   rwxr-xr-x (scripts/dirs)' \
+  '700   rwx------ (private dirs)' \
+  'u+x   add execute for owner' \
+  'a+rX  readable, dirs traversable' | "$HOME/.local/bin/yz-rofi" -p "chmod mode") || exit 0
+m=${mode%% *}
+
+rec=$("$HOME/.local/bin/yz-rofi" -p "recursive -R? (y/N)" <<<"n") || rec=n
+args=(); [[ "${rec,,}" == y* ]] && args=(-R)
+
+cmd="sudo -A chmod ${args[*]} $(printf '%q' "$m")"
+for f in "$@"; do cmd+=" $(printf '%q' "$(readlink -f -- "$f")")"; done
+cmd+="; rc=\$?; notify-send -t 2500 yz-chmod \"\$rc · $m\""
+yz-float 880x200 "$cmd"

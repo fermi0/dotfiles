@@ -3,3 +3,4 @@
 # The undo file only contained the fzf alias; other aliases were lost.
 
 alias fzf="fzf --border --height 40% --layout=reverse --preview 'lynx --style=numbers --color=always --line-range :500 {}'"
+alias oc="opencode"

@@ -288,7 +288,7 @@ Research is iterative. After each pass:
 ## Storage pattern (for large research outputs)
 
 For research that produces >2 pages of output, **persist to the Obsidian vault**:
-- Folder: `~/Work/Zurnel/Research/{topic-slug}/`
+- Folder: `~/shared/Zurnel/Research/{topic-slug}/`
 - Files: `00-question.md`, `10-findings.md`, `20-sources.md`, `30-report.md`
 - Frontmatter: `source: ai`, `verified: <date>`, `tags: [research, <topic>]`
 - Cross-link from `Research/Research.md` index

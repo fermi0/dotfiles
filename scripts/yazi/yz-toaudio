@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# yz-toaudio — convert video/audio to a chosen audio format (ffmpeg), capped concurrency.
+# Usage: yz-toaudio <file...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+fmt=$(printf '%s\n' \
+  'opus     · modern default, small+great (q160)' \
+  'mp3      · universal compat (V0 ~245k)' \
+  'mp3-320  · mp3 CBR max quality' \
+  'm4a      · apple friendly (aac 256k)' \
+  'flac     · lossless archive' \
+  'wav      · raw pcm' | "$HOME/.local/bin/yz-rofi" -p "audio format") || exit 0
+
+case "${fmt%% *}" in
+  opus)    ext=opus; codec=(-c:a libopus -b:a 160k);;
+  mp3-320) ext=mp3;  codec=(-c:a libmp3lame -b:a 320k);;
+  mp3)     ext=mp3;  codec=(-c:a libmp3lame -q:a 0);;
+  m4a)     ext=m4a;  codec=(-c:a aac -b:a 256k);;
+  flac)    ext=flac; codec=(-c:a flac);;
+  wav)     ext=wav;  codec=(-c:a pcm_s16le);;
+  *) exit 0;;
+esac
+
+total=0; jobs=(); skip=0
+for f in "$@"; do
+  [[ -f "$f" ]] || continue
+  out="${f%.*}.$ext"
+  if [[ -e "$out" && ${YZ_OVERWRITE:-0} != 1 ]]; then skip=$((skip+1)); continue; fi
+  jobs+=("$(printf '%q ' ffmpeg -nostdin -y -i "$f" -vn "${codec[@]}" "$out")")
+  sz=$(stat -c %s -- "$f"); total=$(( total + sz ))
+done
+(( ${#jobs[@]} )) || { notify-send "yz-toaudio" "nothing to do ($skip already exist)"; exit 0; }
+
+convert_all() {
+  local n=0 rc=0
+  for j in "$@"; do
+    bash -c "$j" >/dev/null 2>&1 || rc=1
+    (( ++n % 4 == 0 )) && wait
+  done
+  wait
+  notify-send -t 4000 yz-toaudio "$( [[ $rc -eq 0 ]] && echo OK ✓ || echo PARTIAL ✗ ) · ${#@} converted, done"
+}
+export -f convert_all 2>/dev/null || true
+
+if (( total > 200*1024*1024 )); then
+  script="set -e; "; for j in "${jobs[@]}"; do script+="bash -c $(printf '%q' "$j") >/dev/null 2>&1 || :; "; done
+  yz-float 980x260 "$script; notify-send -t 4000 yz-toaudio 'batch finished'"
+else
+  convert_all "${jobs[@]}"
+fi

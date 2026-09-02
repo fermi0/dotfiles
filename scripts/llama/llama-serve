@@ -1,0 +1,39 @@
+#!/bin/zsh
+# llama-serve <ornith|nemotron|qwen36> — raw llama-server with per-model optimal flags.
+# Prefers the CUDA build (build-cuda) once available; falls back to CPU build.
+# Port 1234 = same endpoint opencode's `local` provider expects (http://127.0.0.1:1234/v1).
+emulate -L zsh
+MODEL="${1:-ornith}"
+BIN="$HOME/apps/llama.cpp/build-cuda/bin/llama-server"
+[[ -x "$BIN" ]] || BIN="$HOME/apps/llama.cpp/build/bin/llama-server"
+[[ -x "$BIN" ]] || { print "llama-server not built yet" >&2; exit 1 }
+
+M="$HOME/models"
+case "$MODEL" in
+  ornith)
+    # Ornith-1.5-35B-A3B APEX-Quality tier (highest-quality quant) — n_ctx_train 262144
+    ARGS=(-m "$M/Ornith-1.5-35B-A3B-APEX-Quality.gguf" --alias ornith-35b-a3b
+          --ctx-size 262144 -ngl 999 --n-cpu-moe 38 -ub 1024 -fa on -ctk q8_0 -ctv q8_0)
+    ;;
+  ornith-vision)
+    # Same model + mmproj. NOTE: multimodal disables --cache-reuse (slower repeat sessions).
+    ARGS=(-m "$M/Ornith-1.5-35B-A3B-Q4_K_M.gguf" --mmproj "$M/mmproj-Ornith-1.5-35B-BF16.gguf" --alias ornith-35b-a3b
+          --ctx-size 131072 -ngl 999 --n-cpu-moe 999 -fa on -ctk q8_0 -ctv q8_0)
+    ;;
+  *)
+    print "unknown model: $MODEL (use ornith | nemotron | qwen36)" >&2
+    exit 1
+    ;;
+esac
+
+# single-instance policy: replace any running llama-server (frees VRAM cleanly)
+pkill -f "$BIN" 2>/dev/null
+sleep 1
+
+exec "$BIN" "${ARGS[@]}" \
+  --jinja \
+  --reasoning-budget 1024 \
+  --cache-reuse 256 \
+  --parallel 1 \
+  --metrics \
+  --host 127.0.0.1 --port 1234

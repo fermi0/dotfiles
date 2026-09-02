@@ -23,7 +23,7 @@ Generates a **market research summary + self-contained interactive HTML dashboar
    pandoc reports/topic-2026-08-21.md -s --embed-resources --metadata title="Topic Dashboard" -o reports/topic-2026-08-21.html
    ```
    HTML is self-contained (email/portable), paired HTML `<table>` + `role="img"` + `<title>/<desc>` + `aria-labelledby` per `business-planning` skill.
-6. **Vault (with-context):** `with-context write` to `~/Work/Zurnel/reports/` + `Bases` dashboard aggregates (cross-domain proof for P3.7).
+6. **Vault (with-context):** `with-context write` to `~/shared/Zurnel/reports/` + `Bases` dashboard aggregates (cross-domain proof for P3.7).
 7. **Daily:** `scheduler 07:00` daily note links `[[Zurnel/reports/topic|...]]` via `Tasks` query.
 
 ## Verification

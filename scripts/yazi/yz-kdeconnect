@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# yz-kdeconnect — send selection / ring / battery via KDE Connect.
+set -euo pipefail
+command -v kdeconnect-cli >/dev/null || { notify-send "yz-kde" "kdeconnect-cli missing"; exit 127; }
+R="$HOME/.local/bin/yz-rofi"
+
+pick_dev() {
+  kdeconnect-cli -l 2>/dev/null | grep -oE '[-0-9a-f_]{8,}: .*' | "$R" -p "device" | cut -d: -f1
+}
+
+act=$(printf '%s\n' \
+  'send     · send selected files' \
+  'ring     · find my phone' \
+  'battery  · battery status' \
+  'list     · all devices' | "$R" -p "kdeconnect") || exit 0
+
+case "${act%% *}" in
+  send)    d=$(pick_dev) || exit 0; [[ -n "${d// /}" ]] || exit 0
+          ok=0; for f in "$@"; do kdeconnect-cli -d "$d" --send-files -- "$f" >/dev/null 2>&1 && ok=$((ok+1)); done
+          notify-send -t 3000 "yz-kde" "queued $ok file(s) for send" ;;
+  ring)    d=$(pick_dev) || exit 0; kdeconnect-cli -d "$d" --ring ;;
+  battery) d=$(pick_dev) || exit 0; kdeconnect-cli -d "$d" --battery ;;
+  list)    kdeconnect-cli -l | yz-float 780x340 cat ;;
+esac

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# yz-toimg — convert images to a chosen format (ImageMagick) with size preset.
+# Usage: yz-toimg <image...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+fmt=$(... ) || exit 0
+ext="${fmt%% *}"
+
+size=$(printf '%s\n' 'keep original size' '1920 long edge' '1280 long edge' '512 long edge' | "$HOME/.local/bin/yz-rofi" -p "resize") || exit 0
+case "$size" in keep*) rz=();; *) w="${size%% *}"; rz=(-resize "${w}x${w}>");; esac
+
+n=0; skip=0
+for f in "$@"; do
+  [[ -f "$f" ]] || continue
+  out="${f%.*}.$ext"
+  if [[ -e "$out" && ${YZ_OVERWRITE:-0} != 1 ]]; then skip=$((skip+1)); continue; fi
+  case "$ext" in
+    jpg)  magick "$f" "${rz[@]}" -background white -flatten -quality 92 "$out" ;;
+    webp) magick "$f" "${rz[@]}" -quality 85 "$out";;
+    avif) magick "$f" "${rz[@]}" -quality 60 "$out";;
+    *)    magick "$f" "${rz[@]}" "$out";;
+  esac
+  n=$((n+1))
+done
+notify-send -t 3000 "yz-toimg" "converted $n → .$ext (${skip} skipped)"

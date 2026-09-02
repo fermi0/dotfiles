@@ -628,7 +628,7 @@ for (const t of targets) {
 // Then summarize: extract new items vs. yesterday's index, flag "opportunity" or "threat"
 ```
 
-**Build a daily index in the vault:** `~/Work/Zurnel/Reports/Business/news-intel/{YYYY-MM-DD}.md` with links to downloaded HTML + opportunity flags.
+**Build a daily index in the vault:** `~/shared/Zurnel/Reports/Business/news-intel/{YYYY-MM-DD}.md` with links to downloaded HTML + opportunity flags.
 
 ## Public site scraping & downloads
 
@@ -749,7 +749,7 @@ for (const link of links) {
 **Path 2 — Synthesized reports** (the analysis, written for humans):
 
 ```
-~/Work/Zurnel/Reports/Business/
+~/shared/Zurnel/Reports/Business/
 ├── _dashboard.md                   # business intelligence dashboard
 ├── _index.md                       # master index of all reports
 ├── news-intel/
@@ -1033,7 +1033,7 @@ For every idea, score:
 - Talk to 5–10 potential customers (personal network, WhatsApp groups)
 
 ### Phase 4: Synthesize (1–3 days)
-- Write the report to `~/Work/Zurnel/Reports/Business/{topic}/{YYYY-MM-DD}-{slug}.md`
+- Write the report to `~/shared/Zurnel/Reports/Business/{topic}/{YYYY-MM-DD}-{slug}.md`
 - Use the **Reports** structure (executive summary, findings, evidence, synthesis, sources)
 - Include: opportunity thesis, Nepal fit score, competitive scan, regulatory checklist, financial sketch (NPR), risks
 - Link from the relevant `_index.md`
@@ -1048,7 +1048,7 @@ For every idea, score:
 - **Concierge / Wizard-of-Oz** — don't build tech; deliver manually
 - Find 3–10 paying customers
 - Use the feedback to refine pricing, positioning, delivery
-- Save learnings to `~/Work/Zurnel/Reports/Business/{topic}/pilot-results.md`
+- Save learnings to `~/shared/Zurnel/Reports/Business/{topic}/pilot-results.md`
 
 ### Phase 7: Build (if validated)
 - Now you can build the product (use `development-workflows` skill)
@@ -1067,7 +1067,7 @@ For every idea, score:
 - **SearXNG** + **fetch** (via `execute`/Code Mode) — primary research + news scanning
 - **Playwright** — for JS-heavy Nepali sites (kathmandupost, nepalitimes), login-walled content
 - **Context7** — for current library/framework docs
-- **With-context** (Obsidian REST) — write reports to vault (`~/Work/Zurnel/Reports/Business/`)
+- **With-context** (Obsidian REST) — write reports to vault (`~/shared/Zurnel/Reports/Business/`)
 - **Filesystem** (via `execute`) — save raw HTML/text to `~/Downloads/BusinessPlanning/`
 - **Self-contained HTML/SVG** — output format for dashboards (offline-friendly)
 - **Lemma** — persist Nepal-specific insights across sessions

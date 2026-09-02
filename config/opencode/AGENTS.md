@@ -98,7 +98,7 @@ Run `lemma.memory_feedback({signal: "positive", ...})` when you detect:
   - **Relation tool**: `lemma.memory_relate({from_id, to_id, type})` — connect fragments (supports/contradicts/related_to)
   - **Read first**: Always call `lemma.memory_read` at the start of a session to load what you know
   - **Write at end**: Always call `lemma.memory_add` for new insights; `session_attempt` for dead ends
-- **Obsidian vault**: `/home/work/Work/Zurnel` [aliased vault] (use `obsidian-rest` MCP for vault access)
+- **Obsidian vault**: `/home/shared/Zurnel` [aliased vault] (use `obsidian-rest` MCP for vault access)
 - **Web search**: `searxng` MCP (localhost:8080) [aliased searx]
 - **Browser automation**: `playwright` MCP
 - **read_smart** (custom tool from opencode-token-optimizer): Reads files with explicit line ranges, bypasses the 50KB read limit. Args: `filePath`, `startLine` (1-based), `maxLines`. For files > 200KB, prefer Code Mode `execute`.
@@ -232,6 +232,7 @@ ls /home/work/.config/opencode/backups/         # restore from latest
 - API keys live in `~/.config/opencode/opencode-poorguy-ratelimit.jsonc` (chmod 600)
 - Never commit `.env` or `*poorguy-ratelimit.jsonc` to git
 - **File deletion**: NEVER use `rm` — use `gio trash <path>` (built into GLib, available on every Linux desktop) or `mv <path> ~/.local/share/Trash/files/` for safe recoverable deletion. Files in Trash can be restored. Only destroy permanently outside the session.
+- **Never empty Trash**: NEVER run `gio trash --empty` or delete `~/.local/share/Trash/` — Trash is the safety net for recoverable deletion. User manages Trash manually. (Rule added 2026-09-02 per user instruction.)
 - **Reading opencode session data** (for handoff/recovery): no longer blocked. `~/.local/share/opencode/opencode.db` and `~/.local/state/opencode/storage/` are readable by the model for cross-session analysis.
 
 ## Use Cases (from Intentions.md)
@@ -246,4 +247,4 @@ ls /home/work/.config/opencode/backups/         # restore from latest
 
 ## Context
 
-See `/home/work/Work/Zurnel/Intentions.md` for full use case breakdown.
+See `/home/shared/Zurnel/Intentions.md` for full use case breakdown.

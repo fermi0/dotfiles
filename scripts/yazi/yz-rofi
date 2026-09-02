@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# yz-rofi — standardized selector for all yz-* tools.
+# Uses YOUR default rofi theme/size untouched (no width overrides).
+# Clipping is prevented by keeping menu labels short in the scripts themselves.
+# Usage: yz-rofi [-p PROMPT] [--password] [--filter TEXT] [--multi] [items on stdin]
+set -euo pipefail
+args=(-dmenu -i -no-fixed-num-lines -location 2
+      -theme-str 'listview { fixed-height: false; }')
+pass=0; prompt="select"; filt=""; multi=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --password) pass=1 ;;
+    -p|--prompt) prompt="$2"; shift ;;
+    --filter)    filt="$2"; shift ;;
+    --multi)     multi=1 ;;
+  esac; shift
+done
+(( pass )) && args+=(-password)
+(( multi )) && args+=("-multi-select")
+[[ -n "$filt" ]] && args+=(-filter "$filt")
+exec rofi "${args[@]}" -p "$prompt"

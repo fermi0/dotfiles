@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# yz-compress — compress selection into a chosen archive format.
+# Password OPTIONAL via explicit -pw menu entries (no stray empty prompts).
+# Usage: yz-compress <file|dir...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+
+fmt=$(printf '%s\n' \
+  'zip     · universal' \
+  '7z      · best ratio' \
+  'tar.gz  · unix classic' \
+  'tar.zst · fast modern' \
+  'tar.xz  · smallest unix' \
+  'zip-pw  · universal + password' \
+  '7z-pw   · best ratio + password' | "$HOME/.local/bin/yz-rofi" -p "compress to") || exit 0
+fmt="${fmt%% *}"
+
+if (( $# == 1 )); then name=$(basename -- "${1%/}")
+else name=${PWD##*/}; [[ -z $name ]] && name="archive-$(date +%Y%m%d-%H%M%S)"; fi
+
+YZPW=""
+case "$fmt" in *-pw) YZPW=$("$HOME/.local/bin/yz-rofi" --password -p "password") || exit 0 ;; esac
+export YZPW
+
+big=0
+for f in "$@"; do
+  if [[ -d "$f" ]]; then sz=$(du -sb -- "$f" | cut -f1); else sz=$(stat -c %s -- "$f"); fi
+  if (( sz > 200*1024*1024 )); then big=1; fi
+done
+
+outlist=""; for f in "$@"; do outlist+=" $(printf '%q' "$f")"; done
+case "$fmt" in
+  zip|zip-pw)
+    out="$name.zip"
+    if [[ -n "$YZPW" ]]; then cmd="printf '%s\n' \"\$YZPW\" | zip -9 -er -- $(printf '%q' "$out")$outlist"
+    else cmd="zip -9 -er -- $(printf '%q' "$out")$outlist"; fi ;;
+  7z|7z-pw)
+    out="$name.7z"
+    pflag=""; [[ -n "$YZPW" ]] && pflag='-p"$YZPW" '
+    cmd="7z a -y $pflag-mx=7 -- $(printf '%q' "$out")$outlist >/dev/null" ;;
+  tar.gz)  out="$name.tar.gz";  cmd="tar -czf $(printf '%q' "$out") --$outlist" ;;
+  tar.zst) out="$name.tar.zst"; cmd="tar --zstd -cf $(printf '%q' "$out") --$outlist" ;;
+  tar.xz)  out="$name.tar.xz";  cmd="tar -cJf $(printf '%q' "$out") --$outlist" ;;
+  *) exit 0 ;;
+esac
+
+full="$cmd; rc=\$?; notify-send -t 4000 yz-compress \"\$([ \$rc -eq 0 ] && echo ${out} ✓ || echo FAILED ✗)\""
+if (( big )); then yz-float 1000x300 "$full"
+else bash -c "$full" & fi

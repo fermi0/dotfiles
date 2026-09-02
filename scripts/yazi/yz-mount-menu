@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# yz-mount-menu — mount/unmount drives (udisks2) + Android MTP (gvfs). rofi UI.
+set -euo pipefail
+R="$HOME/.local/bin/yz-rofi"
+opt=$(printf '%s\n' \
+  'mount      · pick an unmounted partition' \
+  'unmount    · pick a mounted filesystem' \
+  'power-off  · spin down a USB drive' \
+  'phone-mtp  · connect Android phone (gvfs)' \
+  'list       · overview of block devices' | "$R" -p "mount") || exit 0
+
+case "${opt%% *}" in
+  mount)
+    dev=$(lsblk -rno NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT | awk 'NF>=3 && $5=="" {printf "/dev/%s  (%s · %s · %s)\n",$1,$2,$3,$4}' | "$R" -p "mount which?") || exit 0
+    udisksctl mount -b "${dev%% *}" ;;
+  unmount)
+    dev=$(findmnt -rn -o SOURCE,TARGET | "$R" -p "unmount which?") || exit 0
+    udisksctl unmount -b "${dev%% *}" ;;
+  power-off)
+    dev=$(lsblk -dno NAME,SIZE,MODEL,TRAN | awk '$4=="usb"' | "$R" -p "power off which usb?") || exit 0
+    udisksctl power-off -b "/dev/${dev%% *}" ;;
+  phone-mtp)
+    if ! gio mount -li 2>/dev/null | grep -qi mtp; then
+      notify-send "yz-mount" "no MTP device yet — plug in & set USB mode to 'file transfer'"
+      exit 0
+    fi
+    gio mount -li | sed -n 's/.*\(mtp:\/\/[^" ]*\|gphoto2:\/\/[^" ]*\).*/\1/p' | while read -r u; do gio mount "$u"; done
+    notify-send "yz-mount" "MTP mounted → browse /run/user/$(id -u)/gvfs/" ;;
+  list)
+    yz-float 980x460 "lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT,TRAN | bat -l ini --color=always --paging=always" ;;
+esac

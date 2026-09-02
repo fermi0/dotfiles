@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# yz-stash <copy|move> — remember selected files for a LIVE transfer later.
+# Commit from the destination with: yz-commit copy|move   (runs rsync w/ progress)
+set -euo pipefail
+mode="${1:?usage: yz-stash copy|move}"
+[[ $# -ge 2 ]] || { notify-send "yz-stash" "nothing selected"; exit 64; }
+shift
+f="/tmp/yz-transfer-$mode.list"
+: > "$f"
+for x in "$@"; do readlink -f -- "$x" >> "$f"; done
+notify-send -t 2500 "yz-stash" "$mode-stashed $# item(s) → navigate & press commit"

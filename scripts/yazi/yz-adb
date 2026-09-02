@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# yz-adb — Android ops from yazi: push selection, pull to cwd, install apks, screenshot.
+set -euo pipefail
+command -v adb >/dev/null || { notify-send "yz-adb" "adb missing"; exit 127; }
+mapfile -t devs < <(adb devices | awk 'NR>1 && $2=="device" {print $1}')
+(( ${#devs[@]} )) || { notify-send "yz-adb" "no authorized device — check the phone screen"; exit 69; }
+dev="${devs[0]}"
+if (( ${#devs[@]} > 1 )); then dev=$(printf '%s\n' "${devs[@]}" | "$HOME/.local/bin/yz-rofi" -p "device") || exit 0; fi
+
+act=$(printf '%s\n' \
+  'push       · send selected files → /sdcard/Download/' \
+  'pull       · phone path → current dir' \
+  'install    · install selected apk(s)' \
+  'screenshot · capture now → current dir' \
+  'devices    · list devices' | "$HOME/.local/bin/yz-rofi" -p "adb [${dev:0:11}]") || exit 0
+
+case "${act%% *}" in
+  push)
+    (( $# )) || { notify-send "yz-adb" "select files first"; exit 64; }
+    for f in "$@"; do adb -s "$dev" push -- "$f" /sdcard/Download/ >/dev/null && echo "✓ ${f##*/}"; done
+    notify-send -t 3000 "yz-adb" "pushed → /sdcard/Download/" ;;
+  pull)
+    p=$("$HOME/.local/bin/yz-rofi" -p "phone path") || exit 0
+    [[ -n "$p" ]] && adb -s "$dev" pull -- "$p" . ;;
+  install)
+    n=0; for f in "$@"; do [[ "${f##*.}" == apk ]] && adb -s "$dev" install -r -- "$f" >/dev/null && n=$((n+1)); done
+    notify-send -t 3000 "yz-adb" "installed $n apk(s)" ;;
+  screenshot)
+    ts=$(date +%Y%m%d-%H%M%S)
+    adb -s "$dev" exec-out screencap -p > "./shot-$ts.png"
+    notify-send -t 2500 "yz-adb" "saved shot-$ts.png" ;;
+  devices)
+    adb devices -l | yz-float 900x240 cat ;;
+esac

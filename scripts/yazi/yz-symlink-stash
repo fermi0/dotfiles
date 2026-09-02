@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# yz-symlink-stash — remember selected files to link somewhere else later.
+# Pairs with yz-symlink-place (Alt+l) after navigating to the destination dir.
+set -euo pipefail
+[[ $# -gt 0 ]] || { notify-send "yz-link" "select/hover something first"; exit 64; }
+: > /tmp/yz-symlink-stash
+for f in "$@"; do readlink -f -- "$f" >> /tmp/yz-symlink-stash; done
+notify-send -t 2500 "yz-link" "stashed $# item(s) — navigate, then Alt+l to place links"

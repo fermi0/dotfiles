@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# yz-trash-restore — browse XDG Trash, restore to ORIGINAL location (multi-select).
+# Shows origin path + deletion date; resolves conflicts by auto-renaming.
+set -euo pipefail
+TRASH="${XDG_DATA_HOME:-$HOME/.local/share}/Trash"
+INF="$TRASH/info"; FIL="$TRASH/files"
+[[ -d "$INF" ]] || { notify-send "yz-restore" "Trash is empty"; exit 0; }
+
+pick=$(for i in "$INF"/*.trashinfo; do
+  [[ -e "$i" ]] || continue
+  name=$(basename "$i" .trashinfo)
+  origin=$(sed -n 's/^Path=//p' "$i")
+  date=$(sed -n 's/^DeletionDate=//p' "$i")
+  # URL-decode (trashinfo paths are percent-encoded)
+  origin=$(python3 -c 'import sys,urllib.parse;print(urllib.parse.unquote(sys.argv[1]))' "$origin")
+  [[ -d "$FIL/$name" ]] && t=d || t=f
+  printf '%s\t%s\t%s%s\n' "$date" "$t" "$name" "$([[ -e $origin ]] && echo '' || echo '')"
+done | sort -r | fzf --multi --with-nth=1,2,3 --delimiter='\t' \
+      --header='TAB select · enter restore · esc cancel' \
+      --preview "printf 'origin: '; sed -n s/^Path=//p \"${INF}/{3}.trashinfo\" 2>/dev/null" \
+      --preview-window=down:3:wrap) || exit 0
+
+restored=0; skipped=0
+while IFS= read -r row; do
+  name=$(cut -f3 <<<"$row")
+  info="$INF/$name.trashinfo"; item="$FIL/$name"
+  [[ -e "$item" ]] || { skipped=$((skipped+1)); continue; }
+  origin=$(python3 -c 'import sys,urllib.parse;print(urllib.parse.unquote(sys.argv[1]))' "$(sed -n 's/^Path=//p' "$info")")
+  uri="trash:///$(python3 -c 'import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1]))' "$name")"
+  if gio trash --restore "$uri" 2>/dev/null; then
+    restored=$((restored+1)); continue
+  fi
+  # conflict / fallback: move manually with suffix
+  target="$origin"
+  if [[ -e "$target" ]]; then
+    d=$(dirname "$origin"); b=$(basename "$origin"); ext=""; stem="$b"
+    if [[ "$b" == *.* && ! -d "$item" ]]; then ext=".${b##*.}"; stem="${b%.*}"; fi
+    target="$d/$stem (restored $(date +%Y%m%d-%H%M%S))$ext"
+  fi
+  mkdir -p "$(dirname "$target")"
+  if mv -- "$item" "$target" && rm -f -- "$info"; then restored=$((restored+1)); else skipped=$((skipped+1)); fi
+done <<<"$pick"
+
+notify-send -t 3500 "yz-restore" "Restored: $restored · Skipped: $skipped"

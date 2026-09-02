@@ -1,0 +1,10 @@
+#!/bin/zsh
+# Wait for llama-server /health, then send one tiny completion to prime
+# CUDA graphs / sampler paths so the first real request isn't slow.
+for i in {1..240}; do
+  [[ "$(curl -s http://127.0.0.1:1234/health 2>/dev/null)" == '{"status":"ok"}' ]] && break
+  sleep 1
+done
+curl -s http://127.0.0.1:1234/v1/chat/completions -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"user","content":"hi"}],"max_tokens":1,"temperature":0}' > /dev/null 2>&1
+echo "llama-server warm"

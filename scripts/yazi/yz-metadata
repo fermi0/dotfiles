@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# yz-metadata — deep exif/metadata view in a floating pager (exiftool).
+# Usage: yz-metadata <file...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+cmd="exiftool -G1 -a -s --"
+for f in "$@"; do cmd+=" $(printf '%q' "$f")"; done
+yz-float 1100x640 "$cmd | bat -l yaml --color=always --paging=always 2>/dev/null || $cmd | less"

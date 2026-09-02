@@ -3,7 +3,7 @@ description: Weekly vault maintenance loop (Phase 4 Recipe D) — analyze, dry-r
 agent: build
 ---
 
-Perform the weekly Zurnel vault maintenance loop (`~/Work/Zurnel`). Read-only + dry-run by default — NEVER delete/move without user approval.
+Perform the weekly Zurnel vault maintenance loop (`~/shared/Zurnel`). Read-only + dry-run by default — NEVER delete/move without user approval.
 
 Steps (per `Zurnel/reports/phase4/phase4-cross-domain-recipes.md` Recipe D):
 

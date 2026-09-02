@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# yz-commit <copy|move> — execute the stashed LIVE transfer into the current dir.
+set -euo pipefail
+mode="${1:?usage: yz-commit copy|move}"
+list="/tmp/yz-transfer-$mode.list"
+[[ -s "$list" ]] || { notify-send "yz-commit" "nothing $mode-stashed (stash with Y / Alt+x)"; exit 64; }
+mapfile -t srcs < "$list"
+rm -f "$list"
+exec "$HOME/.local/bin/yz-$mode-live" "${srcs[@]}" -- "$PWD"

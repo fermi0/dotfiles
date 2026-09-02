@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# yz-sudo — run any command with sudo via rofi askpass (works without a TTY prompt)
+# Usage: yz-sudo <cmd> [args...]
+set -euo pipefail
+command -v rofi >/dev/null || { echo "yz-sudo: rofi missing" >&2; exit 127; }
+export SUDO_ASKPASS="$HOME/.local/bin/yz-askpass"
+exec sudo -A "$@"

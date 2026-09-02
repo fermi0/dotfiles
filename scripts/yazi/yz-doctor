@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# yz-doctor — health check for the yazi power setup (configs, scripts, deps, floats).
+set -uo pipefail
+ok=0; warn=0
+P='✓'; W='⚠'; F='✗'
+say() { printf '%s  %s\n' "$1" "$2"; }
+good() { say "$P" "$1"; (( ++ok )); }
+miss() { say "$F" "$1"; (( ++warn )); }
+skip() { say "$W" "$1"; (( ++warn )); }
+
+echo "── dependencies ─────────────────────────────"
+for t in rofi fzf jq ffmpeg magick exiftool bat 7z zip unzip unrar rsync shred \
+         udisksctl gio wl-copy hyprctl notify-send kitty eza adb kdeconnect-cli; do
+  command -v "$t" >/dev/null && good "$t" || miss "$t missing"
+done
+
+echo "── yz-* scripts ─────────────────────────────"
+for s in "$HOME"/.local/bin/yz-*; do
+  bash -n "$s" 2>/dev/null && good "$(basename "$s")" || miss "syntax: $(basename "$s")"
+done
+[[ -x "$HOME/.local/bin/yz-rofi" ]] && good "yz-rofi wrapper present" || miss "yz-rofi missing"
+
+echo "── yazi configs ─────────────────────────────"
+python3 - <<'EOF' && good "TOML parse (yazi/keymap/theme)" || miss "TOML parse failed"
+import tomllib
+for f in ["yazi.toml","keymap.toml","theme.toml"]:
+    tomllib.load(open("/home/work/.config/yazi/"+f,"rb"))
+EOF
+out=$(timeout 3 yazi </dev/null 2>&1 || true)
+if grep -qiE 'failed to parse|invalid|Caused by' <<<"$out"; then
+  miss "yazi config runtime-parse:"; grep -iE 'error|caused|at line' <<<"$out" | head -3 | sed 's/^/     /'
+else
+  good "yazi loads configs without errors (headless probe)"
+fi
+
+echo "── plugins ──────────────────────────────────"
+n=$(find ~/.config/yazi/plugins -maxdepth 1 -type d -name '*.yazi' 2>/dev/null | wc -l)
+(( n >= 13 )) && good "$n plugins installed" || skip "only $n plugin dirs found"
+
+echo "── hyprland float rules ─────────────────────"
+if hyprctl -j clients >/dev/null 2>&1; then
+  kitty --class yzfloat-doccheck -e sleep 2 >/dev/null 2>&1 &
+  sleep 0.9
+  fl=$(hyprctl -j clients | jq -r '[.[]|select(.class=="yzfloat-doccheck")][0].floating // "closed"')
+  wait 2>/dev/null
+  [[ "$fl" == true ]] && good "yzfloat-* floats via windowrule" \
+    || skip "float rule not active this session (applies next login; run: hyprctl keyword windowrule 'match:class ^(yzfloat-), float on')"
+else
+  skip "not inside a Hyprland session"
+fi
+
+echo "─────────────────────────────────────────────"
+printf ' result: %d ok · %d warnings/issues\n' "$ok" "$warn"

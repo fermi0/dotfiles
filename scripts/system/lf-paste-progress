@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CLIP="${HOME}/.local/share/lf/files"
+LOG="/tmp/lf-paste-progress.log"
+
+if [[ ! -f "$CLIP" ]]; then
+  echo "lf clipboard not found: $CLIP"
+  exit 1
+fi
+
+mapfile -t lines < "$CLIP"
+if [[ "${#lines[@]}" -lt 2 ]]; then
+  echo "Clipboard empty."
+  exit 0
+fi
+
+mode="${lines[0]}"
+files=("${lines[@]:1}")
+
+echo "Mode: $mode"
+echo "Destination: $(pwd)"
+echo "Files:"
+printf ' - %s\n' "${files[@]}"
+echo
+echo "Logging to: $LOG"
+echo
+
+# rsync options:
+# --info=progress2 gives global progress + speed + ETA
+# --human-readable is nice
+# --partial keeps partially transferred files if interrupted
+RSYNC_OPTS=( -a --human-readable --info=progress2 --partial )
+
+# Ensure clipboard file is removed after attempt (successful or not)
+cleanup() {
+  rm -f -- "$CLIP" 2>/dev/null || true
+}
+trap cleanup EXIT
+
+case "$mode" in
+  copy)
+    # Copy into current directory
+    rsync "${RSYNC_OPTS[@]}" -- "${files[@]}" ./ |& tee "$LOG"
+    ;;
+
+  move)
+    # Move: rsync + remove source files, then try to remove empty dirs
+    rsync "${RSYNC_OPTS[@]}" --remove-source-files -- "${files[@]}" ./ |& tee "$LOG"
+
+    # Remove empty dirs left behind (best effort)
+    for f in "${files[@]}"; do
+      d="$(dirname -- "$f")"
+      # walk upward removing empties without being dangerous
+      while [[ -n "$d" && "$d" != "/" && "$d" != "." ]]; do
+        rmdir --ignore-fail-on-non-empty -- "$d" 2>/dev/null || true
+        d="$(dirname -- "$d")"
+      done
+    done
+    ;;
+
+  *)
+    echo "Unknown clipboard mode: $mode"
+    exit 1
+    ;;
+esac
+
+echo
+echo "Done."
+echo "Press any key to close..."
+read -r -n 1
+

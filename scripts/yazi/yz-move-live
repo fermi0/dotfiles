@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# yz-move-live — reliable live move with rsync progress; safely prunes emptied
+# source directories with rmdir -p (never touches non-empty or unrelated dirs).
+# Usage: yz-move-live <src...> -- <destdir>
+set -euo pipefail
+notify() { notify-send -t "${2:-3000}" "yz-move" "$1"; }
+srcs=(); dst=""
+while [[ $# -gt 0 ]]; do
+  if [[ "$1" == "--" ]]; then dst="$2"; break; fi
+  srcs+=("$1"); shift
+done
+[[ ${#srcs[@]} -gt 0 && -n "$dst" && -d "$dst" ]] || { notify "usage: yz-move-live src... -- destdir"; exit 64; }
+
+total=0
+for s in "${srcs[@]}"; do
+  if [[ -d "$s" ]]; then total=$(( total + $(du -sb -- "$s" | cut -f1) ))
+  else total=$(( total + $(stat -c %s -- "$s") )); fi
+done
+
+outlist=""; for s in "${srcs[@]}"; do outlist+=" $(printf '%q' "$s")"; done
+cmd="rsync -a --remove-source-files --info=progress2 --human-readable $outlist ${dst@Q}/"
+for s in "${srcs[@]}"; do cmd+="; rmdir -p --ignore-fail-on-non-empty \$(dirname ${s@Q}) 2>/dev/null"; done
+cmd+=" >/dev/null 2>&1"
+cmd+="; rc=\$?; notify-send -t 4000 yz-move \"\$([ \$rc -eq 0 ] && echo MOVED ✓ || echo PARTIAL/FAILED ✗) → ${dst}\"; sleep 1"
+
+if (( total <= (${YZ_QUIET_KB:-10240}) * 1024 )); then
+  rsync -a --remove-source-files -- "${srcs[@]}" "$dst/"
+  for s in "${srcs[@]}"; do rmdir -p --ignore-fail-on-non-empty "$(dirname -- "$s")" 2>/dev/null || true; done
+  notify "Moved ${#srcs[@]} item(s) → ${dst##*/}" 2500
+else
+  yz-float 1060x320 "$cmd"
+fi

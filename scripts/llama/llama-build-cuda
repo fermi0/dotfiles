@@ -1,0 +1,10 @@
+#!/bin/zsh
+# llama-build-cuda — one-shot CUDA build of llama-server (run AFTER `sudo pacman -S cuda`).
+# Produces ~/apps/llama.cpp/build-cuda/bin/llama-server; llama-serve prefers it automatically.
+set -e
+cd "$HOME/apps/llama.cpp"
+cmake -B build-cuda -DCMAKE_BUILD_TYPE=Release -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="120"
+cmake --build build-cuda --config Release -j"$(nproc)" --target llama-server
+echo "---"
+./build-cuda/bin/llama-server --version
+echo "CUDA BUILD DONE — switch with: systemctl --user restart llama-server@qwen9"

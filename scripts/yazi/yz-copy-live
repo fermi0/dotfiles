@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# yz-copy-live — reliable live copy with progress in an auto-sized floating terminal.
+# Falls back to silent copy + notification for small payloads.
+# Usage (from yazi): yz-copy-live <src...> -- <destdir>
+set -euo pipefail
+notify() { notify-send -t "${2:-3000}" "yz-copy" "$1"; }
+srcs=(); dst=""
+while [[ $# -gt 0 ]]; do
+  if [[ "$1" == "--" ]]; then dst="$2"; break; fi
+  srcs+=("$1"); shift
+done
+[[ ${#srcs[@]} -gt 0 && -n "$dst" && -d "$dst" ]] || { notify "usage: yz-copy-live src... -- destdir"; exit 64; }
+
+total=0
+for s in "${srcs[@]}"; do
+  if [[ -d "$s" ]]; then total=$(( total + $(du -sb -- "$s" | cut -f1) ))
+  else total=$(( total + $(stat -c %s -- "$s") )); fi
+done
+
+cmd="rsync -a --info=progress2 --human-readable"
+for s in "${srcs[@]}"; do cmd+=" $(printf '%q' "$s")"; done
+cmd+=" ${dst@Q}/"
+
+if (( total <= (${YZ_QUIET_KB:-10240}) * 1024 )); then
+  rsync -a --info=progress2 --human-readable -- "${srcs[@]}" "$dst/"
+  notify "Copied ${#srcs[@]} item(s) → ${dst##*/}" 2500
+else
+  yz-float 1060x300 "$cmd; rc=\$?; notify-send -t 4000 yz-copy \"\$([ \$rc -eq 0 ] && echo OK ✓ || echo FAILED ✗) → ${dst}\"; sleep 1"
+fi

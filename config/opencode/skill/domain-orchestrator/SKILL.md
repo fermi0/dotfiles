@@ -287,7 +287,7 @@ The end-of-day / start-of-day chain.
 
 | Pattern | When | Example |
 |---|---|---|
-| **File path** (most common) | The next step can re-read | `→ business-planning: read ~/Work/Zurnel/Research/X/findings.md` |
+| **File path** (most common) | The next step can re-read | `→ business-planning: read ~/shared/Zurnel/Research/X/findings.md` |
 | **Inline summary** | The next step needs the result immediately | "Top 3 competitors are: A, B, C" |
 | **Decision / choice** | The previous step decided | "We chose Cloudflare over Vercel" |
 | **Handoff note** | A complex state that's hard to summarize | A 5-bullet handoff doc |

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# yz-edit-sudo — open a (possibly root-owned) file in $EDITOR with sudo via askpass.
+# Usage: yz-edit-sudo <file>
+set -euo pipefail
+f=$(readlink -f -- "${1:?}")
+yz-float 1100x640 "sudo -A ${EDITOR:-nvim} $(printf '%q' "$f")"

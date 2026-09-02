@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# yz-float — run a command in a compact auto-centered floating kitty window (Hyprland).
+# Usage: yz-float [WIDTHxHEIGHT] <command...>
+# Non-interactive zsh (-c) on purpose: no rc noise, deterministic behavior.
+set -euo pipefail
+SIZE=""; if [[ "${1:-}" =~ ^[0-9]+x[0-9]+$ ]]; then SIZE="$1"; shift; fi
+W="${SIZE%x*}"; H="${SIZE#*x}"; W="${W:-1000}"; H="${H:-380}"
+command -v hyprctl >/dev/null || { echo "yz-float: hyprctl missing" >&2; exit 127; }
+CLS="yzfloat-$$-$(date +%s)"
+kitty --class "$CLS" --title yzfloat -e zsh -c "$*" >/dev/null 2>&1 &
+pid=$!
+addr=""
+for _ in $(seq 1 60); do
+  addr=$(hyprctl -j clients 2>/dev/null | jq -r --arg c "$CLS" \
+        '[.[]|select(.class==$c)][-1].address // empty')
+  [[ -n "$addr" ]] && break; sleep 0.05
+done
+if [[ -n "$addr" ]]; then
+  hyprctl dispatch focuswindow "address:$addr" >/dev/null 2>&1 || true
+  hyprctl dispatch resizewindowpixel "exact $W $H,address:$addr" >/dev/null 2>&1 || true
+  # top-center placement
+  monw=$(hyprctl -j monitors 2>/dev/null | jq -r '(.[] | select(.focused==true) | .width) // (.[0].width) // 1920')
+  x=$(( (monw - W) / 2 )); (( x < 0 )) && x=0
+  hyprctl dispatch movewindowpixel "exact $x 40,address:$addr" >/dev/null 2>&1 || true
+fi
+wait "$pid" 2>/dev/null || true
+exit 0

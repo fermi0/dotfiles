@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# yz-chown — interactive chown (sudo): pick user, group, recursive flag via rofi.
+# Usage: yz-chown <file...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+user=$(cut -d: -f1 /etc/passwd | sort | yz-rofi -p "chown user" --filter "$USER") || exit 0
+group=$(cut -d: -f1 /etc/group | sort | yz-rofi -p "group (empty=$user)" --filter "$USER") || exit 0
+owner="$user${group:+:$group}"
+
+rec=$(yz-rofi -p "recursive -R? (y/N)" <<<"n") || rec=n
+args=(); [[ "${rec,,}" == y* ]] && args=(-R)
+
+cmd="sudo -A chown ${args[*]} $(printf '%q' "$owner")"; for f in "$@"; do cmd+=" $(printf '%q' "$(readlink -f -- "$f")")"; done
+cmd+="; notify-send yz-chown \$?"
+yz-float 860x200 "$cmd"

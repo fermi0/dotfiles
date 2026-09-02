@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# yz-askpass — rofi-based SUDO_ASKPASS provider (used by all yz-* sudo ops)
+set -g
+exec rofi -dmenu -password -no-config -location 2 -theme-str 'window {width: 30%;} listview {enabled: false;} inputbar {children: [prompt, entry];}' -p "sudo" <<< ""

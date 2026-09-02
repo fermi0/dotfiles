@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# yz-extract — extract any archive into a sibling directory (never clobbers).
+# Usage: yz-extract <archive...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+results=""
+for a in "$@"; do
+  [[ -f "$a" ]] || continue
+  dir="${a%.*}"; [[ "$a" == *.tar.* ]] && dir="${a%.tar.*}"
+  n=1; base="$dir"
+  while [[ -e "$dir" ]]; do dir="${base}-$((n++))"; done
+  mkdir -p -- "$dir"
+  case "$a" in
+    *.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.tar.zst|*.tzst|*.tar)
+      tar -xf "$a" -C "$dir" && results+="✓ ${a##*/} → ${dir##*/}\n" ;;
+    *.zip|*.7z|*.rar|*.iso|*.cab)
+      7z x -y -o"$dir" -- "$a" >/dev/null && results+="✓ ${a##*/} → ${dir##*/}\n" ;;
+    *.gz)  gunzip -kc -- "$a" > "$dir/$(basename "${a%.gz}")"  && results+="✓ ${a##*/}\n" ;;
+    *.xz)  unxz -kc  -- "$a" > "$dir/$(basename "${a%.xz}")"  && results+="✓ ${a##*/}\n" ;;
+    *.zst) zstd -dc  -- "$a" > "$dir/$(basename "${a%.zst}")" && results+="✓ ${a##*/}\n" ;;
+    *) rmdir "$dir" 2>/dev/null; results+="✗ unknown type: ${a##*/}\n" ;;
+  esac
+done
+notify-send -t 3500 "yz-extract" "${results//$'\n'/ · }"

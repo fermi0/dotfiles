@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# yz-toclip <name|path|dir> — copy hovered/selected file info to Wayland clipboard.
+set -euo pipefail
+mode="${1:-path}"; shift
+[[ $# -gt 0 ]] || exit 64
+case "$mode" in
+  name) printf '%s\n' "$@" | sed 's|.*/||' ;;
+  path) realpath -s -- "$@" ;;
+  dir)  for f in "$@"; do dirname -- "$(readlink -f -- "$f")"; done | sort -u ;;
+  *) exit 64 ;;
+esac | wl-copy
+notify-send -t 2000 "yazi" "$mode → clipboard ✓"

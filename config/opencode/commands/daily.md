@@ -32,14 +32,14 @@ Generates daily note with all evidence-based components:
 - Consistency tracking (streak, Heatmap, Kanban, never-miss-twice)
 - Cross-domain links (Zurnel, Bases, VAT SaaS)
 
-Writes to `~/Work/daily/YYYY-MM-DD.md` AND `~/Work/Zurnel/daily/YYYY-MM-DD.md`.
+Writes to `~/Work/daily/YYYY-MM-DD.md` AND `~/shared/Zurnel/daily/YYYY-MM-DD.md`.
 
 With `--notify`: Creates systemd timer for 21:00 `notify-send` reflection.
 
 ## Verification (run after)
 
 ```bash
-ls ~/Work/daily/2026-08-30.md ~/Work/Zurnel/daily/2026-08-30.md
+ls ~/Work/daily/2026-08-30.md ~/shared/Zurnel/daily/2026-08-30.md
 cat ~/Work/daily/2026-08-30.md | head -40
 systemctl --user list-timers | grep daily-reflection
 ```

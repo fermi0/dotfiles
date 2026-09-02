@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# yz-checksum — compute checksums for selected files; result copied to clipboard.
+# Usage: yz-checksum <file...>
+set -euo pipefail
+[[ $# -gt 0 ]] || exit 64
+algo=$(printf '%s\n' sha256 blake3 md5 sha1 sha512 | "$HOME/.local/bin/yz-rofi" -p "checksum algo") || exit 0
+out=""
+case "$algo" in
+  blake3) command -v b3sum >/dev/null && out=$(b3sum "$@") ;;
+  *)      out=$("${algo}sum" "$@") ;;
+esac
+[[ -n "$out" ]] || { notify-send "yz-checksum" "tool for $algo missing"; exit 69; }
+printf '%s\n' "$out" | wl-copy
+yz-float 1100x300 "printf '%s\n' \"$(printf '%q' "$out")\" | bat -l ini --color=always --paging=always"
+notify-send -t 2500 "yz-checksum" "$algo → clipboard ✓"

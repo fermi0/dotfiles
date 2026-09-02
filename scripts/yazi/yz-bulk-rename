@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# yz-bulk-rename — vimv-style bulk rename in $EDITOR with safety checks.
+# Usage: yz-bulk-rename <file...>
+set -euo pipefail
+EDITOR="${EDITOR:-nvim}"
+[[ $# -gt 0 ]] || exit 64
+tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+old="$tmp/old"; new="$tmp/new"
+
+: > "$old"
+for f in "$@"; do printf '%s\n' "$(basename -- "$f")" >> "$old"; done
+cp -- "$old" "$new"
+"$EDITOR" -- "$new"
+
+[[ $(wc -l < "$new") -eq $(wc -l < "$old") ]] || { notify-send "yz-rename" "line count changed — aborted"; exit 65; }
+if grep -qn '/\|^$' "$new"; then notify-send "yz-rename" "'/' or empty name found — aborted"; exit 65; fi
+dups=$(sort "$new" | uniq -d)
+[[ -z "$dups" ]] || { notify-send "yz-rename" "duplicate target: $dups"; exit 65; }
+
+changed=0; skipped=0
+paste -d'\t' "$old" "$new" | while IFS=$'\t' read -r a b; do
+  [[ "$a" == "$b" ]] && continue
+  if [[ -e "./$b" ]]; then echo "skip (exists): $a → $b" >&2; continue; fi
+  mv -n -- "$a" "$b" && echo "✓ $a → $b" >&2
+done
+notify-send -t 3000 "yz-rename" "bulk rename finished"

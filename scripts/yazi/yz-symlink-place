@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# yz-symlink-place — create links (relative / absolute / hard) in $PWD for the
+# stashed selection made with yz-symlink-stash.
+set -euo pipefail
+stash=/tmp/yz-symlink-stash
+[[ -s "$stash" ]] || { notify-send "yz-link" "nothing stashed — use L on files first"; exit 64; }
+mode=$(printf '%s\n' 'relative symlink (ln -s relative)' \
+                   'absolute symlink (ln -s full path)' \
+                   'hard link (ln, same filesystem only)' | "$HOME/.local/bin/yz-rofi" -p "link type") || exit 0
+
+n=0; fail=0
+while IFS= read -r src; do
+  base="${src##*/}"
+  case "$mode" in
+    relative*) args=(-rs);; absolute*) args=(-s);; hard*)     args=();;
+    *) exit 0;;
+  esac
+  if ln "${args[@]}" -- "$src" "./$base" 2>/dev/null; then n=$((n+1)); else fail=$((fail+1)); fi
+done < "$stash"
+notify-send -t 3000 "yz-link" "created $n links ($fail skipped/exist)"

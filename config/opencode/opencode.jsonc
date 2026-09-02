@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["~/.config/opencode/AGENTS.md", "~/Work/Zurnel/Intentions.md"],
+  "instructions": ["~/.config/opencode/AGENTS.md", "~/shared/Zurnel/Intentions.md"],
   "provider": {
     "local": {
       "npm": "@ai-sdk/openai-compatible",
@@ -953,8 +953,8 @@
       "environment": {
         "OBSIDIAN_API_URL": "{env:OBSIDIAN_API_URL}",
         "OBSIDIAN_API_KEY": "{env:OBSIDIAN_API_KEY}",
-        "OBSIDIAN_VAULT": "/home/work/Work/Zurnel",
-        "PROJECT_BASE_PATH": "/home/work/Work/Zurnel"
+        "OBSIDIAN_VAULT": "/home/shared/Zurnel",
+        "PROJECT_BASE_PATH": "/home/shared/Zurnel"
       }
     },
     "filesystem": {
@@ -1041,7 +1041,7 @@
         "npx",
         "-y",
         "@modelcontextprotocol/server-filesystem@2026.7.10",
-        "/home/work/Work/Zurnel"
+        "/home/shared/Zurnel"
       ],
       "enabled": true
     },

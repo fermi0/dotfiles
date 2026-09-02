@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# yz-shred — securely shred files (3-pass + zero + remove). Root-owned → sudo askpass.
+# Usage: yz-shred <file...>   (directories are refused)
+set -euo pipefail
+[[ $# -gt 0 ]] || { notify-send "yz-shred" "no files given"; exit 64; }
+files=()
+for f in "$@"; do
+  if [[ -d "$f" ]]; then notify-send "yz-shred" "refusing directory: ${f##*/}"; exit 65; fi
+  files+=("$(readlink -f -- "$f")")
+done
+
+list=$(printf '%s\n' "${files[@]}" | sed 's|.*/|  |')
+"$HOME/.local/bin/yz-rofi" -p "SHRED ${#files[@]}? IRREVERSIBLE · pick any to confirm" <<<"$list" >/dev/null || exit 0
+
+root_needed=0
+for f in "${files[@]}"; do [[ -w "$f" && -w "$(dirname "$f")" ]] || root_needed=1; done
+
+cmd="shred -n 3 -z -u --"
+for f in "${files[@]}"; do cmd+=" $(printf '%q' "$f")"; done
+cmd+="; rc=\$?; notify-send -t 4000 yz-shred \"\$([ \$rc -eq 0 ] && echo SHREDDED ✓ (${#files[@]}) || echo FAILED ✗)\""
+
+if (( root_needed )); then
+  yz-float 900x220 "SUDO_ASKPASS=$HOME/.local/bin/yz-askpass sudo -A sh -c $(printf '%q' "$cmd")"
+else
+  yz-float 900x220 "$cmd"
+fi

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# yz-create-sudo — create a file or directory as root in the current dir.
+set -euo pipefail
+what=$(printf '%s\n' 'directory' 'file' | "$HOME/.local/bin/yz-rofi" -p "sudo create") || exit 0
+name=$("$HOME/.local/bin/yz-rofi" -p "name (in current dir)") || exit 0
+[[ -n "$name" ]] || exit 0
+if [[ "$what" == directory ]]; then
+  cmd="sudo -A mkdir -pv -- $(printf '%q' "$PWD/$name")"
+else
+  cmd="sudo -A touch -- $(printf '%q' "$PWD/$name")"
+fi
+yz-float 860x180 "$cmd; rc=\$?; notify-send -t 2500 yz-create \"\$rc · $name\""
