@@ -155,16 +155,8 @@ eval "$(fnm env --use-on-cd)"
 
 export PATH="/home/work/.local/bin:$PATH"
 
-# AI Agent
-# export OPENROUTER_API_KEY="... (set in ~/.env.local)"
-# export OPENROUTER_API_KEY="... (set in ~/.env.local)"
-# export OPENROUTER_API_KEY="... (set in ~/.env.local)"
-# export OPENROUTER_API_KEY="... (set in ~/.env.local)"
-
-# Obsidian (with-context MCP)
-export OBSIDIAN_API_URL="https://127.0.0.1:27124"
-# export OBSIDIAN_API_KEY="... (set in ~/.env.local)"
-export OBSIDIAN_VAULT="/home/work/Work/Zurnel"
+# API keys (from ~/.env.local - chmod 600, gitignored)
+[ -f "$HOME/.env.local" ] && source "$HOME/.env.local"
 export PROJECT_BASE_PATH="/home/work/Work/Zurnel"
 
 # bun completions
@@ -182,14 +174,7 @@ eval "$(starship init zsh)"
 # direnv per-project env (Phase 4, 2026-08-22)
 eval "$(direnv hook zsh)"
 
-# Free-tier cloud providers (set values manually; opencode reads via {env:...})
-#   NIM:      https://build.nvidia.com  (40 RPM / 10k RPD per model)
-# export NIM_API_KEY="... (set in ~/.env.local)"
-# export NIM_API_KEY="... (set in ~/.env.local)"
-# export NIM_API_KEY="... (set in ~/.env.local)"
 
-export OPENROUTER_API_KEY=$OPENROUTER_API_KEY_4
-export NIM_API_KEY=$NIM_API_KEY_1
 
 # CodeMode (ships in opencode >=1.18.16): one code-exec tool replaces all MCP tool
 # schemas -> ~63k prompts drop to <10k everywhere. Re-verify flag after updates:
