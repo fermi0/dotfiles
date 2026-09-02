@@ -44,6 +44,9 @@ opencode/plugins/opencode-poorguy-ratelimit/package-lock.json
 opencode/plugins/backups/
 opencode/plugin/subtask2/logs/
 
+# ── zen browser (volatile prefs.js) ──
+zen/prefs.js
+
 # ── sqlite runtime data (DBs live in shared/data/ or are dead) ──
 swarm-tools/swarm.db*
 swarm-tools/sessions/
