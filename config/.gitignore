@@ -42,6 +42,7 @@ opencode/plugins/opencode-token-optimizer/package-lock.json
 opencode/plugins/opencode-poorguy-ratelimit/dist/
 opencode/plugins/opencode-poorguy-ratelimit/package-lock.json
 opencode/plugins/backups/
+opencode/plugin/subtask2/logs/
 
 # ── sqlite runtime data (DBs live in shared/data/ or are dead) ──
 swarm-tools/swarm.db*
