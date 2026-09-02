@@ -51,7 +51,7 @@ The user values a system that **learns and adapts**. Use the `lemma.memory_feedb
 
 ### When things go SIDeways (frustrated, angry, tired, objecting, disagreeing)
 
-Run `lemma.memory_feedback({signal: "negative", ...})` IMMEDIATELY when you detect any of:
+Capture via `lemma.memory_add({type: "lesson"|"warning", title: "...", fragment: "..."})` IMMEDIATELY when you detect any of (then `memory_feedback({id, useful: false})` on the related fragment if applicable):
 
 - **Frustration** — "this isn't working", "this is broken", "ugh", "come on", repeated retries, exclamation marks
 - **Anger** — strong negative language, "no", "stop", "wrong", "that's not what I asked"
@@ -68,7 +68,7 @@ Run `lemma.memory_feedback({signal: "negative", ...})` IMMEDIATELY when you dete
 
 ### When things go WELL (happy, joking, greets, appreciates, praises)
 
-Run `lemma.memory_feedback({signal: "positive", ...})` when you detect:
+Run `lemma.memory_feedback({id, useful: true})` when you detect:
 
 - **Happiness** — "great!", "perfect", "love it", "exactly", "yes!"
 - **Laughter** — "haha", "lol", "😂", "that's funny"
@@ -94,7 +94,7 @@ Run `lemma.memory_feedback({signal: "positive", ...})` when you detect:
 
 - **Code Mode** (`execute` tool): Use for batched tool work (3+ tool calls, filter/aggregate, large file processing)
 - **Memory**: lemma (MCP) for cross-session narrative memory; opencode-mem for project-local persistent memory
-  - **Feedback tool**: `lemma.memory_feedback({signal: "positive"|"negative", fragment_id?, note})` — see Feedback Rules above
+  - **Feedback tool**: `lemma.memory_feedback({id, useful: boolean})` — thumbs up/down on existing fragment (boosts/decays confidence); for new incidents use memory_add then memory_relate
   - **Relation tool**: `lemma.memory_relate({from_id, to_id, type})` — connect fragments (supports/contradicts/related_to)
   - **Read first**: Always call `lemma.memory_read` at the start of a session to load what you know
   - **Write at end**: Always call `lemma.memory_add` for new insights; `session_attempt` for dead ends

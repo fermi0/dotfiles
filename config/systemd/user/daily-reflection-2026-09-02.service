@@ -1,0 +1,11 @@
+[Unit]
+Description=Evening Reflection Notification
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/notify-send "🌅 Evening Reflection (21:00)" "Three Good Things time! Reflect on: 1) What went well? 2) What did I learn? 3) What am I grateful for? — Streak: 1"
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+
+[Install]
+WantedBy=default.target

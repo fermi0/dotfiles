@@ -28,6 +28,8 @@ opencode/rate-limit-retry.json
 opencode/rate-limit-retry-debug.log
 opencode/plugin-meta.json
 opencode/opencode-poorguy-ratelimit.log
+# contains API keys (chmod 600) - never commit
+opencode/opencode-poorguy-ratelimit.jsonc
 opencode/opencode-mem.jsonc      # dead plugin (auto-capture disabled)
 opencode/.DS_Store
 opencode/opencode.db*            # local sqlite (in shared/data/ via symlink in stage 4)
