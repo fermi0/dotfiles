@@ -1,6 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["~/.config/opencode/AGENTS.md", "~/shared/Zurnel/Intentions.md"],
+  "_updated": "2026-09-04 v3: Removed GLM-4.7-flash (30B-A3B only), groq/compound-mini, north-mini-code, stepfun/step-3.7-flash, mistral-small, qwen3-coder-30b (a3b). Kept only non-a3b qwen, free models, no content-safety. Now 30 visible models. Backup at ~/.config/opencode/backups/pre-freemodel-20260904-234322/",
+  "instructions": ["~/.config/opencode/AGENTS_ESSENTIAL.md"],
   "provider": {
     "local": {
       "npm": "@ai-sdk/openai-compatible",
@@ -188,11 +189,10 @@
         "minimax/minimax-m2",
         "minimax/minimax-m2-her",
         "minimax/minimax-m2.1",
-        "minimax/minimax-m2.5",
-        "minimax/minimax-m2.7",
-        "minimax/minimax-m3",
-        "minimax/minimax-m3:batch",
-        "mistralai/codestral-2508",
+         "minimax/minimax-m2.5",
+         "minimax/minimax-m2.7",
+         "minimax/minimax-m3:batch",
+         "mistralai/codestral-2508",
         "mistralai/codestral-2508:batch",
         "mistralai/devstral-2512",
         "mistralai/ministral-14b-2512",
@@ -426,8 +426,60 @@
         "~openai/gpt-latest",
         "~openai/gpt-mini-latest",
         "~x-ai/grok-latest",
-        "~z-ai/glm-latest"
-      ]
+        "~z-ai/glm-latest",
+        "openrouter/free"
+      ],
+      "models": {
+        "z-ai/glm-5.2": {
+          "name": "GLM-5.2 (Z.ai paid) - $0.97/$3.04 per 1M tok, ~$0.0001/call",
+          "limit": {
+            "context": 1048576,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "minimax/minimax-m3:free": {
+          "name": "MiniMax M3 (OpenRouter free) - 1M ctx, multimodal, reasoning",
+          "limit": {
+            "context": 1048576,
+            "output": 943718
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.7,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "none",
+              "temperature": 0.6
+            }
+          }
+        }
+      }
     },
     "nim": {
       "npm": "@ai-sdk/openai-compatible",
@@ -438,6 +490,16 @@
         "timeout": 900000,
         "chunkTimeout": 120000
       },
+      "whitelist": [
+        "nvidia/nemotron-3-ultra-550b-a55b",
+        "nvidia/nemotron-3-super-120b-a12b",
+        "nvidia/nemotron-3.5-lightning-30b-a3b",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "deepseek-ai/deepseek-v4-pro-0813",
+        "moonshotai/kimi-k3",
+        "minimaxai/minimax-m3",
+        "openai/gpt-oss-20b"
+      ],
       "models": {
         "nvidia/nemotron-3-ultra-550b-a55b": {
           "name": "Nemotron 3 Ultra 550B (NIM) - Flagship",
@@ -511,30 +573,6 @@
             }
           }
         },
-        "nvidia/nemotron-3-nano-30b-a3b": {
-          "name": "Nemotron 3 Nano 30B (NIM) - Balanced Agentic",
-          "limit": {
-            "context": 1048576,
-            "output": 32768
-          },
-          "stream": true,
-          "reasoning": true,
-          "options": {
-            "temperature": 1.0,
-            "top_p": 0.95
-          },
-          "variants": {
-            "reasoning": {
-              "reasoningEffort": "high"
-            },
-            "balanced": {
-              "reasoningEffort": "medium"
-            },
-            "concise": {
-              "reasoningEffort": "none"
-            }
-          }
-        },
         "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
           "name": "Nemotron 3 Nano Omni 30B (NIM) - Multimodal Agentic",
           "limit": {
@@ -559,8 +597,8 @@
             }
           }
         },
-        "deepseek-ai/deepseek-v4-flash-0731": {
-          "name": "DeepSeek V4 Flash (NIM) - Fast Reasoning",
+        "deepseek-ai/deepseek-v4-pro-0813": {
+          "name": "DeepSeek V4 Pro 0813 (NIM) - Frontier Reasoning",
           "limit": {
             "context": 1048576,
             "output": 32768
@@ -568,22 +606,26 @@
           "stream": true,
           "reasoning": true,
           "options": {
-            "temperature": 0.6
+            "temperature": 0.6,
+            "top_p": 0.95
           },
           "variants": {
             "reasoning": {
-              "reasoningEffort": "high"
+              "reasoningEffort": "high",
+              "temperature": 0.6
             },
             "balanced": {
-              "reasoningEffort": "medium"
+              "reasoningEffort": "medium",
+              "temperature": 0.6
             },
             "concise": {
-              "reasoningEffort": "none"
+              "reasoningEffort": "none",
+              "temperature": 0.6
             }
           }
         },
         "moonshotai/kimi-k3": {
-          "name": "Kimi K3 (NIM) - Strong Agentic MoE",
+          "name": "Kimi K3 (NIM) - Frontier Agentic 2.8T MoE",
           "limit": {
             "context": 1048576,
             "output": 32768
@@ -591,17 +633,21 @@
           "stream": true,
           "reasoning": true,
           "options": {
-            "temperature": 0.6
+            "temperature": 0.6,
+            "top_p": 0.95
           },
           "variants": {
             "reasoning": {
-              "reasoningEffort": "high"
+              "reasoningEffort": "high",
+              "temperature": 0.6
             },
             "balanced": {
-              "reasoningEffort": "medium"
+              "reasoningEffort": "medium",
+              "temperature": 0.6
             },
             "concise": {
-              "reasoningEffort": "none"
+              "reasoningEffort": "none",
+              "temperature": 0.6
             }
           }
         },
@@ -615,32 +661,6 @@
           "reasoning": true,
           "options": {
             "temperature": 0.6
-          },
-          "variants": {
-            "reasoning": {
-              "reasoningEffort": "high"
-            },
-            "balanced": {
-              "reasoningEffort": "medium"
-            },
-            "concise": {
-              "reasoningEffort": "none"
-            }
-          }
-        },
-        "openai/gpt-oss-120b": {
-          "name": "GPT-OSS 120B (NIM) - OpenAI Open Model",
-          "limit": {
-            "context": 131072,
-            "output": 32768
-          },
-          "stream": true,
-          "reasoning": true,
-          "options": {
-            "temperature": 0.6,
-            "top_p": 0.95,
-            "top_k": 20,
-            "min_p": 0.0
           },
           "variants": {
             "reasoning": {
@@ -679,33 +699,33 @@
               "reasoningEffort": "none"
             }
           }
-        },
-        "meta/llama-3.2-90b-vision-instruct": {
-          "name": "Llama 3.2 90B Vision (NIM) - Multimodal",
+        }
+      }
+    },
+    "groq": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Groq (free tier - fastest LPU inference)",
+      "options": {
+        "baseURL": "https://api.groq.com/openai/v1",
+        "apiKey": "{env:GROQ_API_KEY}",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "whitelist": [
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "qwen/qwen3.6-27b",
+        "groq/compound"
+      ],
+      "models": {
+        "openai/gpt-oss-120b": {
+          "name": "GPT-OSS 120B (Groq) - 472 t/s, strongest free reasoning",
           "limit": {
             "context": 131072,
             "output": 32768
           },
           "stream": true,
-          "reasoning": false,
-          "options": {
-            "temperature": 0.6,
-            "top_p": 0.95
-          },
-          "variants": {
-            "concise": {
-              "reasoningEffort": "none"
-            }
-          }
-        },
-        "google/gemma-4-31b-it": {
-          "name": "Gemma 4 31B (NIM) - Google Open",
-          "limit": {
-            "context": 1048576,
-            "output": 32768
-          },
-          "stream": true,
-          "reasoning": false,
+          "reasoning": true,
           "options": {
             "temperature": 0.6,
             "top_p": 0.95
@@ -718,13 +738,449 @@
               "reasoningEffort": "medium"
             },
             "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "openai/gpt-oss-20b": {
+          "name": "GPT-OSS 20B (Groq) - 916 t/s, fastest free model in existence",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "low"
+            },
+            "balanced": {
+              "reasoningEffort": "low"
+            },
+            "concise": {
               "reasoningEffort": "none"
             }
+          }
+        },
+        "qwen/qwen3.6-27b": {
+          "name": "Qwen3.6 27B (Groq free) - intel 38, 53 t/s",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "groq/compound": {
+          "name": "Groq Compound (agentic w/ tools) - 250 RPD",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        }
+      }
+    },
+    "kilo": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Kilo Gateway (keyless, 200 req/hr per IP)",
+      "options": {
+        "baseURL": "https://api.kilo.ai/api/gateway/v1",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "whitelist": [
+        "inclusionai/ling-3.0-flash-fin:free",
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "models": {
+        "nvidia/nemotron-3-super-120b-a12b:free": {
+          "name": "Nemotron 3 Super 120B (Kilo free) - ~0.9s TTFT, 262k ctx",
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "nvidia/nemotron-3.5-lightning:free": {
+          "name": "Nemotron 3.5 Lightning (Kilo free) - ~0.85s TTFT, 1M ctx",
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free": {
+          "name": "Nemotron 3 Nano Omni 30B (Kilo free) - multimodal, ~0.9s TTFT",
+          "limit": {
+            "context": 256000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "inclusionai/ling-3.0-flash-fin:free": {
+          "name": "Ling 3.0 Flash Fin (Kilo free) - ~0.98s TTFT",
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        },
+        "minimax/minimax-m2.7:free": {
+          "name": "MiniMax M2.7 (Kilo free) - intel 39, 74 t/s, 197k ctx",
+          "limit": {
+            "context": 196608,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.7,
+            "top_p": 0.95
+          }
+        },
+        "dots-studio/dots-3-note-preview:free": {
+          "name": "Dots 3 Note Preview (Kilo free) - ~1.07s TTFT, 512k ctx",
+          "limit": {
+            "context": 512000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        }
+      }
+    },
+    "ovh": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OVHcloud AI Endpoints (keyless, EU privacy)",
+      "options": {
+        "baseURL": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "whitelist": [
+        "gpt-oss-120b",
+        "gpt-oss-20b",
+        "Meta-Llama-3_3-70B-Instruct",
+        "Qwen3-32B"
+      ],
+      "models": {
+        "gpt-oss-120b": {
+          "name": "GPT-OSS 120B (OVH keyless) - EU privacy, intel 24",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "gpt-oss-20b": {
+          "name": "GPT-OSS 20B (OVH keyless) - EU privacy, fast",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "low"
+            },
+            "balanced": {
+              "reasoningEffort": "low"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "Meta-Llama-3_3-70B-Instruct": {
+          "name": "Llama 3.3 70B (OVH keyless) - intel 9, 87 t/s",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        },
+        "Qwen3-32B": {
+          "name": "Qwen3 32B (OVH keyless) - reasoning",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        }
+      }
+    },
+    "zai": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Z.ai (Zhipu) - GLM free tier",
+      "options": {
+        "baseURL": "https://api.z.ai/api/paas/v4",
+        "apiKey": "{env:ZAI_API_KEY}",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "whitelist": [
+        "glm-4.5-flash"
+      ],
+      "models": {
+        "glm-4.5-flash": {
+          "name": "GLM-4.5 Flash (Z.ai free) - 1000 RPD",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        }
+      }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama Cloud (free credits)",
+      "options": {
+        "baseURL": "https://ollama.com/v1",
+        "apiKey": "{env:OLLAMA_API_KEY}",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "whitelist": [
+        "gpt-oss:120b",
+        "gpt-oss:20b",
+        "nemotron-3-super",
+        "nemotron-3-ultra",
+        "nemotron-3-nano:30b",
+        "gemma4:31b"
+      ],
+      "models": {
+        "gpt-oss:120b": {
+          "name": "GPT-OSS 120B (Ollama) - intel 24, 151 t/s",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "high"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "concise": {
+              "reasoningEffort": "low"
+            }
+          }
+        },
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B (Ollama) - fastest free, 131k ctx",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          },
+          "variants": {
+            "reasoning": {
+              "reasoningEffort": "low"
+            },
+            "balanced": {
+              "reasoningEffort": "low"
+            },
+            "concise": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "nemotron-3-super": {
+          "name": "Nemotron 3 Super 120B (Ollama) - 142 t/s, 1M ctx",
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          }
+        },
+        "nemotron-3-ultra": {
+          "name": "Nemotron 3 Ultra 550B (Ollama) - 170 t/s, 262k ctx",
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          }
+        },
+        "nemotron-3-nano:30b": {
+          "name": "Nemotron 3 Nano 30B (Ollama) - small/fast, 1M ctx",
+          "limit": {
+            "context": 1000000,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": true,
+          "options": {
+            "temperature": 1.0,
+            "top_p": 0.95
+          }
+        },
+        "gemma4:31b": {
+          "name": "Gemma 4 31B (Ollama) - Google open, 262k ctx",
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
           }
         }
       }
     },
     "opencode": {
+      "whitelist": [
+        "deepseek-v4-flash-free",
+        "muse-spark-1.2-contributor-free",
+        "muse-spark-1.3-contributor-free",
+        "mimo-v2.5-free",
+        "ling-3.0-flash-fin-free",
+        "nemotron-3-ultra-free",
+        "nemotron-3.5-lightning-free",
+        "laguna-s-2.1-free"
+      ],
       "blacklist": [
         "Grok 4.6",
         "GLM-5.3-Flash",
@@ -811,50 +1267,55 @@
       ]
     }
   },
-  "small_model": "nvidia/nemotron-3-nano-30b-a3b",
+  "small_model": "groq/openai/gpt-oss-20b",
   "enabled_providers": [
     "local",
     "openrouter",
     "nim",
-    "opencode"
+    "opencode",
+    "groq",
+    "kilo",
+    "ovh",
+    "zai",
+    "ollama"
   ],
   "plugin": [
  [
   "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
   {
-   "tokenOptimization": {
-    "rtk": {
-     "enabled": true
-    },
-    "dedup": {
-     "enabled": true,
-     "maxEntries": 200,
-     "ttlMs": 600000
-    },
-    "readCompact": {
-     "enabled": true,
-     "collapseRepeatedLines": true,
-     "trimTrailingWs": true
-    },
-    "wrap": {
-     "enabled": true,
-     "maxLineWidth": 120
-    },
-    "history": {
-     "enabled": false,
-     "keepLastTurns": 32
-    },
-    "systemPrompt": {
-     "enabled": true,
-     "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
+"tokenOptimization": {
+     "rtk": {
+      "enabled": true
+     },
+     "dedup": {
+      "enabled": true,
+      "maxEntries": 200,
+      "ttlMs": 600000
+     },
+     "readCompact": {
+      "enabled": true,
+      "collapseRepeatedLines": true,
+      "trimTrailingWs": true
+     },
+     "wrap": {
+      "enabled": true,
+      "maxLineWidth": 120
+     },
+     "history": {
+      "enabled": false,
+      "keepLastTurns": 32
+     },
+     "systemPrompt": {
+      "enabled": true,
+      "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
+     }
     }
-   }
   }
  ],
  "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
-  "@thd3178/opencode-poorguy-ratelimit",
-  "@bdliyq/opencode-rate-limit-retry",
-  "opencode-swarm-plugin/plugin",
+ "@thd3178/opencode-poorguy-ratelimit",
+ "@bdliyq/opencode-rate-limit-retry",
+ "opencode-swarm-plugin/plugin",
  "opencode-throughput",
  "opencode-bash-guard",
  "opencode-scheduler",
@@ -863,9 +1324,9 @@
  "@openspoon/subtask2",
  "opencode-todo-progress",
  "@fleetingecho/opencode-handoff"
-],
+  ],
   "permission": {
-    "bash": {
+      "bash": {
       "*": "ask",
       "ls *": "allow",
       "cat *": "allow",
@@ -1051,6 +1512,17 @@
       "enabled": true,
       "headers": {
         "Authorization": "Bearer {env:OBSIDIAN_API_KEY}"
+      }
+    },
+    "swarm-tools": {
+      "type": "local",
+      "command": [
+        "node",
+        "/home/work/.config/opencode/node_modules/opencode-swarm-plugin/dist/mcp/swarm-mcp-server.cjs"
+      ],
+      "enabled": true,
+      "environment": {
+        "CLAUDE_PLUGIN_ROOT": "/home/work/.config/opencode/node_modules/opencode-swarm-plugin"
       }
     }
   }

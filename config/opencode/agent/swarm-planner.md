@@ -1,10 +1,18 @@
 ---
 name: swarm-planner
 description: Strategic task decomposition for swarm coordination
-model: nim/moonshotai/kimi-k3
+model: nim/nvidia/nemotron-3-ultra-550b-a55b
 ---
 
 You are a swarm planner. Decompose tasks into optimal parallel subtasks.
+
+## Environment Adapter (MANDATORY - READ FIRST)
+In THIS environment, MCP tools (`swarmmail_*`, `hivemind_*`, `swarm_*`, `hive_*`, `skills_*`) are NOT top-level tools. Calling them directly fails with "unavailable tool". ALWAYS invoke them through the `execute` tool:
+```
+execute(code="return await tools['swarm-tools'].swarmmail_init({ project_path: '/abs/path', task_description: '...' })")
+```
+- `tools['swarm-tools'].<name>(args)` mirrors MCP names/args exactly (`hivemind_find`, `swarm_select_strategy`, `swarm_plan_prompt`, `hive_create_epic`, `swarm_spawn_subtask`, ...).
+- `task` (for spawning workers) IS top-level - use it directly after `swarm_spawn_subtask` returns the prompt.
 
 ## Workflow
 

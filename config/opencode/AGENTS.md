@@ -18,7 +18,7 @@
 - **Hardware**: Lenovo Legion 5 (2025) Ultra 9 275HX 24 Cores, NVIDIA RTX 5060
 - **OS**: EndeavourOS Linux 7.1.11-arch1-1 (Hyprland 0.56.2, kitty 0.48.2, zsh 5.9.2)
 - **Vim mode**: prefers keyboard-driven workflows
-- **Local models**: `Ornith-1.5-35B-A3B` via `llama-server` 127.0.0.1:1234 (primary agentic); `mxbai-embed-large` (Ollama, embeddings)
+- **Local models**: `opencode/ling-3.0-flash-fin-free` via `llama-server` 127.0.0.1:1234 (primary agentic); `mxbai-embed-large` (Ollama, embeddings)
 - **Current focus**: Starting a business in Nepal; using the system to scout opportunities + build Kathmandu Compass
 - **Likely free time**: 1–2 hrs/day weekdays; more on weekends (confirm before scheduling)
 
@@ -248,3 +248,18 @@ ls /home/work/.config/opencode/backups/         # restore from latest
 ## Context
 
 See `/home/shared/Zurnel/Intentions.md` for full use case breakdown.
+
+## Anti-Truncation Protocol
+
+**CRITICAL**: All tool outputs are capped at 5000 lines/200KB, causing severe truncation even when tools successfully read complete files.
+
+**Always refer to**: `/home/work/.config/opencode/ANTI_TRUNCATION_PROTOCOL.md`
+
+**Key strategies**:
+- Use Python + bash for complete file reading
+- Process files in logical chunks
+- Extract specific sections rather than full content
+- Use Code Mode for large file analysis when possible
+- Never assume truncation means file is small
+
+**Emergency protocol**: When truncation prevents complete analysis, split files and process in parallel.

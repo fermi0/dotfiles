@@ -541,6 +541,14 @@ hl.window_rule({
     -- TODO: review rule: "idle_inhibit fullscreen"
 })
 
+-- Disable HDR/color-management auto-switch for NON-video players only
+-- Video players like mpv should be able to use HDR when appropriate
+hl.window_rule({
+    name  = "obsidian_no_auto_hdr",
+    match = { class = "^md.obsidian.Obsidian$" },
+    no_auto_hdr = true,
+})
+
 -- FLOAT
 
 hl.window_rule({

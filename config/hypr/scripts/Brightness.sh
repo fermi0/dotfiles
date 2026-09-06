@@ -46,8 +46,8 @@ change_brightness() {
     current=$(get_brightness)
     new=$((current + delta))
 
-    # Clamp between 5 and 100
-    (( new < 5 )) && new=5
+    # Clamp between 0 and 100
+    (( new < 0 )) && new=0
     (( new > 100 )) && new=100
 
     brightnessctl -d "$device" set "${new}%"

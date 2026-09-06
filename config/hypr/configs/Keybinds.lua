@@ -72,7 +72,10 @@ hl.bind(mainMod .. " + " .. "C", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/
 
 -- bindd = $mainMod CTRL SHIFT, R, rofi theme selector (modified), exec, pkill rofi || true && $scriptsDir/RofiThemeSelector-modified.sh #MODIFIED
 
-hl.bind(mainMod .. " + " .. "F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + " .. "F", hl.dsp.window.fullscreen({mode="maximized"}))
+
+-- F11 for Obsidian/Electron apps - use Hyprland fullscreen instead of app's own
+hl.bind("F11", hl.dsp.window.fullscreen({mode="maximized"}))
 
 --MODIFIED
 
@@ -208,11 +211,11 @@ hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "Space", hl.dsp.window.cycle_next())
 
 -- Special Keys / Hot Keys
+hl.bind("xf86audioraisevolume", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Volume.sh --inc"), { locked
+            = true, repeating = true })
 
-hl.bind("xf86audioraisevolume", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Volume.sh --inc"), { locked = true })
-
-hl.bind("xf86audiolowervolume", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Volume.sh --dec"), { locked = true })
-
+hl.bind("xf86audiolowervolume", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Volume.sh --dec"), { locked
+            = true, repeating = true })
 hl.bind("xf86AudioMicMute", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Volume.sh --toggle-mic"), { locked = true })
 
 hl.bind("xf86audiomute", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Volume.sh --toggle"), { locked = true })

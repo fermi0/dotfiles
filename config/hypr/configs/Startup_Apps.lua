@@ -57,8 +57,6 @@ local livewallpaper = ""
 
 
 
--- exec-once = easyeffects
-
 -- Clipboard manager
 
 
