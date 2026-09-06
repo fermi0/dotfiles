@@ -3,4 +3,4 @@ Description=Zurnel vault: commit pending changes (30 min)
 
 [Service]
 Type=oneshot
-ExecStart=%h/scripts/zurnel-snapshot.sh
+ExecStart=%h/scripts/system/zurnel-snapshot.sh
