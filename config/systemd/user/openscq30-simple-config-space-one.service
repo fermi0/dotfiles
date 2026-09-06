@@ -1,0 +1,14 @@
+[Unit]
+Description=Auto-configure OpenSCQ30 settings for Soundcore Space One
+Documentation=file:///home/work/.local/bin/openscq30-simple-config-space-one.sh
+After=default.target
+Wants=default.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/work/.local/bin/openscq30-simple-config-space-one.sh
+TimeoutStartSec=30
+Restart=no
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=OpenSCQ30 Auto-Configuration
+Exec=/home/work/.local/bin/openscq30-simple-config.sh
+Terminal=false
+Categories=Audio;Settings;
+StartupNotify=false
+X-GNOME-Autostart-enabled=true

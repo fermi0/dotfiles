@@ -1,0 +1,16 @@
+[Unit]
+Description=Auto-configure OpenSCQ30 settings for Soundcore Liberty 4 NC
+Documentation=file:///home/work/.local/bin/openscq30-simple-config.sh
+After=default.target
+Wants=default.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/work/.local/bin/openscq30-simple-config.sh
+TimeoutStartSec=30
+Restart=no
+User=%U
+Group=%G
+
+[Install]
+WantedBy=default.target
