@@ -11,7 +11,9 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 
 ## Space One (oratory1990) — MAC: F4:9D:8A:1C:BE:F6
 
-- Preamp: -4.7 dB (not applied in filter-graph; F32LE processing prevents internal clipping)
+- Preamp: -4.7 dB — **APPLIED 2026-09-07** as `bq_raw` gain node (b0=0.582103) first in chain
+  (guarantees no clipping at the LDAC 24-bit encode stage; `label:gain` does NOT exist in the
+  builtin plugin — `bq_raw` with a `config.coefficients` array is the working form)
 - 10 bands:
 
 | # | Type | Fc (Hz) | Q | Gain (dB) |
@@ -29,7 +31,7 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 
 ## Liberty 4 NC (Rtings Brüel & Kjær 5128) — MAC: E8:26:CF:83:B9:46
 
-- Preamp: -2.5 dB (not applied in filter-graph; F32LE processing prevents internal clipping)
+- Preamp: -2.5 dB — **APPLIED 2026-09-07** as `bq_raw` gain node (b0=0.749894) first in chain
 - 10 bands:
 
 | # | Type | Fc (Hz) | Q | Gain (dB) |
@@ -37,7 +39,7 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 | 1 | bq_peaking | 45 | 2.07 | +0.3 |
 | 2 | bq_peaking | 71 | 2.62 | -0.3 |
 | 3 | bq_lowshelf | 105 | 0.7 | -6.6 |
-| 4 | bq_peaking | 105 | 2.1 | -2.1 |
+| 4 | bq_peaking | 105 | 0.87 | -2.1 |
 | 5 | bq_peaking | 258 | 1.5 | -0.1 |
 | 6 | bq_peaking | 579 | 0.94 | +2.4 |
 | 7 | bq_peaking | 1229 | 2.48 | +0.3 |
@@ -58,7 +60,8 @@ Note: Filters 8 and 9 form a steep notch+boost combo around 5 kHz. Net effect is
 
 - WirePlumber's `filter-graph.lua` matches BT device nodes by `node.name` pattern
 - Applies `audioconvert.filter-graph.0` param inline to the audioconvert node
-- EQ processed in F32LE (32-bit float) — no clipping risk in DSP
+- EQ processed in F32LE (32-bit float) — no clipping risk in DSP; preamp additionally protects
+  the float→24-bit LDAC encode stage
 - Automatic: EQ loads on BT connect, removes on disconnect
 - Fallback: laptop speaker plays flat (no EQ) when BT disconnected
 

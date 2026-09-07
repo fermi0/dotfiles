@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenSCQ30 watchdog — apply Soundcore settings on every Bluetooth connect
+Documentation=file:///home/work/.local/bin/openscq30-watchdog.sh
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=/home/work/.local/bin/openscq30-watchdog.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

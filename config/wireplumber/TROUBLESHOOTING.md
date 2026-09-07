@@ -223,6 +223,28 @@ Verified live on the running system (session `ses_f8cfa652dffe4HL7HDjjykEqsn`).
 | Default sink persisted | `~/.local/state/wireplumber/default-nodes` → `bluez_output.E8_26_CF_83_B9_46.1` |
 | LDAC hq config | `51-ldac-hq.conf` (applied at device-added via monitor.bluez.rules) |
 | EQ filter-graph | `52-bt-eq.conf` (applied at sink-added via node.filter-graph.rules) |
+| openscq30 device settings | `openscq30-watchdog.service` (see below) |
+
+### openscq30 Watchdog (2026-09-07 — replaces broken boot-time oneshots)
+
+**Problem**: `openscq30-auto-config.service` + `openscq30-simple-config-space-one.service`
+(oneshot, `After=default.target`) failed at every boot — BT headphones connect *after* login,
+so the scripts exited with "Device not connected via bluetooth" (Space One script's
+5×2s retry was also too short). XDG autostart entries duplicated the same broken scripts.
+
+**Fix**: `~/.local/bin/openscq30-watchdog.sh` + `openscq30-watchdog.service`
+(Type=simple, Restart=always). Polls `bluetoothctl info` every 5s, and on every
+disconnected→connected transition waits 4s for the RFCOMM control channel, then applies
+the full desired state via `openscq30-cli` (4 retries × 3s). Verified: live
+disconnect/reconnect of Liberty 4 NC detected and re-configured within ~15s.
+
+- Liberty 4 NC: `ambientSoundMode=NoiseCanceling noiseCancelingMode=Manual
+  manualNoiseCanceling=5 environmentDetection=false windNoiseSuppression=false`
+- Space One: `ambientSoundMode=NoiseCanceling noiseCancelingMode=Custom
+  manualNoiseCanceling=5 windNoiseSuppression=false ldac=true`
+
+The old oneshot services are **disabled** and the XDG autostart entries removed.
+The old scripts remain in `scripts/audio/` for manual use only.
 
 ### Parametric EQ (10-band biquad, confirmed loaded)
 
@@ -283,6 +305,29 @@ the syntax is wrong.
 ### Symptom: "section 'wireplumber.profiles' is used as-is" — my profile override is ignored
 **Cause**: WirePlumber's main profile cannot be overridden from user conf.d/. Use
 `node.filter-graph.rules` instead (which works without profile override).
+
+## Preamp (2026-09-07)
+
+AutoEQ preamps are applied as a `bq_raw` pure-gain node FIRST in each chain:
+- Liberty 4 NC: -2.5 dB → `b0 = 0.749894` (10^(-2.5/20))
+- Space One: -4.7 dB → `b0 = 0.582103` (10^(-4.7/20))
+
+**Gotchas (learned the hard way)**:
+- `label = gain` does NOT exist in the builtin filter-graph plugin → "cannot create label gain".
+  The `gain` strings in the .so belong to the mixer's internal ports.
+- `bq_raw` takes coefficients via a **`config` section** (`config = { coefficients = [ { rate = 96000
+  b0 = ... a0 = 1.0 ... } ] }`), NOT `control = {...}`. Without it: "cannot create plugin instance 0:
+  Invalid argument". Closest-rate match wins, so one entry at 96000 covers all rates.
+- `mixer` is NOT usable as a gain stage: its 8 unconnected inputs would become graph ports.
+
+## Symptom: A2DP profiles vanish after `systemctl --user restart wireplumber`
+
+After a WirePlumber restart, already-connected BT devices can come back with ONLY
+`headset-head-unit*` profiles (sinks show `codec = msbc`). BlueZ does not re-offer A2DP to
+already-connected devices.
+
+**Fix**: `bluetoothctl disconnect <MAC>` + `bluetoothctl connect <MAC>` for each device.
+A2DP returns, LDAC HQ and the EQ re-apply automatically (watchdog re-applies openscq30 settings).
 
 ## Force-Enable Verbose WirePlumber Logging
 
