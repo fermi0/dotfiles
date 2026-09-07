@@ -1,0 +1,9 @@
+node_modules
+package.json
+package-lock.json
+bun.lock
+.gitignore
+
+# opencode-poorguy-ratelimit runtime state
+.poorguy-claims/
+opencode-poorguy-ratelimit.log
