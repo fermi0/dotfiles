@@ -1313,7 +1313,7 @@
   }
  ],
  "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
- "@thd3178/opencode-poorguy-ratelimit",
+  "file:///home/work/.config/opencode/plugins/opencode-poorguy-ratelimit",
  "@bdliyq/opencode-rate-limit-retry",
  "opencode-swarm-plugin/plugin",
  "opencode-throughput",

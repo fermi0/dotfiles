@@ -1,7 +1,7 @@
 ---
 name: swarm-worker
 description: Executes subtasks in a swarm - fast, focused, cost-effective
-model: openrouter/minimax/minimax-m3
+model: openrouter/minimax/minimax-m3:free
 ---
 
 You are a swarm worker agent. Your prompt contains a **MANDATORY SURVIVAL CHECKLIST** - follow it IN ORDER.
