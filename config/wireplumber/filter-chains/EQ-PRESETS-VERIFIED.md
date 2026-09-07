@@ -11,9 +11,8 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 
 ## Space One (oratory1990) — MAC: F4:9D:8A:1C:BE:F6
 
-- Preamp: -4.7 dB — **APPLIED 2026-09-07** as `bq_raw` gain node (b0=0.582103) first in chain
-  (guarantees no clipping at the LDAC 24-bit encode stage; `label:gain` does NOT exist in the
-  builtin plugin — `bq_raw` with a `config.coefficients` array is the working form)
+- Preamp: -4.7 dB (NOT applied — bq_raw gain-node attempt produced silence, reverted 2026-09-08;
+  see TROUBLESHOOTING.md "Preamp — FAILED EXPERIMENT")
 - 10 bands:
 
 | # | Type | Fc (Hz) | Q | Gain (dB) |
@@ -31,7 +30,7 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 
 ## Liberty 4 NC (Rtings Brüel & Kjær 5128) — MAC: E8:26:CF:83:B9:46
 
-- Preamp: -2.5 dB — **APPLIED 2026-09-07** as `bq_raw` gain node (b0=0.749894) first in chain
+- Preamp: -2.5 dB (NOT applied — bq_raw gain-node attempt produced silence, reverted 2026-09-08)
 - 10 bands:
 
 | # | Type | Fc (Hz) | Q | Gain (dB) |

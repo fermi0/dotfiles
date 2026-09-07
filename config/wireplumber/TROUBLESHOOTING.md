@@ -306,19 +306,22 @@ the syntax is wrong.
 **Cause**: WirePlumber's main profile cannot be overridden from user conf.d/. Use
 `node.filter-graph.rules` instead (which works without profile override).
 
-## Preamp (2026-09-07)
+## Preamp — FAILED EXPERIMENT (2026-09-08, reverted)
 
-AutoEQ preamps are applied as a `bq_raw` pure-gain node FIRST in each chain:
-- Liberty 4 NC: -2.5 dB → `b0 = 0.749894` (10^(-2.5/20))
-- Space One: -4.7 dB → `b0 = 0.582103` (10^(-4.7/20))
+Attempted to add AutoEQ preamps (-2.5/-4.7 dB) as a `bq_raw` pure-gain node first in each chain.
+**Result: total silence on both devices despite the graph loading with ZERO errors.**
+The config (`config = { coefficients = [ { rate = 96000 b0 = ... } ] }`) parses, the graph links
+(`preamp:Out -> eq_0:In`), no "cannot create" errors — but the node outputs digital silence.
+Root cause unknown (likely the Lua→JSON config serialization mangling the nested coefficients array).
 
-**Gotchas (learned the hard way)**:
-- `label = gain` does NOT exist in the builtin filter-graph plugin → "cannot create label gain".
-  The `gain` strings in the .so belong to the mixer's internal ports.
-- `bq_raw` takes coefficients via a **`config` section** (`config = { coefficients = [ { rate = 96000
-  b0 = ... a0 = 1.0 ... } ] }`), NOT `control = {...}`. Without it: "cannot create plugin instance 0:
-  Invalid argument". Closest-rate match wins, so one entry at 96000 covers all rates.
-- `mixer` is NOT usable as a gain stage: its 8 unconnected inputs would become graph ports.
+**Lessons**:
+- `label = gain` does NOT exist in the builtin plugin ("cannot create label gain").
+- `bq_raw` with `control = {...}` → "cannot create plugin instance: Invalid argument".
+- `bq_raw` with `config = { coefficients = [...] }` → loads clean, outputs SILENCE. Do not use.
+- `mixer` unusable as gain stage (8 unconnected inputs become graph ports).
+- **State checks (running, no errors) do NOT prove audibility. Always verify with actual listening.**
+- Preamp remains UNAPPLIED. The +17.4 dB Liberty band can theoretically clip at the LDAC 24-bit
+  encode stage on very hot content; accepted risk (was the working state for days).
 
 ## Symptom: A2DP profiles vanish after `systemctl --user restart wireplumber`
 
