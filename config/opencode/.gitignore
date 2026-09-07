@@ -7,3 +7,8 @@ bun.lock
 # opencode-poorguy-ratelimit runtime state
 .poorguy-claims/
 opencode-poorguy-ratelimit.log
+
+# auto-generated daily reflection systemd units
+config/systemd/user/daily-reflection-*.service
+config/systemd/user/daily-reflection-*.timer
+config/systemd/user/timers.target.wants/daily-reflection-*.timer
