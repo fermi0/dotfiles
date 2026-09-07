@@ -1,6 +1,6 @@
 # dotfiles
 
-> **The exoskeleton for a solo founder in Kathmandu who runs local LLMs, automates browsers, and refuses pseudoscience.**
+> **Reproducible Linux desktop + AI-augmented development environment. Evidence-based. No pseudoscience.**
 
 ---
 
@@ -11,7 +11,7 @@ A living system of configuration, scripts, and AI-agent tooling — versioned, s
 ```
 dotfiles/
 ├── config/              # ~/.config/ — 40+ app configs (opencode, hypr, kitty, pipewire, nvim…)
-├── scripts/             # ~/scripts/ — system, business, daily planning utilities
+├── scripts/             # ~/scripts/ — system, daily planning utilities
 ├── agents/              # ~/.agents/ — opencode skills (linux-poweruser, lemma, browser-control…)
 ├── os/                  # Pacman/AUR/Flatpak manifests for full system restore
 ├── data/                # Schema + seed only (runtime DBs gitignored)
@@ -19,31 +19,20 @@ dotfiles/
 └── README.md            # ← you are here
 ```
 
-**No copies. No backups beyond git.** Everything in `~/.config/`, `~/scripts/`, `~/data/`, `~/.lemma/` is a symlink into this repo.
-
 ---
 
-## The stack (what actually runs)
+## The stack
 
 | Layer | Tools |
 |-------|-------|
 | **AI Agent Runtime** | OpenCode (15 plugins: swarm, sentinel, lemma memory, poorguy-ratelimit, token-optimizer, handoff…) |
 | **Local Models** | `ling-3.0-flash-fin-free` @ llama-server:1234 · `mxbai-embed-large` @ Ollama |
 | **Browser Automation** | Playwright MCP — e2e tests, scraping, QA |
-| **Vault / Second Brain** | Obsidian (Zurnel) — 4-stage flow: Inbox → Daily → Projects → Archive |
-| **Planning** | Evidence-based daily system: ultradian 90/20, implementation intentions (Gollwitzer d=0.65), spaced repetition (Dunlosky d=0.62), Three Good Things (Seligman) |
-| **Business** | Nepal-focused: Kathmandu Compass (diaspora BI), CBMS VAT SaaS, sector dossiers |
-| **Linux** | systemd user units, pacman/yay, hyprland lua, pipewire/wireplumber, kitty GPU-accelerated |
-
----
-
-## Anti-patterns (what we explicitly don't do)
-
-- ❌ MBTI, Enneagram, astrology, manifestation, "law of attraction"
-- ❌ Personality quizzes — we track **behavior graphs**, not traits
-- ❌ `rm` — use `gio trash` (recoverable deletion only)
-- ❌ Untracked runtime state — `.poorguy-claims/`, `*.log`, daily systemd units are gitignored
-- ❌ Goals without systems — "You fall to the level of your systems" (Clear)
+| **Vault / Second Brain** | Obsidian — 4-stage flow: Inbox → Daily → Projects → Archive |
+| **Planning** | Evidence-based daily system: ultradian 90/20, implementation intentions (Gollwitzer d=0.65), spaced repetition (Dunlosky d=0.62) |
+| **Linux Desktop** | Hyprland (lua), PipeWire/WirePlumber, kitty GPU-accelerated, btop, cava, lf |
+| **Editor** | Neovim (lazy.nvim), Helix |
+| **Shell** | zsh, starship, fzf, zoxide, atuin |
 
 ---
 
@@ -83,7 +72,6 @@ opencode mcp add lemma npx @lemma/mcp@latest
 | Understand the agent system | `meta/AGENTS.md` |
 | See the vault structure | `~/Work/Zurnel/_index.md` |
 | Run daily planning | `scripts/daily/generate_daily.py` |
-| Scan Nepal business news | `scripts/business/daily-news-scan.sh` |
 | Debug Linux audio | `config/pipewire/TROUBLESHOOTING.md` |
 | Add a new opencode skill | `~/.config/opencode/skill/` |
 
@@ -91,16 +79,12 @@ opencode mcp add lemma npx @lemma/mcp@latest
 
 ## Philosophy
 
-> **"Motivation is fleeting. Systems are reliable."**
+> **"Motivation is fleeting. Systems are reliable."** — James Clear
 
-This repo *is* the system. The code, the configs, the agents, the daily notes — they're not documentation of what I did. They're the infrastructure that lets me do it again tomorrow, better.
+This repo *is* the system. The code, the configs, the agents — they're not documentation of what I did. They're the infrastructure that lets me do it again tomorrow, better.
 
 ---
 
 ## License
 
 MIT — steal freely, attribute if you feel like it.
-
----
-
-*Built in Kathmandu. Runs on evidence. No pseudoscience.*
