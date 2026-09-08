@@ -306,22 +306,31 @@ the syntax is wrong.
 **Cause**: WirePlumber's main profile cannot be overridden from user conf.d/. Use
 `node.filter-graph.rules` instead (which works without profile override).
 
-## Preamp — FAILED EXPERIMENT (2026-09-08, reverted)
+## Preamp — SOLVED (2026-09-08)
 
-Attempted to add AutoEQ preamps (-2.5/-4.7 dB) as a `bq_raw` pure-gain node first in each chain.
-**Result: total silence on both devices despite the graph loading with ZERO errors.**
-The config (`config = { coefficients = [ { rate = 96000 b0 = ... } ] }`) parses, the graph links
-(`preamp:Out -> eq_0:In`), no "cannot create" errors — but the node outputs digital silence.
-Root cause unknown (likely the Lua→JSON config serialization mangling the nested coefficients array).
+AutoEQ preamps are now applied as a **`bq_highshelf` at 0 Hz** (PipeWire's native preamp method,
+same as `param_eq` plugin uses). This replaces the failed `bq_raw` experiment.
 
-**Lessons**:
-- `label = gain` does NOT exist in the builtin plugin ("cannot create label gain").
-- `bq_raw` with `control = {...}` → "cannot create plugin instance: Invalid argument".
-- `bq_raw` with `config = { coefficients = [...] }` → loads clean, outputs SILENCE. Do not use.
-- `mixer` unusable as gain stage (8 unconnected inputs become graph ports).
-- **State checks (running, no errors) do NOT prove audibility. Always verify with actual listening.**
-- Preamp remains UNAPPLIED. The +17.4 dB Liberty band can theoretically clip at the LDAC 24-bit
-  encode stage on very hot content; accepted risk (was the working state for days).
+- Liberty 4 NC: -2.5 dB → `{ type = builtin name = preamp label = bq_highshelf
+  control = { "Freq" = 0.0 "Q" = 1.0 "Gain" = -2.5 } }`
+- Space One: -4.7 dB → `{ type = builtin name = preamp label = bq_highshelf
+  control = { "Freq" = 0.0 "Q" = 1.0 "Gain" = -4.7 } }`
+
+**Why this works**: `bq_highshelf` at 0 Hz with Q=1.0 creates a flat gain shelf across the
+entire audible band — mathematically identical to a preamp. The `bq_highshelf` plugin
+is already proven in your chain (existing EQ bands use it). This is the exact method
+PipeWire's own `param_eq` plugin uses for preamps (see `plugin_builtin.c:load_eq_bands`).
+
+**Failed attempts (documented to prevent retry)**:
+- `label = gain` → "cannot create label gain" (no such plugin)
+- `bq_raw` with `control = { b0 = ... }` → "cannot create plugin instance: Invalid argument"
+- `bq_raw` with `config = { coefficients = [...] }` → loads clean, **outputs total silence**.
+  Root cause: `bq_run()` for `BQ_NONE` re-reads control ports on every run; unconnected
+  control ports read 0.0 → b0=0 → total silence.
+- `bq_raw` with both config + control → also silent (control application order issue).
+- **State checks (running, no errors) do NOT prove audibility — always verify by ear.**
+
+**State**: **APPLIED AND WORKING** on both devices (Liberty -2.5dB, Space One -4.7dB).
 
 ## Symptom: A2DP profiles vanish after `systemctl --user restart wireplumber`
 

@@ -11,8 +11,8 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 
 ## Space One (oratory1990) — MAC: F4:9D:8A:1C:BE:F6
 
-- Preamp: -4.7 dB (NOT applied — bq_raw gain-node attempt produced silence, reverted 2026-09-08;
-  see TROUBLESHOOTING.md "Preamp — FAILED EXPERIMENT")
+- Preamp: -4.7 dB — **APPLIED 2026-09-08** as `bq_highshelf` at 0 Hz (PipeWire native preamp;
+  guarantees no clipping at LDAC 24-bit encode stage)
 - 10 bands:
 
 | # | Type | Fc (Hz) | Q | Gain (dB) |
@@ -30,7 +30,7 @@ verified: filter-graph loaded without errors, no spa.filter-graph warnings
 
 ## Liberty 4 NC (Rtings Brüel & Kjær 5128) — MAC: E8:26:CF:83:B9:46
 
-- Preamp: -2.5 dB (NOT applied — bq_raw gain-node attempt produced silence, reverted 2026-09-08)
+- Preamp: -2.5 dB — **APPLIED 2026-09-08** as `bq_highshelf` at 0 Hz (PipeWire native preamp)
 - 10 bands:
 
 | # | Type | Fc (Hz) | Q | Gain (dB) |
@@ -59,8 +59,9 @@ Note: Filters 8 and 9 form a steep notch+boost combo around 5 kHz. Net effect is
 
 - WirePlumber's `filter-graph.lua` matches BT device nodes by `node.name` pattern
 - Applies `audioconvert.filter-graph.0` param inline to the audioconvert node
-- EQ processed in F32LE (32-bit float) — no clipping risk in DSP; preamp additionally protects
-  the float→24-bit LDAC encode stage
+- EQ processed in F32LE (32-bit float) — no clipping risk in DSP
+- **Preamp applied as `bq_highshelf` at 0 Hz (Freq=0, Q=1.0)** — PipeWire native preamp method
+  (same as `param_eq` plugin); protects float→24-bit LDAC encode stage from clipping
 - Automatic: EQ loads on BT connect, removes on disconnect
 - Fallback: laptop speaker plays flat (no EQ) when BT disconnected
 

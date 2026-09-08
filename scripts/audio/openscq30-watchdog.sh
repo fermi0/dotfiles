@@ -61,6 +61,39 @@ if ! command -v openscq30-cli &>/dev/null; then
     exit 1
 fi
 
+# A2DP health: after a WirePlumber restart, already-connected devices can come
+# back with NO a2dp-sink profile at all (HFP/mSBC only). BlueZ won't re-offer
+# A2DP until the device reconnects. Detect that exact broken state and force a
+# reconnect. Safe: during legitimate HFP use (calls) the a2dp-sink profile still
+# EXISTS on the card — it only vanishes in the broken state.
+# Rate-limited to one recovery attempt per device per 60s.
+a2dp_broken() {
+    local mac="$1"
+    local card="bluez_card.${mac//:/_}"
+    local block
+    block=$(pactl list cards 2>/dev/null | sed -n "/Name: $card/,/^Card #/p")
+    [ -z "$block" ] && return 1   # card missing entirely while connected = broken
+    echo "$block" | grep -q "a2dp-sink:" && return 1   # a2dp exists = healthy
+    return 0
+}
+
+declare -A last_recovery
+
+recover_a2dp() {
+    local mac="$1" name="$2"
+    local now last
+    now=$(date +%s)
+    last=${last_recovery[$mac]:-0}
+    if [ $((now - last)) -lt 60 ]; then
+        return 0
+    fi
+    last_recovery[$mac]=$now
+    warn "$name connected but A2DP profile missing — forcing reconnect"
+    bluetoothctl disconnect "$mac" &>/dev/null
+    sleep 3
+    bluetoothctl connect "$mac" &>/dev/null
+}
+
 log "watchdog started (poll=${POLL_INTERVAL}s)"
 
 liberty_prev=0
@@ -79,6 +112,10 @@ while true; do
         fi
     fi
     liberty_prev=$cur
+    if [ "$cur" = 1 ] && a2dp_broken "E8:26:CF:83:B9:46"; then
+        recover_a2dp "E8:26:CF:83:B9:46" "Liberty 4 NC"
+        liberty_prev=0
+    fi
 
     if is_connected "F4:9D:8A:1C:BE:F6"; then cur=1; else cur=0; fi
     if [ "$cur" = 1 ] && [ "$space_one_prev" = 0 ]; then
@@ -91,6 +128,10 @@ while true; do
         fi
     fi
     space_one_prev=$cur
+    if [ "$cur" = 1 ] && a2dp_broken "F4:9D:8A:1C:BE:F6"; then
+        recover_a2dp "F4:9D:8A:1C:BE:F6" "Space One"
+        space_one_prev=0
+    fi
 
     sleep $POLL_INTERVAL
 done
