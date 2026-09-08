@@ -1,0 +1,36 @@
+{
+  "name": "opencode-poorguy-ratelimit-local",
+  "version": "1.8.1-multisession",
+  "description": "OpenCode plugin for multi-key rotation with sliding-window rate limiting",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node",
+    "dev": "bun build src/index.ts --outdir dist --target node --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "bun src/self-test.ts && bun test/header-rotation.ts"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "rate-limit",
+    "sliding-window",
+    "multi-key",
+    "rotation"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "^1.0.0"
+  }
+}
