@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "_updated": "2026-09-04 v3: Removed GLM-4.7-flash (30B-A3B only), groq/compound-mini, north-mini-code, stepfun/step-3.7-flash, mistral-small, qwen3-coder-30b (a3b). Kept only non-a3b qwen, free models, no content-safety. Now 30 visible models. Backup at ~/.config/opencode/backups/pre-freemodel-20260904-234322/",
   "instructions": ["~/.config/opencode/AGENTS_ESSENTIAL.md"],
   "provider": {
     "local": {
