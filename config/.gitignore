@@ -156,3 +156,8 @@ autostart/*.desktop.bak
 *~
 .DS_Store
 Thumbs.db
+
+# opencode-scheduler runtime state
+opencode/scheduler/scopes/*/runs/
+opencode/scheduler/scopes/*/locks/
+opencode/scheduler/scopes/*/jobs/
