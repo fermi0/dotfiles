@@ -504,7 +504,8 @@ Before generating a plan, **read:**
 
 ### The "save after write" rule
 
-After generating a plan, **save it to the daily note** in the vault (via `with-context` MCP). The plan is worthless if it lives in chat history.
+After generating a plan, **save it to the daily note** in
+            the vault (via available tools). The plan is worthless if it lives in chat history.
 
 ### The "check in mid-day" rule
 

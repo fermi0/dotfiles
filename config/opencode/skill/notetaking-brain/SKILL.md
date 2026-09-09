@@ -21,7 +21,9 @@ tags:
 
 Operate the Obsidian vault as the **single source of truth** for everything: research, business, daily, dev, creative work. Local-first markdown + a rich plugin ecosystem + AI agents (via MCP) make it the best second-brain tool in 2026.
 
-> **Local-first wins.** Notes are plain `.md` files; no lock-in, no subscription, fully searchable, AI-ready. The agent reads/writes the vault through the `with-context` MCP (Obsidian Local REST API) or directly via filesystem.
+> **Local-first wins.** Notes are plain `.md` files; no
+            lock-in, no subscription, fully searchable, AI-ready. The agent reads/writes the vault through available tools
+            or directly via filesystem.
 
 ## How to use this skill
 
@@ -638,10 +640,10 @@ Re-organizing is risky. **Always propose before executing.** Use the dry-run pat
 ## AI-powered workflows
 
 > **2026 reality:** an Obsidian vault + an AI agent (via MCP) = the most powerful personal knowledge system. The agent reads, writes, searches, and reasons over your notes as context.
+### Vault Access
 
-### The `with-context` MCP (already in your stack)
-
-The user's OpenCode already has the `with-context` MCP for Obsidian Local REST API. **Use it as the primary tool for all vault operations.**
+The user's OpenCode has various tools for vault operations.
+            **Use available tools for all vault operations.**
 
 **Key operations:**
 - `list_templates()` — see available templates
@@ -814,7 +816,8 @@ Agent:
 ## Changelog & history
 
 - **One `YYYY-MM-DD.md` daily note per day** in `Daily/`; periodic summaries reference the dailies via links
-- **Log vault changes** with `with-context_add_changelog_entry` (conventional types: `add`, `update`, `remove`, `reorg`, `merge`) + `with-context_get_commit_suggestion`
+- **Log vault changes** with
+            available tools (conventional types: `add`, `update`, `remove`, `reorg`, `merge`)
 - **Mark AI-written notes** `source: ai` in frontmatter
 - **For durable history** keep the vault in git (obsidian-git): track notes + config only; ignore `.obsidian/workspace.json`, trash, caches
 - **Commit-and-sync** with a templated message: `chore: daily — {date}` or `feat: add MOC — {topic}`
@@ -846,7 +849,8 @@ Agent:
 ## Tools in our stack (Zurnel vault)
 
 - **Obsidian** (desktop + mobile) — primary client
-- **`with-context` MCP** — agent's interface to the vault
+- **Vault tools** — agent's interface to the
+            vault
 - **Plugins (recommended set):**
   - **Templater** — templates + dynamic content
   - **Dataview** — query layer (use Bases when possible; Dataview for complex)

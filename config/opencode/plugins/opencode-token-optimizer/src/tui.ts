@@ -6,8 +6,8 @@
  *
  * Style note: we use the manual OpenTUI Solid primitives
  * (createElement / setProp / insertNode / effect) rather than JSX.
- * This matches the convention used by every other TUI plugin in
- * the OpenCode ecosystem (opencode-throughput, opencode-rpm-guard).
+* This matches the convention used by every other TUI plugin in
+  * the OpenCode ecosystem.
  */
 import { createSignal, onCleanup } from "solid-js";
 import {

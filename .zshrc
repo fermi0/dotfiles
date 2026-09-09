@@ -181,8 +181,6 @@ eval "$(direnv hook zsh)"
 #   grep -c OPENCODE_EXPERIMENTAL_CODE_MODE /usr/bin/opencode
 export OPENCODE_EXPERIMENTAL_CODE_MODE=1
 
-# Swarm: lite/coordination model for the opencode-swarm-plugin compaction prompt.
-# Verified free (no API key), fast, 1M ctx, returns clean tool calls.
-export OPENCODE_LITE_MODEL="openrouter-free/nvidia/nemotron-3.5-lightning:free"
+
 
 # OpenCode provider API keys (added 2026-09-04)

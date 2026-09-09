@@ -12,8 +12,13 @@ M="$HOME/models"
 case "$MODEL" in
   ornith)
     # Ornith-1.5-35B-A3B APEX-Quality tier (highest-quality quant) — n_ctx_train 262144
+    # DFlash2 spec decoding (jzinno/Ornith-1.5-35B-A3B-DFlash2, converted 2026-09-09):
+    # target verifies every drafted token -> output distribution unchanged (0% quality change).
+    # ncmoe 36 (was 38) frees ~1.1GB VRAM for the draft on GPU + spec graph reserve.
     ARGS=(-m "$M/Ornith-1.5-35B-A3B-APEX-Quality.gguf" --alias ornith-35b-a3b
-          --ctx-size 262144 -ngl 999 --n-cpu-moe 38 -ub 1024 -fa on -ctk q8_0 -ctv q8_0)
+          --ctx-size 262144 -ngl 999 --n-cpu-moe 36 -ub 1024 -fa on -ctk q8_0 -ctv q8_0
+          -md "$M/dflash2-draft-Ornith15.gguf" --spec-type draft-dflash
+          --spec-draft-n-max 16 --spec-draft-ngl 999)
     ;;
   ornith-vision)
     # Same model + mmproj. NOTE: multimodal disables --cache-reuse (slower repeat sessions).

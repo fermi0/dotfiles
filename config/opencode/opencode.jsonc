@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["~/.config/opencode/AGENTS_ESSENTIAL.md"],
   "provider": {
     "local": {
       "npm": "@ai-sdk/openai-compatible",
@@ -11,7 +10,7 @@
         "chunkTimeout": 120000
       },
       "models": {
-        "ornith-35b-a3b": {
+        "Ornith-1.5-35B-A3B-APEX-Quality": {
           "name": "Ornith-1.5-35B-A3B APEX-Quality - agentic RL-tuned MoE, ctx 256k (KV q8_0)",
           "limit": {
             "context": 262144,
@@ -1278,11 +1277,11 @@
     "zai",
     "ollama"
   ],
-  "plugin": [
+"plugin": [
  [
   "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
   {
-"tokenOptimization": {
+ "tokenOptimization": {
      "rtk": {
       "enabled": true
      },
@@ -1306,24 +1305,19 @@
      },
      "systemPrompt": {
       "enabled": true,
-      "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
+ "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
      }
     }
   }
  ],
  "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
-  "file:///home/work/.config/opencode/plugins/opencode-poorguy-ratelimit",
+ "file:///home/work/.config/opencode/plugins/opencode-poorguy-ratelimit",
  "@bdliyq/opencode-rate-limit-retry",
- "opencode-swarm-plugin/plugin",
- "opencode-throughput",
- "opencode-bash-guard",
  "opencode-scheduler",
  "opencode-sentinel",
- "opencode-ops",
  "@openspoon/subtask2",
- "opencode-todo-progress",
  "@fleetingecho/opencode-handoff"
-  ],
+ ],
   "permission": {
       "bash": {
       "*": "ask",
@@ -1403,48 +1397,6 @@
       ],
       "enabled": true
     },
-    "with-context": {
-      "type": "local",
-      "command": [
-        "node",
-        "/home/work/apps/wcm-local/node_modules/with-context-mcp/dist/index.js"
-      ],
-      "enabled": true,
-      "environment": {
-        "OBSIDIAN_API_URL": "{env:OBSIDIAN_API_URL}",
-        "OBSIDIAN_API_KEY": "{env:OBSIDIAN_API_KEY}",
-        "OBSIDIAN_VAULT": "/home/shared/Zurnel",
-        "PROJECT_BASE_PATH": "/home/shared/Zurnel"
-      }
-    },
-    "filesystem": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem@2026.7.10",
-        "/home/work"
-      ],
-      "enabled": true
-    },
-    "fetch": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "fetch-mcp@0.0.5"
-      ],
-      "enabled": true
-    },
-    "git": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "git-mcp@1.0.0"
-      ],
-      "enabled": true
-    },
     "sequential-thinking": {
       "type": "local",
       "command": [
@@ -1453,25 +1405,6 @@
         "@modelcontextprotocol/server-sequential-thinking@2026.7.4"
       ],
       "enabled": true
-    },
-    "time": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "time-mcp@1.0.6"
-      ],
-      "enabled": true
-    },
-    "chrome-devtools": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@1.7.0",
-        "--slim"
-      ],
-      "enabled": false
     },
     "sqlite": {
       "type": "local",
@@ -1495,33 +1428,12 @@
         "SEARXNG_URL": "http://localhost:8080"
       }
     },
-    "filesystem-zurnel": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem@2026.7.10",
-        "/home/shared/Zurnel"
-      ],
-      "enabled": true
-    },
     "obsidian-rest": {
       "type": "remote",
       "url": "https://127.0.0.1:27124/mcp/",
       "enabled": true,
       "headers": {
         "Authorization": "Bearer {env:OBSIDIAN_API_KEY}"
-      }
-    },
-    "swarm-tools": {
-      "type": "local",
-      "command": [
-        "node",
-        "/home/work/.config/opencode/node_modules/opencode-swarm-plugin/dist/mcp/swarm-mcp-server.cjs"
-      ],
-      "enabled": true,
-      "environment": {
-        "CLAUDE_PLUGIN_ROOT": "/home/work/.config/opencode/node_modules/opencode-swarm-plugin"
       }
     }
   }

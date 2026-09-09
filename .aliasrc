@@ -4,3 +4,7 @@
 
 alias fzf="fzf --border --height 40% --layout=reverse --preview 'lynx --style=numbers --color=always --line-range :500 {}'"
 alias oc="opencode"
+alias ornith="systemctl --user start llama-server@ornith"
+alias ornithstop="systemctl --user stop llama-server@\*"
+alias ocv="cd $HOME/Work/Zurnel;opencode"
+alias oc-local="XDG_CONFIG_HOME=$HOME/.config/oc-local opencode"

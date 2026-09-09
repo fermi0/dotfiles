@@ -14,7 +14,8 @@ Generates a **market research summary + self-contained interactive HTML dashboar
 
 ## Workflow (Golden Loop, $0 Free)
 
-1. **Searxng (self-hosted, unlimited):** `mcp-searxng` with `SEARXNG_URL http://localhost:8080` (70 engines, private,  `~/searxng_instance/docker-compose.yml` ) — search topic + IRD/CBMS/WDI docs. Fallback `fetch` for `https://ird.gov.np`, `https://cbms.ird.gov.np`, `https://prize.ird.gov.np`, `https://data.finstatglobe.com/nepal`.
+1. **Searxng (self-hosted, unlimited):** `mcp-searxng` with `SEARXNG_URL http://localhost:8080` (70 engines,
+            private, `~/searxng_instance/docker-compose.yml` ) — search topic + IRD/CBMS/WDI docs.
 2. **SQLite (`data/business.db`):** `mcp-sqlite --db-path /home/work/data/business.db` — store TAM/SAM/SOM tables, RICE backlog, leads. Schema `tam(segment, count, arpu, tam_npr)`, `rice(feature, reach, impact, confidence, effort, score)`.
 3. **Sequential Thinking:** Decompose Porter 5 forces, JTBD, Pugh, RICE sequencing, BRD — `sequential-thinking` MCP.
 4. **Report Markdown:** Write `reports/<topic>-YYYY-MM-DD.md` with sections: Executive Summary, TAM/SAM/SOM (bottom-up, WDI ceiling), Porter (binding constraint), JTBD/persona, Lean Canvas, RICE, BRD, Dashboard inline SVG (bar=comparison, pie 2-5 slices), Nepal $0 data table, Future Prediction, Workflow. Cite `prize.ird.gov.np 13598`, `cbms.ird.gov.np`, `IRD Annual 13350`, `FinStatGlobe 28.1%`.
@@ -23,7 +24,8 @@ Generates a **market research summary + self-contained interactive HTML dashboar
    pandoc reports/topic-2026-08-21.md -s --embed-resources --metadata title="Topic Dashboard" -o reports/topic-2026-08-21.html
    ```
    HTML is self-contained (email/portable), paired HTML `<table>` + `role="img"` + `<title>/<desc>` + `aria-labelledby` per `business-planning` skill.
-6. **Vault (with-context):** `with-context write` to `~/shared/Zurnel/reports/` + `Bases` dashboard aggregates (cross-domain proof for P3.7).
+6. **Vault (manual):** Manual write to
+            `~/shared/Zurnel/reports/` + `Bases` dashboard aggregates (cross-domain proof for P3.7).
 7. **Daily:** `scheduler 07:00` daily note links `[[Zurnel/reports/topic|...]]` via `Tasks` query.
 
 ## Verification
@@ -47,7 +49,9 @@ ls ~/projects/zurnel-saas/reports/kathmandu-vat-saas-2026-08-21.{md,html} && ls 
 
 ## Implementation
 
-This slash-command is a **recipe**, not a code generator. To run it, invoke the `business-planning` skill and follow the workflow above, using `searxng`, `sqlite`, `sequential-thinking`, `pandoc`, `mermaid-cli`, `with-context`.
+This slash-command is a **recipe**, not a code generator. To run it,
+            invoke the `business-planning` skill and follow the workflow above, using `searxng`, `sqlite`, `sequential-thinking`,
+            `pandoc`, `mermaid-cli`, and available tools.
 
 ```bash
 # Example invocation (in opencode TUI):

@@ -556,7 +556,8 @@ After 6 months of disciplined cross-chain memory:
 ## Tools in our stack
 
 - **All domain skills** (deep-research, business-planning, development-workflows, browser-control, notetaking-brain, daily-planning, linux-poweruser, lemma, find-skills)
-- **`with-context` MCP** — for vault operations between steps
+- **Vault tools** — for vault operations
+            between steps
 - **`opencode scheduler`** — for scheduled chains (daily news scan, weekly vault health, monthly report)
 - **OpenSpec** — for new ventures or major changes (formal change proposal)
 - **Handoff plugin** — for session continuation when a chain spans sessions

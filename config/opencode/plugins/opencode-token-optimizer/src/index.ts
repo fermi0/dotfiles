@@ -242,8 +242,18 @@ function hashArgs(tool: string, args: any): string {
   return createHash("sha256").update(stableStringify({ tool, args })).digest("hex").slice(0, 16);
 }
 
+// Dedup is only safe for pure read-only query tools whose results the model
+// is likely to request verbatim again within seconds (polling loops, repeated
+// searches). Caching bash/read/edit serves STALE output after any mutation
+// (e.g. read -> edit -> read returns pre-edit content) — that costs more in
+// confusion loops than it saves in tokens.
+const DEDUP_TOOLS = new Set(["glob", "grep"]);
+// Any successful mutation invalidates the whole dedup cache.
+const MUTATING_TOOLS = new Set(["write", "edit", "bash", "task"]);
+
 function dedupGet(tool: string, args: any): CacheEntry | null {
   if (!config.dedup.enabled) return null;
+  if (!DEDUP_TOOLS.has(tool)) return null;
   const e = dedupCache.get(hashArgs(tool, args));
   if (!e) return null;
   if (config.dedup.ttlMs > 0 && Date.now() - e.ts > config.dedup.ttlMs) {
@@ -256,6 +266,7 @@ function dedupGet(tool: string, args: any): CacheEntry | null {
 
 function dedupPut(tool: string, args: any, result: ToolResult): void {
   if (!config.dedup.enabled) return;
+  if (!DEDUP_TOOLS.has(tool)) return;
   if (result?.metadata?.error) return;
   const h = hashArgs(tool, args);
   dedupCache.set(h, { tool, args, result, ts: Date.now(), hits: 0 });
@@ -430,12 +441,33 @@ function compressHistory(messages: any[]): any[] {
 
 import { renameSync } from "node:fs";
 
+// Prune old session files: keep the newest N (by mtime), delete the rest.
+// Runs at most once per process (on first persistState call).
+let prunedThisProcess = false;
+function pruneSessionFiles(keep: number = 100): void {
+  if (prunedThisProcess) return;
+  prunedThisProcess = true;
+  try {
+    const dir = config.statePersistence.dir;
+    const files = _readdirSync(dir)
+      .filter((f) => f.endsWith(".json"))
+      .map((f) => ({ f, mtime: _statSync(join(dir, f)).mtimeMs }))
+      .sort((a, b) => b.mtime - a.mtime);
+    for (const old of files.slice(keep)) {
+      try {
+        require("node:fs").unlinkSync(join(dir, old.f));
+      } catch {}
+    }
+  } catch {}
+}
+
 function persistState(state: SessionState): void {
   if (!config.statePersistence.enabled) return;
   try {
     if (!existsSync(config.statePersistence.dir)) {
       mkdirSync(config.statePersistence.dir, { recursive: true });
     }
+    pruneSessionFiles(100);
     const file = join(config.statePersistence.dir, `${state.sessionID}.json`);
     const tmp = `${file}.tmp`;
     const payload = {
@@ -564,6 +596,11 @@ const tokenOptimizerPlugin = async (input: PluginInput, options?: Record<string,
         return;
       }
 
+      // Invalidate dedup cache after any successful mutation
+      if (MUTATING_TOOLS.has(hookInput.tool) && !output.metadata?.error) {
+        dedupCache.clear();
+      }
+
       if (typeof output.output !== "string") {
         persistState(s);
         return;
@@ -624,7 +661,11 @@ const tokenOptimizerPlugin = async (input: PluginInput, options?: Record<string,
       if (!config.systemPrompt.enabled) return;
       if (!Array.isArray(output.system) || output.system.length === 0) return;
       // APPEND only, never replace. Never regex-strip.
-      output.system = output.system.map(s => s + config.systemPrompt.codeModeNudge);
+      // Append to the LAST system message only — appending to every part
+      // duplicates the nudge (and its token cost) when there are several.
+      output.system = output.system.map((s, i) =>
+        i === output.system.length - 1 ? s + config.systemPrompt.codeModeNudge : s
+      );
     },
 
     "experimental.chat.messages.transform": async (
@@ -698,64 +739,104 @@ function toolPluginHealth() {
       const lines: string[] = [];
       const issues: string[] = [];
 
+      // NEVER spawn bare `opencode` subcommands that load plugins/MCP from inside a
+      // running session: spawnSync blocks the event loop and the child contends on
+      // session state -> hang/crash. All spawns below are hard-timeout-guarded, and
+      // plugin/MCP inventory is read directly from config files instead.
+      const SPAWN_OPTS = { encoding: "utf-8" as const, timeout: 8000, killSignal: "SIGKILL" as const };
+
       lines.push("=== opencode plugin + MCP health check ===\n");
 
-      // 1. OpenCode version
+      // 1. OpenCode version (safe: exits immediately without loading plugins)
       try {
-        const v = spawnSync("opencode", ["--version"], { encoding: "utf-8" }).stdout.trim();
+        const r = spawnSync("opencode", ["--version"], SPAWN_OPTS);
+        const v = (r.stdout ?? "").trim();
         lines.push(`opencode version: ${v}`);
       } catch {
         lines.push("opencode: NOT INSTALLED");
         issues.push("opencode binary not in PATH");
       }
 
-      // 2. Config sanity
-      const configPath = `${_homedir()}/.config/opencode/opencode.jsonc`;
-      try {
+      // 2. Config sanity — respect XDG_CONFIG_HOME (e.g. oc-local isolated setups)
+      const xdg = process.env.XDG_CONFIG_HOME;
+      const configCandidates = [
+        ...(xdg ? [`${xdg}/opencode/opencode.jsonc`, `${xdg}/opencode/opencode.json`] : []),
+        `${_homedir()}/.config/opencode/opencode.jsonc`,
+        `${_homedir()}/.config/opencode/opencode.json`,
+      ];
+      let configPath: string | null = null;
+      let configRaw = "";
+      for (const c of configCandidates) {
+        try {
+          _statSync(c);
+          configPath = c;
+          configRaw = _readFileSync(c, "utf-8");
+          break;
+        } catch {}
+      }
+      if (configPath) {
         const stat = _statSync(configPath);
         lines.push(`config: ${configPath} (${stat.size} bytes, mtime ${stat.mtime.toISOString()})`);
-      } catch {
-        lines.push(`config: MISSING (${configPath})`);
+      } else {
+        lines.push(`config: MISSING (tried: ${configCandidates.join(", ")})`);
         issues.push("Main config file missing");
       }
 
-      // 3. Plugins from opencode debug info
+      // Parse JSONC tolerantly: drop full-line comments and trailing commas.
+      const parseConfig = (): any => {
+        const noComments = configRaw
+          .split("\n")
+          .filter((l) => !l.trim().startsWith("//"))
+          .join("\n");
+        return JSON.parse(noComments.replace(/,(\s*[}\]])/g, "$1"));
+      };
+
+      // 3. Plugins — read from config directly (never spawn `opencode debug info`)
+      let plugins: string[] = [];
       try {
-        const out = spawnSync("opencode", ["debug", "info"], { encoding: "utf-8" });
-        const plugins = out.stdout.split("\n").filter((l) => l.startsWith("- ")).map((l) => l.slice(2).trim());
+        const cfg = parseConfig();
+        // Entries can be "name" or ["file://...", {config}] pairs — extract the spec string
+        plugins = Array.isArray(cfg.plugin)
+          ? cfg.plugin.map((p: any) => (typeof p === "string" ? p : Array.isArray(p) ? p[0] : null)).filter(Boolean)
+          : [];
         lines.push(`\n--- plugins (${plugins.length}) ---`);
         for (const p of plugins) {
           lines.push(`  ${p}`);
         }
       } catch (e: any) {
-        lines.push(`\nplugins: FAILED to list — ${e.message}`);
-        issues.push("Could not list plugins via 'opencode debug info'");
+        lines.push(`\nplugins: FAILED to parse config — ${e.message}`);
+        issues.push("Could not parse plugin list from config");
       }
 
-      // 4. MCP servers
+      // 4. MCP servers — read from config directly (never spawn `opencode mcp list`)
       try {
-        const out = spawnSync("opencode", ["mcp", "list"], { encoding: "utf-8" });
-        const mcpLines = out.stdout.split("\n").filter((l) => l.trim());
-        lines.push(`\n--- MCP servers ---`);
-        for (const l of mcpLines) lines.push(`  ${l}`);
+        const cfg = parseConfig();
+        const mcp = cfg.mcp && typeof cfg.mcp === "object" ? cfg.mcp : {};
+        const names = Object.keys(mcp);
+        lines.push(`\n--- MCP servers (${names.length}) ---`);
+        for (const n of names) {
+          const enabled = mcp[n]?.enabled !== false;
+          lines.push(`  ${n}: ${enabled ? "enabled" : "disabled"}`);
+        }
       } catch (e: any) {
-        lines.push(`\nMCP: FAILED to list — ${e.message}`);
+        lines.push(`\nMCP: FAILED to parse config — ${e.message}`);
       }
-
       // 5. RTK
       lines.push(`\n--- this plugin ---`);
       lines.push(`  RTK available: ${rtkAvailable} (path: ${rtkBinaryPath ?? "n/a"})`);
 
-      // 6. Verbose: try to load each listed plugin
+      // 6. Verbose: try to load each listed plugin (from config, no self-spawn).
+      // Skip stateful plugins whose factories mutate shared on-disk state when
+      // imported by a probe subprocess (PID-keyed claim files, locks, etc.).
+      const PROBE_SKIP = [/poorguy/i, /ratelimit/i];
       if (args.verbose) {
         lines.push(`\n--- verbose plugin load test ---`);
         try {
-          const out = spawnSync("opencode", ["debug", "info"], { encoding: "utf-8" });
-          const plugins = out.stdout
-            .split("\n")
-            .filter((l) => l.startsWith("- "))
-            .map((l) => l.slice(2).trim());
           for (const spec of plugins) {
+            if (PROBE_SKIP.some((re) => re.test(spec))) {
+              lines.push(`  ⏭ ${spec} — skipped (stateful plugin, unsafe to probe)`);
+              continue;
+            }
             const result = probePlugin(spec);
             const icon = result.ok ? "✓" : "✗";
             const detail = result.ok ? `${result.hooks} hooks` : result.error ?? "unknown";
@@ -773,10 +854,10 @@ function toolPluginHealth() {
       } else {
         lines.push(`\n--- NO ISSUES FOUND ---`);
       }
-
+      const wrapped = lines.map((l) => wrap(l));
       return {
         title: "Plugin + MCP health",
-        output: lines.map(wrap).join("\n"),
+        output: wrapped.join("\n"),
         metadata: { ok: issues.length === 0, issueCount: issues.length },
       };
     },
@@ -789,6 +870,7 @@ function toolPluginHealth() {
  * in the TUI's chat panel (which doesn't word-wrap long lines itself).
  */
 function wrap(line: string, max: number = 90): string {
+  if (!Number.isFinite(max) || max < 10) max = 90; // guard: never allow max=0 (i += 0 infinite loop)
   if (line.length <= max) return line;
   // Simple greedy wrap: split on spaces, build lines
   const words = line.split(/\s+/);

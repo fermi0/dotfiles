@@ -28,8 +28,8 @@ The built-in `websearch` and `webfetch` tools are NOT sufficient for extensive r
 | `webfetch` (built-in) | Direct | Single URL fetch only |
 | `searxng_web_search` (SearXNG MCP) | **Code Mode** | 70+ search engines, full web |
 | `web_url_read` (SearXNG MCP) | **Code Mode** | Read any URL with metadata |
-| `fetch_url` (fetch MCP) | **Code Mode** | HTML/Markdown conversion |
-| `fetch_youtube_transcript` (fetch MCP) | **Code Mode** | Video transcripts |
+| `web_url_read` (SearXNG MCP) | **Code Mode** | HTML/Markdown conversion |
+            
 | `browser_*` (playwright MCP) | **Code Mode** | JS-heavy sites, login-walled pages |
 | `query-docs` (context7 MCP) | **Code Mode** | Library/framework docs |
 | `sequentialthinking` MCP | **Code Mode** | Multi-step reasoning |
@@ -269,7 +269,8 @@ Research is iterative. After each pass:
 | `context7` | `query-docs`, `resolve-library-id` | Library/framework docs |
 | `sequential-thinking` | `sequentialthinking` | Multi-step reasoning |
 | `filesystem` | `read_file`, `write_file`, `search_files` | Local code/doc reading |
-| `with-context` | (Obsidian REST) | Save research to vault |
+| Vault tools | (Available) | Save research to vault
+            |
 
 ## Common mistakes to avoid
 

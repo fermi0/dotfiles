@@ -122,7 +122,9 @@ modified: {datetime.now().isoformat()}
 - `Bases` dashboard: `TABLE streak FROM "daily" WHERE date = {formatted_date}`
 
 ---
-*Generated via `/daily` (with-context + Templater 2.7.3 + Dataview + Heatmap 0.7.1 + swaync 0.12.6) — evidence-based only (no MBTI/manifestation). Scheduler timer `0 7 * * *` reboot-proof via `opencode-scheduler` systemd.*
+*Generated via `/daily` (available tools + Templater 2.7.3 +
+            Dataview + Heatmap 0.7.1 + swaync 0.12.6) — evidence-based only (no MBTI/manifestation). Scheduler timer `0 7 * * *`
+            reboot-proof via `opencode-scheduler` systemd.*
 """
     return content
 
