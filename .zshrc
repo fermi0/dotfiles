@@ -181,6 +181,10 @@ eval "$(direnv hook zsh)"
 #   grep -c OPENCODE_EXPERIMENTAL_CODE_MODE /usr/bin/opencode
 export OPENCODE_EXPERIMENTAL_CODE_MODE=1
 
+# Route opencode-handoff background refreshes to a separate provider (zai) with
+# its own rate-limit pool, so folding never competes with the active model.
+export OPENCODE_HANDOFF_MODEL=zai/glm-4.5-flash
+
 
 
 # OpenCode provider API keys (added 2026-09-04)
