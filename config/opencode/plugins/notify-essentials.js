@@ -34,31 +34,32 @@ export const NotifyEssentialsPlugin = async ({ $, directory, worktree }) => {
   };
 
   return {
-    "permission.asked": async (input, output) => {
-      send(
-        "OpenCode: permission needed",
-        input.action ?? "Tool needs your approval"
-      );
-    },
-
-    "question.asked": async (input, output) => {
-      // Debounce: only notify once per unique question id
-      if (input.id === lastQuestionID) return;
-      lastQuestionID = input.id;
-      send(
-        "OpenCode: question",
-        input.header ?? input.question ?? "Agent is asking a question"
-      );
-    },
-
     "event": async ({ event }) => {
       switch (event.type) {
+        case "permission.asked": {
+          const properties = event.properties ?? {};
+          send(
+            "OpenCode: permission needed",
+            properties.permission ?? properties.action ?? "Tool needs your approval"
+          );
+          break;
+        }
+        case "question.asked": {
+          const properties = event.properties ?? {};
+          const questionID = properties.id ?? event.id;
+          if (questionID === lastQuestionID) return;
+          lastQuestionID = questionID;
+          const question = properties.questions?.[0];
+          send(
+            "OpenCode: question",
+            question?.header ?? question?.question ?? "Agent is asking a question"
+          );
+          break;
+        }
         case "session.idle":
           send("OpenCode: done", "Agent stopped. Check the terminal.");
           break;
         case "session.error":
-          // Only this is an "error" event — when opencode itself crashed.
-          // Individual tool errors stay in the TUI scrollback.
           send(
             "OpenCode: crashed",
             (event.properties?.error?.message ?? "Unknown error").slice(0, 200)
