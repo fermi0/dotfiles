@@ -1,0 +1,117 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // oc-local: lean, isolated config for the local Ornith model (llama-server @ 127.0.0.1:1234).
+  // Launched via the `oc-local` alias: XDG_CONFIG_HOME=~/.config/oc-local opencode
+  // Fully isolated from the global ~/.config/opencode config (no merge) -> minimal system prompt.
+  "instructions": ["~/.config/opencode/AGENTS.md"],
+
+  "model": "local/Ornith-1.5-35B-A3B-APEX-Quality",
+
+  "provider": {
+    "local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local llama-server (raw llama.cpp)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "models": {
+        "Ornith-1.5-35B-A3B-APEX-Quality": {
+          "name": "Ornith-1.5-35B-A3B APEX-Quality - agentic RL-tuned MoE, ctx 256k (KV q8_0)",
+          "limit": {
+            "context": 262144,
+            "output": 8192
+          },
+          "stream": true,
+          "options": {
+            "temperature": 0.6
+          },
+          "variants": {
+            "precise": { "temperature": 0.2, "top_p": 0.9, "min_p": 0.05 },
+            "balanced": { "temperature": 0.6, "top_p": 0.95, "min_p": 0.1 },
+            "creative": { "temperature": 0.8, "top_p": 0.95 },
+            "benchmark": { "temperature": 1.0 }
+          }
+        }
+      }
+    },
+    "zai": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Z.ai (Zhipu) - GLM free tier",
+      "options": {
+        "baseURL": "https://api.z.ai/api/paas/v4",
+        "apiKey": "{env:ZAI_API_KEY}",
+        "timeout": 900000,
+        "chunkTimeout": 120000
+      },
+      "whitelist": [
+        "glm-4.5-flash"
+      ],
+      "models": {
+        "glm-4.5-flash": {
+          "name": "GLM-4.5 Flash (Z.ai free) - 1000 RPD",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          },
+          "stream": true,
+          "reasoning": false,
+          "options": {
+            "temperature": 0.6,
+            "top_p": 0.95
+          }
+        }
+      }
+    }
+  },
+  "enabled_providers":[
+    "local",
+    "zai"
+  ],
+
+  // Plugins: token-optimizer (context savings) + handoff (session continuity).
+  // notify-essentials is auto-discovered from ./plugins/ (symlinked).
+  // node_modules is symlinked to the global config's for npm package resolution.
+  "plugin": [
+    "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
+    "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
+    "@fleetingecho/opencode-handoff"
+  ],
+
+  // Only the 6 MCPs the local model actually needs.
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp@4.0.3"],
+      "enabled": true
+    },
+    "lemma": {
+      "type": "local",
+      "command": ["node", "/home/work/.config/opencode/node_modules/lemma-mcp/dist/index.js"],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking@2026.7.4"],
+      "enabled": true
+    },
+    "searxng": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-searxng@1.16.0"],
+      "enabled": true,
+      "environment": { "SEARXNG_URL": "http://localhost:8080" }
+    },
+    "obsidian-rest": {
+      "type": "remote",
+      "url": "https://127.0.0.1:27124/mcp/",
+      "enabled": true,
+      "headers": { "Authorization": "Bearer {env:OBSIDIAN_API_KEY}" }
+    },
+    "sqlite": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-sqlite@1.0.9"],
+      "enabled": true
+    }
+  }
+}
