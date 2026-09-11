@@ -1410,7 +1410,8 @@
       "command": [
         "npx",
         "-y",
-        "mcp-sqlite@2.0.9"
+        "mcp-sqlite@1.0.9",
+        "/home/shared/data/lemma/lemma.db"
       ],
       "enabled": true
     },
