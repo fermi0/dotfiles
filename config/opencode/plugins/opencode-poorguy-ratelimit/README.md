@@ -1,5 +1,28 @@
 # @thd3178/opencode-poorguy-ratelimit
 
+> ## Local fork — behavior added on top of upstream (2026-09-11)
+>
+> This copy is heavily patched; the sections below describe **upstream**. Local changes:
+>
+> - **In-request key rotation**: `maxAttemptsPerRequest` (per provider, default 1 — set 4) retries the
+>   same request with the next key on failure, invisible to opencode.
+> - **Error-scoped cooldowns**:
+>   - `429` → per-key cooldown (Retry-After honored, else exponential `baseDelayMs`→`maxDelayMs`)
+>   - `404` → **per-(key, model)** cooldown until 00:00 UTC — key stays usable for other models
+>   - `402` → key-wide until 00:00 UTC (balance is account-wide)
+>   - `401/403` → key-wide 30 min (revoked/invalid key)
+>   - `408/5xx` and network errors → key-wide 30 s + circuit-breaker failure, then rotate
+>   - other 4xx (e.g. 400) → passed through untouched, never counted as success
+> - **RPD daily caps**: per-provider `rpd` (0 = disabled) and per-key override via
+>   `{"key": "...", "rpd": 1000}`. Counted on 2xx only. Keys at cap are skipped; if ALL keys are
+>   capped, acquire fails fast with a clear error instead of spinning.
+> - **Persistence**: cooldowns, per-model cooldowns, RPD counts, circuit state, and cross-process
+>   key claims live in `~/.config/opencode/.poorguy-claims/` and survive restarts.
+> - **Circuit breaker**: provider-wide; opens after `failureThreshold` failures in `failureWindowMs`,
+>   half-opens after `openDurationMs`.
+> - **Real async mutex** around the acquire critical section (safe with `maxConcurrent` > 1).
+> - Only `2xx` counts as success (RPD, circuit close, error-count reset).
+
 [English](README_EN.md)
 
 OpenCode 插件：给 AI 请求做**滑动窗口限流**——按每分钟请求数精确控速，避免触发 RPM 上限导致的 429；多 key 场景自动轮询分流，抬升整体吞吐，缩短首 token 时间。

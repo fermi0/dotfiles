@@ -1304,15 +1304,14 @@
       "keepLastTurns": 32
      },
      "systemPrompt": {
-      "enabled": true,
- "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
+     "enabled": true,
+     "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
      }
     }
   }
  ],
  "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
  "file:///home/work/.config/opencode/plugins/opencode-poorguy-ratelimit",
- "@bdliyq/opencode-rate-limit-retry",
  "opencode-scheduler",
  "opencode-sentinel",
  "@openspoon/subtask2",
@@ -1411,8 +1410,7 @@
       "command": [
         "npx",
         "-y",
-        "mcp-sqlite@1.0.9",
-        "/home/work/data/business.db"
+        "mcp-sqlite@2.0.9"
       ],
       "enabled": true
     },

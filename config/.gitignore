@@ -39,7 +39,8 @@ opencode/plugins/opencode-token-optimizer/node_modules/
 opencode/plugins/opencode-token-optimizer/--db-path
 opencode/plugins/opencode-token-optimizer/dist/
 opencode/plugins/opencode-token-optimizer/package-lock.json
-opencode/plugins/opencode-poorguy-ratelimit/dist/
+# poorguy dist/ IS tracked (hand-patched local fork, must survive) — only backups ignored
+opencode/plugins/opencode-poorguy-ratelimit/dist/index.js.*
 opencode/plugins/opencode-poorguy-ratelimit/package-lock.json
 opencode/plugins/backups/
 opencode/plugin/subtask2/logs/
