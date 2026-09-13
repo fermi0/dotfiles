@@ -91,9 +91,11 @@ function clearCooldownSync(providerName, keySuffix) {
 }
 
 // ---- Per-model cooldown persistence ----
-// A 404 means "this model is not available on this key/account" — it says nothing about
-// the key's other models. So 404 cooldowns are scoped to (key, model); the key stays
-// eligible for every other model. Persisted so they survive restarts.
+// A 404 means "this model is not available on this key/account" and a 402 means "this
+// model costs money this key/account doesn't have" — both say nothing about the key's
+// other models. So 404/402 cooldowns are scoped to (key, model); the key stays eligible
+// for every other model. Persisted (with reason) so they survive restarts.
+// File format: {model: {until, reason}} — legacy {model: untilNumber} is accepted on load.
 function modelCooldownPath(providerName, keySuffix) {
   return join(CLAIMS_DIR, `${providerName}-${keySuffix}.modelcooldowns`);
 }
@@ -102,19 +104,25 @@ function loadModelCooldownsSync(providerName, keySuffix) {
     const c = JSON.parse(readFileSync(modelCooldownPath(providerName, keySuffix), "utf-8"));
     const now = Date.now();
     const out = {};
-    for (const [m, until] of Object.entries(c)) {
-      if (typeof until === "number" && until > now) out[m] = until;
+    const reasons = {};
+    for (const [m, v] of Object.entries(c)) {
+      const until = typeof v === "number" ? v : v?.until;
+      if (typeof until === "number" && until > now) {
+        out[m] = until;
+        reasons[m] = (typeof v === "object" && v?.reason) || "notfound";
+      }
     }
-    return out;
-  } catch { return {}; }
+    return { cooldowns: out, reasons };
+  } catch { return { cooldowns: {}, reasons: {} }; }
 }
-function saveModelCooldownsSync(providerName, keySuffix, map) {
+function saveModelCooldownsSync(providerName, keySuffix, map, reasons = {}) {
   try {
     ensureClaimsDir();
     const now = Date.now();
     const pruned = {};
     for (const [m, until] of Object.entries(map)) {
-      if (typeof until === "number" && until > now) pruned[m] = until;
+      if (typeof until === "number" && until > now)
+        pruned[m] = { until, reason: reasons[m] ?? "notfound" };
     }
     writeFileSync(modelCooldownPath(providerName, keySuffix), JSON.stringify(pruned));
   } catch {}
@@ -417,6 +425,7 @@ class ProviderLimiter {
       const tail = k.name ?? k.key.slice(-4);
       // Load any persisted cooldown from previous sessions
       const persisted = loadCooldownSync(name, tail);
+      const mc = loadModelCooldownsSync(name, tail);
       return {
         key: k.key,
         name: tail,
@@ -426,7 +435,8 @@ class ProviderLimiter {
         error429Count: 0,
         lastSuccessAt: 0,
         rpd: typeof k.rpd === "number" ? k.rpd : undefined,
-        modelCooldowns: loadModelCooldownsSync(name, tail)
+        modelCooldowns: mc.cooldowns,
+        modelCooldownReasons: mc.reasons
       };
     });
   }
@@ -491,9 +501,19 @@ class ProviderLimiter {
     if (this.keys.some((k) => this.keyRpdLimit(k) > 0) && this.keys.every((k) => this.isKeyAtRpdLimit(k))) {
       throw new Error(`[poorguy-ratelimit] ${this.name}: all ${this.keys.length} keys hit their daily limit (rpd), resets 00:00 UTC`);
     }
-    // Fast-fail when every key is 404-cooled for THIS model — waiting won't help until midnight.
-    if (model && this.keys.every((k) => (k.modelCooldowns[model] ?? 0) > Date.now())) {
-      throw new Error(`[poorguy-ratelimit] ${this.name}: all ${this.keys.length} keys returned 404 for model '${model}', skipping this model until 00:00 UTC`);
+    // Fast-fail when every key is model-cooled (404/402) for THIS model — waiting won't help until midnight.
+    if (model) {
+      const cooled = this.keys.filter((k) => (k.modelCooldowns[model] ?? 0) > Date.now());
+      if (cooled.length === this.keys.length && cooled.length > 0) {
+        const n402 = cooled.filter((k) => k.modelCooldownReasons?.[model] === "payment").length;
+        const n404 = cooled.length - n402;
+        const detail = n402 === cooled.length
+          ? `402 payment required on all keys (paid model — no key has credit/access for it)`
+          : n404 === cooled.length
+            ? `404 on all keys (model not served by any key/account)`
+            : `${n402}x 402 (payment) + ${n404}x 404 (unavailable)`;
+throw new Error(`[poorguy-ratelimit] ${this.name}: model '${model}' unusable until 00:00 UTC — ${detail}. Pick another model.`);
+      }
     }
     let waited = 0;
     for (let round = 0;round < 120; round++) {
@@ -620,19 +640,28 @@ class ProviderLimiter {
     fileLog("warn", `[${this.name}] 5xx/408 @key…${k.name} -> cooldown ${cooldownMs}ms`);
     return cooldownMs;
   }
-  mark402(keyIndex) {
-    // 402 = insufficient balance. Account-wide (not model-specific), so the whole key
-    // is cooled until 00:00 UTC, when free tiers / daily balances typically reset.
+  mark402(keyIndex, model) {
+    // 402 = this key/account has no credit for THIS model (e.g. free-tier key on a
+    // paid-only model). It says nothing about the key's other models, so scope the
+    // cooldown to (key, model) until 00:00 UTC — the key stays usable for free models.
     const k = this.keys[keyIndex];
     if (!k) return 0;
     const now = Date.now();
     const midnightUtc = new Date(now);
     midnightUtc.setUTCHours(24, 0, 0, 0);
     const cooldownMs = Math.max(60000, midnightUtc.getTime() - now);
-    k.cooldownUntil = now + cooldownMs;
-    k.cooldownReason = "payment";
-    saveCooldownSync(this.name, k.name, k.cooldownUntil, "payment");
-    fileLog("warn", `[${this.name}] 402 @key…${k.name} -> cooldown ${cooldownMs}ms (payment, until 00:00 UTC)`);
+    if (model) {
+      k.modelCooldowns[model] = now + cooldownMs;
+      k.modelCooldownReasons = k.modelCooldownReasons ?? {};
+      k.modelCooldownReasons[model] = "payment";
+      saveModelCooldownsSync(this.name, k.name, k.modelCooldowns, k.modelCooldownReasons);
+    } else {
+      // Couldn't identify the model — fall back to a short key-wide cooldown.
+      k.cooldownUntil = Math.max(k.cooldownUntil, now + Math.min(cooldownMs, 300000));
+      k.cooldownReason = "payment";
+      saveCooldownSync(this.name, k.name, k.cooldownUntil, "payment");
+    }
+    fileLog("warn", `[${this.name}] 402 @key…${k.name} model=${model ?? "unknown"} -> model-scoped cooldown ${cooldownMs}ms (payment, until 00:00 UTC)`);
     return cooldownMs;
   }
   markModel404(keyIndex, model) {
@@ -646,7 +675,9 @@ class ProviderLimiter {
     const cooldownMs = Math.max(60000, midnightUtc.getTime() - now);
     if (model) {
       k.modelCooldowns[model] = now + cooldownMs;
-      saveModelCooldownsSync(this.name, k.name, k.modelCooldowns);
+      k.modelCooldownReasons = k.modelCooldownReasons ?? {};
+      k.modelCooldownReasons[model] = "notfound";
+      saveModelCooldownsSync(this.name, k.name, k.modelCooldowns, k.modelCooldownReasons);
     } else {
       // Couldn't identify the model — fall back to a short key-wide cooldown.
       k.cooldownUntil = now + Math.min(cooldownMs, 300000);
@@ -924,14 +955,14 @@ function wrapFetch(origFetch, limiter, toast) {
           continue;
         }
         if (res.status === 402) {
-          const cd = limiter.mark402(acq.keyIndex);
+          const cd = limiter.mark402(acq.keyIndex, model);
           lastRes = res;
           if (lastAttempt) {
             releaseKeySync(limiter.name, claimedKey);
             slotReleased = true;
             limiter.releaseSlot();
           }
-          await toast(`[402] [${limiter.name}] key…${acq.tail} insufficient balance, key cooled until 00:00 UTC${rotateNote}`, "error");
+await toast(`[402] [${limiter.name}] key…${acq.tail}${model ? ` model=${model}` : ""} payment required, key skipped for this model until 00:00 UTC${rotateNote}`, "error");
           continue;
         }
         if (res.status === 404) {
@@ -1057,7 +1088,8 @@ var PoorguyRatelimit = async ({ client }) => {
       circuitBreaker: config.circuitBreaker,
       strategy: p.strategy ?? config.strategy,
       onWait: (ms) => {
-        toast(`⏳ [${name}] rate limit triggered, waiting ${(ms / 1000).toFixed(1)}s (${limiters.get(name)?.remaining() ?? 0} remaining quota)`, "warning");
+        const l = limiters.get(name);
+toast(`⏳ [${name}] rate limit triggered, waiting ${(ms / 1000).toFixed(1)}s (${l?.availableKeyCount() ?? 0}/${l?.totalKeyCount ?? 0} keys available)`, "warning");
       }
     }));
     const limiter = limiters.get(name);

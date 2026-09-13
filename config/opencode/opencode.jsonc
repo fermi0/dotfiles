@@ -187,10 +187,10 @@
         "minimax/minimax-m2",
         "minimax/minimax-m2-her",
         "minimax/minimax-m2.1",
-         "minimax/minimax-m2.5",
-         "minimax/minimax-m2.7",
-         "minimax/minimax-m3:batch",
-         "mistralai/codestral-2508",
+        "minimax/minimax-m2.5",
+        "minimax/minimax-m2.7",
+        "minimax/minimax-m3:batch",
+        "mistralai/codestral-2508",
         "mistralai/codestral-2508:batch",
         "mistralai/devstral-2512",
         "mistralai/ministral-14b-2512",
@@ -451,31 +451,6 @@
               "reasoningEffort": "low"
             }
           }
-        },
-        "minimax/minimax-m3:free": {
-          "name": "MiniMax M3 (OpenRouter free) - 1M ctx, multimodal, reasoning",
-          "limit": {
-            "context": 1048576,
-            "output": 943718
-          },
-          "stream": true,
-          "reasoning": true,
-          "options": {
-            "temperature": 0.7,
-            "top_p": 0.95
-          },
-          "variants": {
-            "reasoning": {
-              "reasoningEffort": "high"
-            },
-            "balanced": {
-              "reasoningEffort": "medium"
-            },
-            "concise": {
-              "reasoningEffort": "none",
-              "temperature": 0.6
-            }
-          }
         }
       }
     },
@@ -489,16 +464,16 @@
         "chunkTimeout": 120000,
         "headerTimeout": 120000
       },
-      "whitelist": [
-        "nvidia/nemotron-3-ultra-550b-a55b",
-        "nvidia/nemotron-3-super-120b-a12b",
-        "nvidia/nemotron-3.5-lightning-30b-a3b",
-        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
-        "deepseek-ai/deepseek-v4-pro-0813",
-        "moonshotai/kimi-k3",
-        "minimaxai/minimax-m3",
-        "openai/gpt-oss-20b"
-      ],
+      //"whitelist": [
+      //  "nvidia/nemotron-3-ultra-550b-a55b",
+      //  "nvidia/nemotron-3-super-120b-a12b",
+      //  "nvidia/nemotron-3.5-lightning-30b-a3b",
+      //  "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+      //  "deepseek-ai/deepseek-v4-pro-0813",
+      //  "moonshotai/kimi-k3",
+      //  "minimaxai/minimax-m3",
+      //  "openai/gpt-oss-20b"
+      //],
       "models": {
         "nvidia/nemotron-3-ultra-550b-a55b": {
           "name": "Nemotron 3 Ultra 550B (NIM) - Flagship",
@@ -514,7 +489,8 @@
           },
           "variants": {
             "reasoning": {
-              "reasoningEffort": "high"
+              "reasoningEffort": "high",
+              "reasoning_budget": 32768
             },
             "balanced": {
               "reasoningEffort": "medium"
@@ -528,54 +504,6 @@
           "name": "Nemotron 3 Super 120B (NIM) - High-End Agentic",
           "limit": {
             "context": 1000000,
-            "output": 32768
-          },
-          "stream": true,
-          "reasoning": true,
-          "options": {
-            "temperature": 1.0,
-            "top_p": 0.95
-          },
-          "variants": {
-            "reasoning": {
-              "reasoningEffort": "high"
-            },
-            "balanced": {
-              "reasoningEffort": "medium"
-            },
-            "concise": {
-              "reasoningEffort": "none"
-            }
-          }
-        },
-        "nvidia/nemotron-3.5-lightning-30b-a3b": {
-          "name": "Nemotron 3.5 Lightning 30B (NIM) - Fastest Agentic",
-          "limit": {
-            "context": 1000000,
-            "output": 32768
-          },
-          "stream": true,
-          "reasoning": true,
-          "options": {
-            "temperature": 1.0,
-            "top_p": 0.95
-          },
-          "variants": {
-            "reasoning": {
-              "reasoningEffort": "high"
-            },
-            "balanced": {
-              "reasoningEffort": "medium"
-            },
-            "concise": {
-              "reasoningEffort": "none"
-            }
-          }
-        },
-        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
-          "name": "Nemotron 3 Nano Omni 30B (NIM) - Multimodal Agentic",
-          "limit": {
-            "context": 1048576,
             "output": 32768
           },
           "stream": true,
@@ -650,8 +578,8 @@
             }
           }
         },
-        "minimaxai/minimax-m3": {
-          "name": "MiniMax M3 (NIM) - High-Performance Agentic",
+        "deepseek-ai/deepseek-v4-flash-0731": {
+          "name": "DeepSeek V4 Flash 0731 (NIM) - Fast Agentic 13B active",
           "limit": {
             "context": 1048576,
             "output": 32768
@@ -659,43 +587,21 @@
           "stream": true,
           "reasoning": true,
           "options": {
-            "temperature": 0.6
+            "temperature": 1.0,
+            "top_p": 0.95
           },
           "variants": {
             "reasoning": {
-              "reasoningEffort": "high"
+              "reasoningEffort": "high",
+              "temperature": 1.0
             },
             "balanced": {
-              "reasoningEffort": "medium"
+              "reasoningEffort": "medium",
+              "temperature": 1.0
             },
             "concise": {
-              "reasoningEffort": "none"
-            }
-          }
-        },
-        "openai/gpt-oss-20b": {
-          "name": "GPT-OSS 20B (NIM) - Fast Open Model",
-          "limit": {
-            "context": 131072,
-            "output": 32768
-          },
-          "stream": true,
-          "reasoning": true,
-          "options": {
-            "temperature": 0.6,
-            "top_p": 0.95,
-            "top_k": 20,
-            "min_p": 0.0
-          },
-          "variants": {
-            "reasoning": {
-              "reasoningEffort": "high"
-            },
-            "balanced": {
-              "reasoningEffort": "medium"
-            },
-            "concise": {
-              "reasoningEffort": "none"
+              "reasoningEffort": "none",
+              "temperature": 1.0
             }
           }
         }

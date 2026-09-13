@@ -41,7 +41,7 @@ home dir; this copy is the version-controlled, git-tracked reference.
 | `sheldon/` | `~/.config/sheldon/` | zsh plugin manager state |
 | `swarm-tools/` | `~/.config/swarm-tools/` | swarm MCP config (DB gitignored) |
 | `openspec/` | `~/.config/openspec/` | openspec config |
-| `systemd/` | `~/.config/systemd/user/` | user systemd units (1 daily-reflection pair + system services) |
+| `systemd/` | `~/.config/systemd/user/` | user systemd units (llama-server, searxng, scheduler jobs, system services) |
 | `autostart/` | `~/.config/autostart/` | XDG autostart .desktop files (currently empty) |
 
 ## Files at the top level of config/
