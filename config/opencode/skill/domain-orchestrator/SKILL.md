@@ -1,6 +1,6 @@
 ---
 name: domain-orchestrator
-description: Route any user request to the right domain skill and chain cross-domain workflows. Use when a task spans multiple domains (e.g. research → report → vault note → daily plan), when you are unsure which skill applies, or when connecting computer/browser/dev/business/daily/note-taking work into one coherent flow. Acts as the planning/routing layer over all other skills.
+description: Route any user request to the right domain skill and chain cross-domain workflows. Use when a task spans multiple domains (e.g. research → report → vault note → decision), when you are unsure which skill applies, or when connecting computer/browser/dev/business/note-taking work into one coherent flow. Acts as the planning/routing layer over all other skills.
 created: 2026-08-30
 status: draft
 sources:
@@ -44,7 +44,6 @@ The **planning + routing layer** over all your domain skills. Decides fast, hand
 | `development-workflows` | Engineering (build, deploy, test) | New feature, refactor, deployment, MCP dev |
 | `browser-control` | Browser (Playwright MCP + @playwright/test) | Any web page interaction, scraping, E2E tests |
 | `notetaking-brain` | Vault (Obsidian, notes, links) | Save/find/organize anything in the vault |
-| `daily-planning` | Productivity (habits, MITs, plans) | Daily plan, motivation, habit tracking |
 | `linux-poweruser` | Linux systems | Package management, services, debugging, sysadmin |
 | `domain-orchestrator` | **THIS** (routing) | Cross-domain, ambiguous, or chain tasks |
 | `lemma` | Memory | Persist insights across sessions |
@@ -61,7 +60,6 @@ The **planning + routing layer** over all your domain skills. Decides fast, hand
 | Build/refactor/plan architecture/stack/backend/frontend/MCP/deploy | `development-workflows` |
 | Navigate/search/click/type/scrape a website; E2E test | `browser-control` |
 | Save to vault, find in vault, organize vault, link notes | `notetaking-brain` |
-| Daily plan, to-do, motivation, habit tracking | `daily-planning` |
 | Install/fix a system, manage a service, debug a command, pacman/yay | `linux-poweruser` |
 | Persist insight for future sessions | `lemma` |
 | Find a new skill for a need | `find-skills` |
@@ -84,7 +82,7 @@ Q3: Am I uncertain which skill fits?
     YES → Load THIS skill + use the routing table + (optionally) ask the user
     NO  → Use the routing table
 
-Q4: Is this a known recurring pattern (daily plan, research, build)?
+Q4: Is this a known recurring pattern (research, build, news scan)?
     YES → Load the matching skill
     NO  → Load THIS skill + decompose
 ```
@@ -107,11 +105,11 @@ Q4: Is this a known recurring pattern (daily plan, research, build)?
 
 ## Chain recipes
 
-### The 7 loops (cross-domain chain templates)
+### The 6 loops (cross-domain chain templates)
 
 These are battle-tested chains. **Pick the closest fit; customize as needed.**
 
-#### 1. **The Golden Loop — Research → Business → Notes → Plan**
+#### 1. **The Golden Loop — Research → Business → Notes**
 
 The most common. Used whenever you need to **decide something** based on **evidence**.
 
@@ -119,7 +117,6 @@ The most common. Used whenever you need to **decide something** based on **evide
 1. deep-research    → gather + cite; produce findings
 2. business-planning → analyze (TAM, competitors, pricing); produce report
 3. notetaking-brain  → save report + findings as linked notes; update MOC; log changelog
-4. daily-planning    → turn outcome into tomorrow's MIT
 ```
 
 **Use when:** evaluating a new business, choosing a tech stack, deciding a market to enter, picking a vendor.
@@ -159,8 +156,7 @@ The Linux / sysadmin chain.
 1. linux-poweruser      → diagnose (logs, processes, services)
 2. linux-poweruser      → fix (package, config, restart)
 3. notetaking-brain     → save "fix notes" (do-not-rebreak)
-4. (optional) daily-planning → add maintenance task to habit tracker
-5. (optional) lemma     → memory_add the root cause
+4. (optional) lemma     → memory_add the root cause
 ```
 
 **Use when:** something is broken or behaving unexpectedly.
@@ -195,21 +191,6 @@ For a new project from zero.
 ```
 
 **Use when:** "I want to build X" where X is real and worth the effort.
-
-#### 7. **Daily Loop — Recall → Plan → Execute → Reflect**
-
-The end-of-day / start-of-day chain.
-
-```
-1. lemma            → memory_read (recall what matters for today)
-2. notetaking-brain → read today's daily note
-3. daily-planning   → set MITs + schedule
-4. (during the day)  → execute; append progress to daily
-5. daily-planning   → evening reflection
-6. lemma            → memory_add key insights
-```
-
-**Use when:** starting a workday, ending a workday, or setting up a new week.
 
 ## Planning a chain
 
@@ -392,7 +373,7 @@ If a step succeeds but you discover later it was wrong (e.g., wrong URL scraped)
 | Project artifacts | `notetaking-brain` (project folder) | Per project |
 | Source list | `notetaking-brain` (source list) | Per research project |
 | Mistakes / gotchas | `lemma` (session_attempt) | When a chain fails or you realize a wrong path |
-| Time / cost / outcome | `notetaking-brain` (CHANGELOG or daily) | End of significant chains |
+| Time / cost / outcome | `notetaking-brain` (CHANGELOG) | End of significant chains |
 | New skill ideas | `notetaking-brain` (skill proposal note) | When a chain reveals a reusable pattern |
 
 ### Cross-chain memory pattern
@@ -401,7 +382,7 @@ If a step succeeds but you discover later it was wrong (e.g., wrong URL scraped)
 End of chain:
 1. lemma.memory_add(key insight or pattern)
 2. lemma.session_attempt(failed approaches; what didn't work)
-3. notetaking-brain.append(daily note: "chained X → Y → Z; output at <path>")
+3. notetaking-brain.append(vault note: "chained X → Y → Z; output at <path>")
 4. notetaking-brain.add changelog entry if vault changed
 ```
 
@@ -417,7 +398,7 @@ After 6 months of disciplined cross-chain memory:
 
 ### Diagnose
 
-- Does the request map to a domain? (research, dev, business, browser, vault, daily, linux)
+- Does the request map to a domain? (research, dev, business, browser, vault, linux)
 - If yes but the existing skill is too narrow → expand the skill, don't work around it
 - If no → it's either a new domain or a meta-task
 
@@ -461,7 +442,7 @@ After 6 months of disciplined cross-chain memory:
 2. **Plan with checkpoints** — for any chain >3 steps, write the plan with state-passing defined.
 3. **Execute one step at a time** — load only the current skill; don't pollute context.
 4. **Verify at each step** — never continue on a failure you haven't understood.
-5. **Persist at the end** — vault note + lemma insight + daily reflection.
+5. **Persist at the end** — vault note + lemma insight.
 6. **Propose a skill** when a chain reveals a reusable pattern.
 7. **Iterate on the skill** — if the chain worked, the skill should make it easier next time.
 
@@ -474,7 +455,7 @@ After 6 months of disciplined cross-chain memory:
 - "URL → scraped Markdown → vault note" → a skill
 - "Vault health check" → a `vault-health` slash command
 
-**Propose these in the daily reflection.** Don't bloat the skill library; do promote proven patterns.
+**Propose these in the vault changelog.** Don't bloat the skill library; do promote proven patterns.
 
 ## Guardrails / anti-patterns
 
@@ -499,7 +480,6 @@ After 6 months of disciplined cross-chain memory:
 3. business-planning → TAM/SAM/SOM + competitor scan + pricing
 4. business-planning → hypothesis-driven validation plan
 5. notetaking-brain → save the report + MOC update
-6. daily-planning → if yes, set 1 MIT for the week
 ```
 
 ### Scenario 2: "Build me a new feature in my project"
@@ -520,7 +500,6 @@ After 6 months of disciplined cross-chain memory:
 2. linux-poweruser → fix
 3. notetaking-brain → save "fix notes" (do-not-rebreak)
 4. lemma → memory_add the root cause
-5. (optional) daily-planning → add monitoring habit
 ```
 
 ### Scenario 4: "What's happening in Nepal's fintech?"
@@ -533,16 +512,6 @@ After 6 months of disciplined cross-chain memory:
 5. (if opportunity) business-planning → run the 8-phase playbook
 ```
 
-### Scenario 5: "I'm starting my day"
-
-```
-1. lemma → memory_read (recall)
-2. notetaking-brain → read today's daily note
-3. daily-planning → set MITs
-4. (execute) → the first MIT
-5. (end of day) daily-planning → reflection
-```
-
 ### Scenario 6: "I want to learn Y deeply"
 
 ```
@@ -550,15 +519,14 @@ After 6 months of disciplined cross-chain memory:
 2. notetaking-brain → permanent note + MOC
 3. (optional) development-workflows → build a small project
 4. lemma → memory_add the core insight
-5. daily-planning → schedule spaced repetition review
 ```
 
 ## Tools in our stack
 
-- **All domain skills** (deep-research, business-planning, development-workflows, browser-control, notetaking-brain, daily-planning, linux-poweruser, lemma, find-skills)
+- **All domain skills** (deep-research, business-planning, development-workflows, browser-control, notetaking-brain, linux-poweruser, lemma, find-skills)
 - **Vault tools** — for vault operations
             between steps
-- **`opencode scheduler`** — for scheduled chains (daily news scan, weekly vault health, monthly report)
+- **`opencode scheduler`** — for scheduled chains (daily news scan)
 - **OpenSpec** — for new ventures or major changes (formal change proposal)
 - **Handoff plugin** — for session continuation when a chain spans sessions
 - **Lemma** — for cross-session memory

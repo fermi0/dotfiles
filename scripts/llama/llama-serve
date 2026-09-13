@@ -12,13 +12,15 @@ M="$HOME/models"
 case "$MODEL" in
   ornith)
     # Ornith-1.5-35B-A3B APEX-Quality tier (highest-quality quant) — n_ctx_train 262144
-    # DFlash2 spec decoding (jzinno/Ornith-1.5-35B-A3B-DFlash2, converted 2026-09-09):
-    # target verifies every drafted token -> output distribution unchanged (0% quality change).
-    # ncmoe 36 (was 38) frees ~1.1GB VRAM for the draft on GPU + spec graph reserve.
+    # Ornith-1.5-35B-A3B APEX-Quality tier (highest-quality quant) — n_ctx_train 262144
+    # NOTE (2026-09-09, benchmarked): DFlash2 draft-model spec decoding is a NET LOSS on this
+    # rig (verify cost ~linear on CPU-resident experts): 12 t/s w/ spec vs 29 t/s without.
+    # Draft GGUFs kept on disk: dflash2-draft-Ornith15{,-Q8_0}.gguf — retry if more VRAM.
+    # ngram-simple IS a small win (~7%, 31.7 vs 29.6 t/s): free drafts (no draft model),
+    # target verifies every token -> 0% quality change. Shines on repetitive output (code).
     ARGS=(-m "$M/Ornith-1.5-35B-A3B-APEX-Quality.gguf" --alias ornith-35b-a3b
-          --ctx-size 262144 -ngl 999 --n-cpu-moe 36 -ub 1024 -fa on -ctk q8_0 -ctv q8_0
-          -md "$M/dflash2-draft-Ornith15.gguf" --spec-type draft-dflash
-          --spec-draft-n-max 16 --spec-draft-ngl 999)
+          --ctx-size 262144 -ngl 999 --n-cpu-moe 38 -ub 1024 -fa on -ctk q8_0 -ctv q8_0
+          --spec-type ngram-simple)
     ;;
   ornith-vision)
     # Same model + mmproj. NOTE: multimodal disables --cache-reuse (slower repeat sessions).
@@ -39,6 +41,7 @@ exec "$BIN" "${ARGS[@]}" \
   --jinja \
   --reasoning-budget 1024 \
   --cache-reuse 256 \
+  --slot-save-path "$HOME/.cache/llama-slots" \
   --parallel 1 \
   --metrics \
   --host 127.0.0.1 --port 1234

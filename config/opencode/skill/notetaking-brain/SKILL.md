@@ -707,17 +707,6 @@ Agent:
   4. Offer to save the synthesis as a note
 ```
 
-#### 5. **Daily plan → write to daily**
-
-```
-User: "plan my day"
-
-Agent:
-  1. Read HANDOFF.md (current state)
-  2. Use daily-planning skill
-  3. append_to_note("Daily/{today}.md", "## MITs\n...")
-```
-
 ### AI agent discipline (read this)
 
 - **Always read before writing** — never overwrite a note you haven't read
@@ -864,8 +853,8 @@ Agent:
   - **Calendar** — daily note navigation
 - **Obsidian Bases** — built-in (2026)
 - **Obsidian Sync** (optional, paid) — multi-device
-- **Skills:** `domain-orchestrator` (routing), `deep-research` (vault sourcing), `business-planning` (Nepal reports), `development-workflows` (ADRs), `daily-planning` (daily notes)
+- **Skills:** `domain-orchestrator` (routing), `deep-research` (vault sourcing), `business-planning` (Nepal reports), `development-workflows` (ADRs)
 
 ## Related skills
 
-- `domain-orchestrator` (routing), `deep-research` (sources for notes), `business-planning` (Nepal reports go in vault), `development-workflows` (ADRs), `daily-planning` (daily notes), `linux-poweruser` (for backup automation, obsidian-cli)
+- `domain-orchestrator` (routing), `deep-research` (sources for notes), `business-planning` (Nepal reports go in vault), `development-workflows` (ADRs), `linux-poweruser` (for backup automation, obsidian-cli)

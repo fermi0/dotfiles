@@ -4,9 +4,9 @@ After=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/work/apps/searxng
-Environment=SEARXNG_SETTINGS_PATH=/home/work/apps/searxng/searxng-settings.yml
-ExecStart=/home/work/apps/searxng/.venv/bin/python -m searx.webapp
+WorkingDirectory=%h/apps/searxng
+Environment=SEARXNG_SETTINGS_PATH=%h/apps/searxng/searxng-settings.yml
+ExecStart=%h/apps/searxng/.venv/bin/python -m searx.webapp
 Restart=on-failure
 RestartSec=5
 

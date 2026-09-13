@@ -1,0 +1,34 @@
+{
+  "name": "opencode-token-optimizer",
+  "version": "1.0.0",
+  "description": "Multi-layer token optimization for OpenCode: RTK, Slimedit, DCP, Budget Manager, Prompt Compression, Semantic Cache",
+  "type": "module",
+  "exports": {
+    "./tui": "./dist/tui.js",
+    "./server": "./dist/server.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+ "dependencies": {
+ "@opentui/solid": ">=0.1.97",
+ "solid-js": "^1.9.11"
+ },
+ "peerDependencies": {
+ "@opencode-ai/plugin": ">=1.14.18"
+ },
+ "peerDependenciesMeta": {
+ "@opencode-ai/plugin": {
+ "optional": true
+ }
+ },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^7.0.2"
+  }
+}

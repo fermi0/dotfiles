@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@fleetingecho/opencode-handoff": "^1.1.0",
+    "@opencode-ai/plugin": "1.18.25",
+    "lemma-mcp": "^0.20.0",
+    "opencode-scheduler": "^1.3.0",
+    "opencode-sentinel": "^0.1.5",
+    "unique-names-generator": "^4.7.1"
+  }
+}

@@ -1,9 +1,5 @@
 # dotfiles
 
-> **Reproducible Linux desktop + AI-augmented development environment. Evidence-based. No pseudoscience.**
-
----
-
 ## What this is
 
 A living system of configuration, scripts, and AI-agent tooling — versioned, symlinked, and battle-tested on a Legion 5 (Ultra 9 275HX / RTX 5060) running EndeavourOS + Hyprland.
@@ -11,7 +7,7 @@ A living system of configuration, scripts, and AI-agent tooling — versioned, s
 ```
 dotfiles/
 ├── config/              # ~/.config/ — 40+ app configs (opencode, hypr, kitty, pipewire, nvim…)
-├── scripts/             # ~/scripts/ — system, daily planning utilities
+├── scripts/             # ~/scripts/ — system, llama, news utilities
 ├── agents/              # ~/.agents/ — opencode skills (linux-poweruser, lemma, browser-control…)
 ├── os/                  # Pacman/AUR/Flatpak manifests for full system restore
 ├── data/                # Schema + seed only (runtime DBs gitignored)
@@ -25,7 +21,7 @@ dotfiles/
 
 | Layer | Tools |
 |-------|-------|
-| **AI Agent Runtime** | OpenCode (15 plugins: swarm, sentinel, lemma memory, poorguy-ratelimit, token-optimizer, handoff…) |
+| **AI Agent Runtime** | OpenCode (plugins: token-optimizer, poorguy-ratelimit, scheduler, sentinel, subtask2, handoff, notify-essentials) |
 | **Local Models** | `ling-3.0-flash-fin-free` @ llama-server:1234 · `mxbai-embed-large` @ Ollama |
 | **Browser Automation** | Playwright MCP — e2e tests, scraping, QA |
 | **Vault / Second Brain** | Obsidian — 4-stage flow: Inbox → Daily → Projects → Archive |
@@ -38,30 +34,29 @@ dotfiles/
 
 ## Quick start (steal this)
 
+The repo is location- and username-agnostic: clone it anywhere, then run the restore script.
+It symlinks configs into place (no stow), rewrites hardcoded paths, installs plugin deps, and
+recreates the scheduler jobs + systemd timers.
+
 ```bash
-# Clone to shared location (not ~)
-git clone git@github.com:fermi0/dotfiles.git /home/shared/dotfiles
+# 1. Clone anywhere (any username, any path)
+git clone git@github.com:fermi0/dotfiles.git ~/dotfiles
 
-# Symlink the config tree
-stow -d /home/shared/dotfiles -t ~/.config config
+# 2. Restore the OpenCode stack (preview first, then apply)
+~/dotfiles/scripts/system/opencode-restore.sh --dry-run
+~/dotfiles/scripts/system/opencode-restore.sh
 
-# Symlink scripts
-ln -s /home/shared/dotfiles/scripts ~/scripts
+# 3. Secrets: the script copies *.example templates — fill in your keys
+#    ~/.env.local                                   (provider API keys)
+#    ~/.config/opencode/opencode-poorguy-ratelimit.jsonc  (rotation keys)
 
-# Symlink agents
-ln -s /home/shared/dotfiles/agents ~/.agents
-
-# Restore packages
-sudo pacman -S --needed - < /home/shared/dotfiles/os/pacman.txt
-yay -S --needed - < /home/shared/dotfiles/os/aur.txt
-
-# OpenCode: install plugins + MCP servers
-cd ~/.config/opencode && npm ci
-opencode plugin install
-opencode mcp add searxng http://localhost:8080
-opencode mcp add playwright npx @playwright/mcp@latest
-opencode mcp add lemma npx @lemma/mcp@latest
+# 4. Full-system packages (optional — the whole desktop, not just opencode)
+sudo pacman -S --needed - < ~/dotfiles/os/pacman.txt
+yay -S --needed - < ~/dotfiles/os/aur.txt
 ```
+
+The restore script prints the remaining manual steps (opencode binary, `opencode auth login`,
+searxng/llama.cpp apps, Obsidian REST cert, playwright browsers, global npm CLIs).
 
 ---
 
@@ -71,7 +66,6 @@ opencode mcp add lemma npx @lemma/mcp@latest
 |----------|------------|
 | Understand the agent system | `meta/AGENTS.md` |
 | See the vault structure | `~/Work/Zurnel/_index.md` |
-| Run daily planning | `scripts/daily/generate_daily.py` |
 | Debug Linux audio | `config/pipewire/TROUBLESHOOTING.md` |
 | Add a new opencode skill | `~/.config/opencode/skill/` |
 

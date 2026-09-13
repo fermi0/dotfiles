@@ -1081,7 +1081,6 @@ For every idea, score:
 - `domain-orchestrator` (routing) — when a task spans multiple domains
 - `notetaking-brain` (vault storage, links, tags) — for organizing reports
 - `development-workflows` (if building a product)
-- `daily-planning` (if business work enters today's plan)
 - `linux-poweruser` (for hosting, payment gateway integrations, server setup)
 - **Scheduler jobs** — use `opencode scheduler` to run daily/weekly Nepal news scans
 - **Custom command** — consider creating a `/nepal-intel` slash command for quick opportunity capture

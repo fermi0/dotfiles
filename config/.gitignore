@@ -4,10 +4,8 @@
 
 # ── opencode plugin internals (rebuildable via `npm install` in each plugin) ──
 opencode/node_modules/
-opencode/package-lock.json
 opencode/bun.lock
 opencode/.gitignore
-opencode/package.json
 opencode/local.jsonc
 opencode-local/node_modules/
 opencode-local/package-lock.json
@@ -38,7 +36,6 @@ opencode/opencode.db*            # local sqlite (in shared/data/ via symlink in 
 opencode/plugins/opencode-token-optimizer/node_modules/
 opencode/plugins/opencode-token-optimizer/--db-path
 opencode/plugins/opencode-token-optimizer/dist/
-opencode/plugins/opencode-token-optimizer/package-lock.json
 # poorguy dist/ IS tracked (hand-patched local fork, must survive) — only backups ignored
 opencode/plugins/opencode-poorguy-ratelimit/dist/index.js.*
 opencode/plugins/opencode-poorguy-ratelimit/package-lock.json

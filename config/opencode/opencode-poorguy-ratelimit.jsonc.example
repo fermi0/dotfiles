@@ -1,0 +1,87 @@
+{
+  "_comment": "Example OpenCode poorguy-ratelimit config. Copy to opencode-poorguy-ratelimit.jsonc and fill in your actual API keys.",
+  "enabled": true,
+  "strategy": "least-used",
+  "providers": {
+    "nim": {
+      "rpm": 40,
+      "rpd": 0,
+      "windowMs": 60000,
+      "strategy": "least-used",
+      "maxAttemptsPerRequest": 4,
+      "keys": [
+        "<NVIDIA_NIM_API_KEY_1>",
+        "<NVIDIA_NIM_API_KEY_2>",
+        "<NVIDIA_NIM_API_KEY_3>",
+        "<NVIDIA_NIM_API_KEY_4>",
+        "<NVIDIA_NIM_API_KEY_5>",
+        "<NVIDIA_NIM_API_KEY_6>",
+        "<NVIDIA_NIM_API_KEY_7>",
+        "<NVIDIA_NIM_API_KEY_8>"
+      ],
+      "maxConcurrent": 2
+    },
+    "openrouter": {
+      "rpm": 20,
+      "rpd": 50,
+      "windowMs": 60000,
+      "strategy": "least-used",
+      "maxAttemptsPerRequest": 4,
+      "keys": [
+        { "key": "<OPENROUTER_API_KEY_1>", "rpd": 1000 },
+        "<OPENROUTER_API_KEY_2>",
+        "<OPENROUTER_API_KEY_3>",
+        "<OPENROUTER_API_KEY_4>",
+        "<OPENROUTER_API_KEY_5>",
+        "<OPENROUTER_API_KEY_6>",
+        "<OPENROUTER_API_KEY_7>"
+      ],
+      "maxConcurrent": 2
+    },
+    "groq": {
+      "rpm": 30,
+      "windowMs": 60000,
+      "strategy": "least-used",
+      "maxAttemptsPerRequest": 4,
+      "keys": [
+        "<GROQ_API_KEY>"
+      ],
+      "maxConcurrent": 2
+    },
+    "zai": {
+      "rpm": 60,
+      "windowMs": 60000,
+      "strategy": "least-used",
+      "maxAttemptsPerRequest": 4,
+      "keys": [
+        "<ZAI_API_KEY_1>",
+        "<ZAI_API_KEY_2>",
+        "<ZAI_API_KEY_3>",
+        "<ZAI_API_KEY_4>"
+      ],
+      "maxConcurrent": 2
+    },
+    "ollama": {
+      "rpm": 60,
+      "windowMs": 60000,
+      "strategy": "least-used",
+      "maxAttemptsPerRequest": 4,
+      "keys": [
+        "<OLLAMA_API_KEY>"
+      ],
+      "maxConcurrent": 2
+    }
+  },
+  "backoff": {
+    "baseDelayMs": 10000,
+    "maxDelayMs": 120000
+  },
+  "circuitBreaker": {
+    "failureThreshold": 10,
+    "failureWindowMs": 120000,
+    "openDurationMs": 180000
+  },
+  "logging": {
+    "enabled": true
+  }
+}

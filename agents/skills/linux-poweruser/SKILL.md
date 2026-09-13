@@ -265,7 +265,7 @@ When installing or configuring a tool:
 If a task straddles domains or you are unsure which workflow applies (e.g.\ a
 system chore that also needs recording in the vault, or a maintenance decision
 feeding a plan), consult the `domain-orchestrator` skill to route it and chain
-this skill with `notetaking-brain` / `daily-planning` as appropriate.
+this skill with `notetaking-brain` as appropriate.
 
 ## Final Completion Check
 

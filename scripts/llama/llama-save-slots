@@ -1,0 +1,7 @@
+#!/bin/zsh
+# Save slot 0 KV cache (system-prompt prefix) to disk before the server stops.
+# Restored by llama-warmup on next start. Best-effort: silent failures.
+curl -s -m 30 -X POST "http://127.0.0.1:1234/slots/0?action=save" \
+  -H 'Content-Type: application/json' \
+  -d '{"filename":"ornith-prefix.bin"}' > /dev/null 2>&1
+exit 0

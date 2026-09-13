@@ -486,7 +486,8 @@
         "baseURL": "https://integrate.api.nvidia.com/v1",
         "apiKey": "{env:NIM_API_KEY}",
         "timeout": 900000,
-        "chunkTimeout": 120000
+        "chunkTimeout": 120000,
+        "headerTimeout": 120000
       },
       "whitelist": [
         "nvidia/nemotron-3-ultra-550b-a55b",

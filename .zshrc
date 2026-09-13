@@ -153,28 +153,26 @@ ex=🎯:\
 "
 eval "$(fnm env --use-on-cd)"
 
-export PATH="/home/work/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # API keys (from ~/.env.local - chmod 600, gitignored)
 [ -f "$HOME/.env.local" ] && source "$HOME/.env.local"
-export PROJECT_BASE_PATH="/home/work/Work/Zurnel"
+export PROJECT_BASE_PATH="$HOME/Work/Zurnel"
 
 # bun completions
-[ -s "/home/work/.bun/_bun" ] && source "/home/work/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Trust Obsidian Local REST API self-signed cert (obsidian-rest MCP)
-export NODE_EXTRA_CA_CERTS="/home/work/.local/share/opencode-certs/obsidian-rest.crt"
+export NODE_EXTRA_CA_CERTS="$HOME/.local/share/opencode-certs/obsidian-rest.crt"
 
 # starship prompt (Phase 4, 2026-08-22)
 eval "$(starship init zsh)"
 # direnv per-project env (Phase 4, 2026-08-22)
 eval "$(direnv hook zsh)"
-
-
 
 # CodeMode (ships in opencode >=1.18.16): one code-exec tool replaces all MCP tool
 # schemas -> ~63k prompts drop to <10k everywhere. Re-verify flag after updates:
@@ -185,6 +183,3 @@ export OPENCODE_EXPERIMENTAL_CODE_MODE=1
 # its own rate-limit pool, so folding never competes with the active model.
 export OPENCODE_HANDOFF_MODEL=zai/glm-4.5-flash
 
-
-
-# OpenCode provider API keys (added 2026-09-04)
