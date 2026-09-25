@@ -198,6 +198,13 @@ hl.config({
     },
 })
 
+-- Advertise wp_color_management_v1 so HDR-capable players (mpv) can signal HDR
+hl.config({
+    experimental = {
+        wp_cm_1_2 = true,
+    },
+})
+
 hl.config({
     cursor = {
         sync_gsettings_theme = true,

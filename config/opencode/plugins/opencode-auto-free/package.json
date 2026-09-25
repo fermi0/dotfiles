@@ -1,0 +1,7 @@
+{
+  "name": "opencode-auto-free",
+  "version": "1.0.0",
+  "description": "Auto-curates free models: hides paid models, shows keep-listed + newly-appeared free models",
+  "type": "module",
+  "main": "index.js"
+}

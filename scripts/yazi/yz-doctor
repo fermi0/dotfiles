@@ -23,8 +23,10 @@ done
 echo "── yazi configs ─────────────────────────────"
 python3 - <<'EOF' && good "TOML parse (yazi/keymap/theme)" || miss "TOML parse failed"
 import tomllib
-for f in ["yazi.toml","keymap.toml","theme.toml"]:
-    tomllib.load(open("/home/work/.config/yazi/"+f,"rb"))
+from pathlib import Path
+base = Path.home() / ".config" / "yazi"
+for f in ["yazi.toml", "keymap.toml", "theme.toml"]:
+    tomllib.load(open(base / f, "rb"))
 EOF
 out=$(timeout 3 yazi </dev/null 2>&1 || true)
 if grep -qiE 'failed to parse|invalid|Caused by' <<<"$out"; then

@@ -33,7 +33,7 @@ npm run build
 ```jsonc
 {
   "plugin": [
-    "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/index.js"
+    "./plugins/opencode-token-optimizer/dist/server.js"
   ],
   "tokenOptimization": {
     "rtk": { "enabled": true },
@@ -188,7 +188,7 @@ rtk --version  # Should show version
 ### Plugin not loading
 Check `opencode.jsonc` has correct path:
 ```jsonc
-"file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/index.js"
+"./plugins/opencode-token-optimizer/dist/server.js"
 ```
 
 ### TUI sidebar not showing

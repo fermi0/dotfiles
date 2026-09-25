@@ -1,14 +1,26 @@
 #!/usr/bin/env bash
 # Script for Monitor backlights (if supported) using brightnessctl
+# Dynamically detects the correct backlight device for iGPU/dGPU modes
 
 iDIR="$HOME/.config/swaync/icons"
 notification_timeout=1000
 step=10  # INCREASE/DECREASE BY THIS VALUE
 
-# Panel backlight device. On this laptop in BIOS "Dynamic graphics" mode the
-# display is driven by the Intel iGPU -> intel_backlight. brightnessctl defaults
-# to the phantom NVIDIA device (nvidia_0) which no longer changes the panel.
-device="intel_backlight"
+# Auto-detect the correct backlight device
+# Priority: nvidia_0 (dGPU mode), intel_backlight (iGPU mode)
+detect_backlight_device() {
+    if [[ -e /sys/class/backlight/nvidia_0 ]]; then
+        echo "nvidia_0"
+    elif [[ -e /sys/class/backlight/intel_backlight ]]; then
+        echo "intel_backlight"
+    else
+        # Fallback: use first available backlight device
+        local dev=$(ls /sys/class/backlight/ 2>/dev/null | head -1)
+        echo "${dev:-intel_backlight}"
+    fi
+}
+
+device=$(detect_backlight_device)
 
 # Get current brightness as an integer (without %)
 get_brightness() {

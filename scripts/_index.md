@@ -1,39 +1,45 @@
 ---
 created: 2026-08-31
-modified: 2026-08-31
+modified: 2026-09-25
 type: subdir-index
-status: post-stage2
+status: active
 ---
 
 # scripts/ — MOC
 
-> All shell and Python scripts on this machine, organized by domain.
+## system/
 
-## `system/`
+- `opencode-restore.sh` — collision-safe restore with `--check`, `--dry-run`, and `--links-only`
+- `zurnel-snapshot.sh` — vault snapshot and Git bundle workflow
+- `obsidian-sync` — vault sync helper
+- `lf-paste-progress` — lf paste progress helper
+- `fzf-preview.sh` — fzf preview
+- `install-plugins.sh` — plugin installation helper
 
-Utilities for the **work** account's daily system operations.
+## audio/
 
-- `install-plugins.sh` — opencode plugin installer (used by the 2026-08-30 vault reorg)
-- `zurnel-snapshot.sh` — Obsidian vault snapshot (uses `obsidian-git`-style commit + push)
-- `fzf-preview.sh` — fzf preview helper for git/awesome-fzf
-- `chrome-color-fix.sh` — chrome/chromedevtools color profile fix
+OpenSCQ30 and Soundcore setup helpers, including the connection watchdog and Liberty/Space One scripts.
 
-## `business/` (reserved)
+## llama/
 
-Nepal Business Intelligence scripts.
+Build, serve, warmup, and slot-management wrappers for llama.cpp.
 
-- `daily-news-scan.sh` — (reserved) daily scrape of NRB/MOF/SEBON/NEPSE news
-- `news-delta-detector.py` — (reserved) diff between yesterday and today's news
+## news/
 
-## `legacy/` (gitignored)
+`daily-news-scan.sh` — scheduled Nepal news scan used by opencode-scheduler.
 
-Old `/home/shared/scripts/` content (2024-era). Held for user review.
+## fzf/
 
-- `payload.py` — old payload script, purpose unknown
-- `sms_client.py` — old SMS client, purpose unknown
-- `sqlqueries/` — SQL practice queries
+Completion scripts and Python helpers sourced by zsh.
 
-## See also
+## yazi/
 
-- `~/scripts/` — symlink to this directory (`/home/shared/dotfiles/scripts/`)
-- Repo README — migration history table
+Yazi shell helpers installed into `~/.local/bin`.
+
+## legacy/
+
+Ignored 2024 scripts and database backups retained for review. This tree is not part of restore.
+
+## Deployment
+
+`~/scripts` links to this directory. Restore-managed commands are linked into `~/.local/bin`.

@@ -27,7 +27,8 @@
 import { existsSync, writeFileSync, mkdirSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // ──────────────────────────────────────────────────────────────────────
 // Config
@@ -828,7 +829,7 @@ function toolPluginHealth() {
       // 6. Verbose: try to load each listed plugin (from config, no self-spawn).
       // Skip stateful plugins whose factories mutate shared on-disk state when
       // imported by a probe subprocess (PID-keyed claim files, locks, etc.).
-      const PROBE_SKIP = [/poorguy/i, /ratelimit/i];
+      const PROBE_SKIP = [/poorguy/i, /ratelimit/i, /auto-free/i];
       if (args.verbose) {
         lines.push(`\n--- verbose plugin load test ---`);
         try {
@@ -837,7 +838,7 @@ function toolPluginHealth() {
               lines.push(`  ⏭ ${spec} — skipped (stateful plugin, unsafe to probe)`);
               continue;
             }
-            const result = probePlugin(spec);
+            const result = probePlugin(spec, configPath ? dirname(configPath) : join(_homedir(), ".config/opencode"));
             const icon = result.ok ? "✓" : "✗";
             const detail = result.ok ? `${result.hooks} hooks` : result.error ?? "unknown";
             lines.push(`  ${icon} ${spec} — ${detail}`);
@@ -950,19 +951,30 @@ function toolReadSmart() {
 }
 
 // Probe a single plugin: try to import + call the factory
-function probePlugin(spec: string): { ok: true; hooks: number } | { ok: false; error: string } {
-  let resolved = spec;
+function probePlugin(spec: string, configDir: string): { ok: true; hooks: number } | { ok: false; error: string } {
+  const expanded = spec.replace(/\{env:([^}]+)\}/g, (_, key: string) => process.env[key] ?? "");
+  let resolved = expanded;
   let isFileEntry = false;
-  if (spec.startsWith("file://")) {
-    // file://spec — the spec itself IS the entry point, not a directory
-    resolved = spec.replace("file://", "");
-    isFileEntry = true;
+  if (expanded.startsWith("file://")) {
+    resolved = fileURLToPath(expanded);
+    try {
+      isFileEntry = !_statSync(resolved).isDirectory();
+    } catch {
+      isFileEntry = true;
+    }
+  } else if (expanded.startsWith("./") || expanded.startsWith("../")) {
+    resolved = resolve(configDir, expanded);
+    try {
+      isFileEntry = !_statSync(resolved).isDirectory();
+    } catch {
+      isFileEntry = true;
+    }
   } else {
     // npm package — try to find in cache
     const cacheBase = `${_homedir()}/.cache/opencode/packages`;
-    const parts = spec.split("/");
+    const parts = expanded.split("/");
     let pkg: string;
-    if (spec.startsWith("@")) {
+    if (expanded.startsWith("@")) {
       pkg = `${parts[0]}/${parts[1]}`;
     } else {
       pkg = parts[0];
@@ -986,7 +998,7 @@ function probePlugin(spec: string): { ok: true; hooks: number } | { ok: false; e
 
   // For file://spec, use the file path directly
   if (isFileEntry) {
-    return probeEntry(spec, spec.replace("file://", ""));
+    return probeEntry(expanded, resolved);
   }
 
   // Read package.json to find entry
@@ -1022,7 +1034,7 @@ function probePlugin(spec: string): { ok: true; hooks: number } | { ok: false; e
     // use default
   }
 
-  return probeEntry(spec, `${resolved}/${entry}`);
+  return probeEntry(expanded, `${resolved}/${entry}`);
 }
 
 function probeEntry(spec: string, fullPath: string): { ok: true; hooks: number } | { ok: false; error: string } {

@@ -54,6 +54,9 @@
           "image-size": 10,
           "image-radius": 0
       },
+      "notifications": {
+          "vexpand": true
+      },
       "volume": {
           "label": "󰕾"
       },

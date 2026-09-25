@@ -46,7 +46,7 @@ resolve_sink() {
         _SINK_NAME=
     fi
     # Single pw-dump pass: find default sink + any BT sinks
-    eval "$(pw-dump 2>/dev/null | python3 -c "
+    eval "$(timeout --foreground --kill-after=1s 3s pw-dump 2>/dev/null | python3 -c "
 import json, sys, subprocess
 nodes = json.load(sys.stdin)
 def_sink_id = None
@@ -116,7 +116,7 @@ resolve_mic() {
     fi
     # Ensure we know which sink is active so we can pick its mic
     resolve_sink || true
-    eval "$(pw-dump 2>/dev/null | python3 -c "
+    eval "$(timeout --foreground --kill-after=1s 3s pw-dump 2>/dev/null | python3 -c "
 import json, sys, subprocess
 nodes = json.load(sys.stdin)
 sink_devid = ''

@@ -1,1 +1,1 @@
-/home/work/.config/opencode/plugins/notify-essentials.js
+../../../opencode/plugins/notify-essentials.js

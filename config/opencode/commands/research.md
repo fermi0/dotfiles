@@ -16,7 +16,7 @@ Generates a **market research summary + self-contained interactive HTML dashboar
 
 1. **Searxng (self-hosted, unlimited):** `mcp-searxng` with `SEARXNG_URL http://localhost:8080` (70 engines,
             private, `~/searxng_instance/docker-compose.yml` ) — search topic + IRD/CBMS/WDI docs.
-2. **SQLite (`data/business.db`):** `mcp-sqlite --db-path /home/work/data/business.db` — store TAM/SAM/SOM tables, RICE backlog, leads. Schema `tam(segment, count, arpu, tam_npr)`, `rice(feature, reach, impact, confidence, effort, score)`.
+2. **SQLite (`data/business.db`):** `mcp-sqlite --db-path ~/data/business.db` — store TAM/SAM/SOM tables, RICE backlog, leads. Schema `tam(segment, count, arpu, tam_npr)`, `rice(feature, reach, impact, confidence, effort, score)`.
 3. **Sequential Thinking:** Decompose Porter 5 forces, JTBD, Pugh, RICE sequencing, BRD — `sequential-thinking` MCP.
 4. **Report Markdown:** Write `reports/<topic>-YYYY-MM-DD.md` with sections: Executive Summary, TAM/SAM/SOM (bottom-up, WDI ceiling), Porter (binding constraint), JTBD/persona, Lean Canvas, RICE, BRD, Dashboard inline SVG (bar=comparison, pie 2-5 slices), Nepal $0 data table, Future Prediction, Workflow. Cite `prize.ird.gov.np 13598`, `cbms.ird.gov.np`, `IRD Annual 13350`, `FinStatGlobe 28.1%`.
 5. **Pandoc + Mermaid-CLI:** `pandoc 3.10 --embed-resources --self-contained` + `mermaid-cli 11.16` → inline SVG (no Chart.js CDN). Verify `mmdc --version` + `pandoc --version`. Example:
@@ -34,7 +34,7 @@ Generates a **market research summary + self-contained interactive HTML dashboar
 # 1. SearXNG up (if docker)
 docker ps | grep searxng || docker compose -f ~/searxng_instance/docker-compose.yml up -d && curl -s http://localhost:8080/search?q=test&format=json | head
 # 2. SQLite
-sqlite3 /home/work/data/business.db "select * from tam;"
+sqlite3 ~/data/business.db "select * from tam;"
 # 3. Pandoc + Mermaid
 pandoc --version; mmdc --version; echo '# Test' | pandoc -s --embed-resources -o /tmp/test.html && ls -lh /tmp/test.html
 # 4. Report exists

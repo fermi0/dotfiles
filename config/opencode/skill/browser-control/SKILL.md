@@ -231,7 +231,7 @@ For a single field, use `browser_type` after a `browser_click` on the input.
 // Click the upload button → file picker opens
 // browser_file_upload takes absolute paths
 await tools.playwright.browser_file_upload({
-  paths: ["/home/work/Downloads/invoice.pdf"]
+  paths: ["~/Downloads/invoice.pdf"]
 });
 ```
 

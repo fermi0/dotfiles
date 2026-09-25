@@ -1,58 +1,54 @@
 ---
 created: 2026-08-31
-modified: 2026-08-31
+modified: 2026-09-25
 type: repo-index
-status: post-stage1
+status: active
 ---
 
 # dotfiles — MOC
 
-> Map of Content for `/home/shared/dotfiles/`. The repo is the source of truth;
-> this file is the index that makes it navigable.
+## Top level
 
-## Top-level
+- `.aliasrc` — live shell aliases
+- `.zshrc` — live zsh configuration
+- `.gitignore` — repository-wide exclusions
+- `README.md` — restore and architecture overview
+- `_index.md` — this map
 
-- `README.md` — overview, goals, branches, layout, migration history
-- `_index.md` (this file) — MOC
-- `.gitignore` — files excluded from version control
+## `config/`
 
-## `config/` (populated in stage 8)
+- `config/README.md` — managed package inventory
+- `config/opencode/` — global OpenCode configuration and plugins
+- `config/oc-local/` — isolated local-model configuration
+- `config/hypr/` — active Hyprland configuration
+- `config/pipewire/` — active PipeWire configuration
+- `config/wireplumber/` — active WirePlumber configuration
+- `config/systemd/` — tracked user-unit sources
+- `config/zen/` — Zen theme source and preferences template
 
-Hand-edited config files imported from `~/.config/`. Per-package README to be
-added with each import.
+Most managed package directories are deployed as `~/.config` symlinks. `~/.config/systemd` is a real directory whose unit files link back here, preventing generated scheduler state from writing into Git.
 
-## `local/` (reserved, future stage)
+## `scripts/`
 
-Selected entries from `~/.local/share/` that are worth tracking (applications
-directory, .desktop files).
+- `scripts/system/` — restore, snapshots, plugin and system utilities
+- `scripts/audio/` — Soundcore/OpenSCQ30 automation
+- `scripts/llama/` — llama-server lifecycle helpers
+- `scripts/news/` — scheduled news scan
+- `scripts/fzf/` — completion and preview helpers
+- `scripts/yazi/` — Yazi helper commands
+- `scripts/legacy/` — ignored 2024 material retained for review
 
-## `scripts/` (populated in stages 2 and 3)
+## `agents/`
 
-- `scripts/system/` — utilities: `install-plugins.sh`, `zurnel-snapshot.sh`,
-  `fzf-preview.sh`, `chrome-color-fix.sh`
-- `scripts/business/` — (reserved) Nepal BI scripts after survey
-- `scripts/legacy/` — gitignored, holds the 2024-era `/home/shared/scripts/`
-  for user review
+OpenCode skills deployed at `~/.agents`.
 
-## `data/` (reserved, future stage)
+## `os/`
 
-- `data/business/` — `business.db` runtime data lives in `/home/shared/data/`
-  (gitignored); the schema lives in `data/business/schema.sql` (tracked)
-- `data/lemma/` — same pattern for `lemma.db`
+- `os/pacman.txt` — explicit repository packages
+- `os/aur.txt` — explicit AUR packages
 
-## `os/` (reserved, future stage)
+## Operations
 
-- `os/packages-pacman.txt` — `pacman -Qeqt` output
-- `os/packages-aur.txt` — `yay -Qm` output
-- `os/packages-flatpak.txt` — `flatpak list` output
-- `os/restore.sh` — system restore script
-
-## `meta/` (reserved, future stage)
-
-- `meta/AGENTS.md` — symlink target for the global agent context
-- `meta/ecosystem.md` — the `/home/shared/` + `/home/<user>/` split explained
-
-## See also
-
-- `README.md` — goals, branches, remote, migration history
-- `~/Work/Zurnel/Reports/Mind-Palace-Dryrun-2026-08-31.md` — the 8-stage plan
+- Restore: `scripts/system/opencode-restore.sh`
+- Read-only check: `scripts/system/opencode-restore.sh --check`
+- Audit: `~/Work/Zurnel/Reports/Dotfiles-System-Audit-2026-09-25.md`

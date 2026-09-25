@@ -12,7 +12,9 @@ data/**/*.db-journal
 # ── backups created by the migration itself ──
 Backups/
 *.bak
+*.bak-*
 *.backup
+*.backup.*
 
 # ── editor / OS junk ──
 .DS_Store

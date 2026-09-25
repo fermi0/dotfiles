@@ -10,6 +10,7 @@ application/xhtml+xml=zen.desktop
 application/x-extension-xhtml=zen.desktop
 application/x-extension-xht=zen.desktop
 x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/antigravity=antigravity.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;
@@ -36,3 +37,5 @@ application/pdf=loupe-usercreated-1.desktop;
 image/png=imv.desktop;
 audio/ogg=mpv.desktop;
 video/mp4=mpv.desktop;
+text/markdown=md-viewer.desktop;
+video/matroska=mpv.desktop;

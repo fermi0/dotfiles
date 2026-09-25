@@ -14,7 +14,7 @@ file_exists() {
 }
 
 # Kill already running processes
-_ps=(waybar rofi swaync ags)
+_ps=(waybar rofi ags)
 for _prs in "${_ps[@]}"; do
   if pidof "${_prs}" >/dev/null; then
     pkill "${_prs}"
@@ -33,7 +33,7 @@ sleep 0.1
 #pkill qs && qs &
 
 # some process to kill
-for pid in $(pidof waybar rofi swaync ags swaybg); do
+for pid in $(pidof waybar rofi ags swaybg); do
   kill -SIGUSR1 "$pid"
   sleep 0.1
 done
@@ -42,11 +42,7 @@ done
 sleep 0.1
 waybar &
 
-# relaunch swaync
-sleep 0.3
-swaync >/dev/null 2>&1 &
-# reload swaync
-swaync-client --reload-config
+systemctl --user restart swaync.service
 
 # Relaunching rainbow borders if the script exists
 sleep 1

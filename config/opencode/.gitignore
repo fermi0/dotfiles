@@ -1,7 +1,16 @@
 node_modules
 bun.lock
 .gitignore
+auto-free/
+auto-free.backup.*/
+auto-free/test-reports/
+*.bak-*
+*.backup.*
+*.db
+*.db-*
 
 # opencode-poorguy-ratelimit runtime state
 .poorguy-claims/
-opencode-poorguy-ratelimit.log
+logs/
+*.log
+supabase-pat

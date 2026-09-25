@@ -74,8 +74,8 @@
   // notify-essentials is auto-discovered from ./plugins/ (symlinked).
   // node_modules is symlinked to the global config's for npm package resolution.
   "plugin": [
-    "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
-    "file:///home/work/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
+    "file://{env:HOME}/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
+    "file://{env:HOME}/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
     "@fleetingecho/opencode-handoff"
   ],
 
@@ -88,7 +88,7 @@
     },
     "lemma": {
       "type": "local",
-      "command": ["node", "/home/work/.config/opencode/node_modules/lemma-mcp/dist/index.js"],
+      "command": ["node",         "{env:HOME}/.config/opencode/node_modules/lemma-mcp/dist/index.js"],
       "enabled": true
     },
     "sequential-thinking": {

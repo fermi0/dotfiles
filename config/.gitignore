@@ -7,12 +7,11 @@ opencode/node_modules/
 opencode/bun.lock
 opencode/.gitignore
 opencode/local.jsonc
-opencode-local/node_modules/
-opencode-local/package-lock.json
-opencode-local/bun.lock
-opencode-local/.gitignore
-opencode-local/package.json
-opencode-local-xdg/
+oc-local/opencode/node_modules/
+oc-local/opencode/package-lock.json
+oc-local/opencode/bun.lock
+oc-local/opencode/.gitignore
+oc-local-xdg/
 
 # ── opencode local backups and runtime artifacts ──
 opencode/opencode.jsonc.backup*
@@ -28,6 +27,15 @@ opencode/plugin-meta.json
 opencode/opencode-poorguy-ratelimit.log
 # contains API keys (chmod 600) - never commit
 opencode/opencode-poorguy-ratelimit.jsonc
+opencode/auto-free/
+opencode/auto-free.backup.*/
+opencode/auto-free/test-reports/
+opencode/plugins/opencode-auto-free/node_modules/
+opencode/*.bak-*
+opencode/*.backup.*
+opencode/*.db
+opencode/*.db-*
+opencode/mydatabase.db
 opencode/opencode-mem.jsonc      # dead plugin (auto-capture disabled)
 opencode/.DS_Store
 opencode/opencode.db*            # local sqlite (in shared/data/ via symlink in stage 4)
@@ -66,6 +74,7 @@ hypr/.initial_startup_done
 hypr/Monitor_Profiles/*.bak
 hypr/configs/*.bak.*
 hypr/configs/*~
+hypr/lua-staging/
 
 # ── rofi runtime state (current wallpaper, etc.) ──
 rofi/.current_wallpaper
@@ -149,8 +158,17 @@ autostart/*.desktop.bak
 
 # ── general junk ──
 *.bak
+*.bak-*
 *.backup
+*.backup.*
 *.tmp
+*.pid
+*.sock
+.env
+.env.*
+*.pem
+*.key
+!*.example
 *~
 .DS_Store
 Thumbs.db
