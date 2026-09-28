@@ -14,17 +14,15 @@ file_exists() {
 }
 
 # Kill already running processes
-_ps=(waybar rofi ags)
+# NOTE: waybar is deliberately absent. It is supervised by systemd
+# (waybar.service, Restart=always); pkill'ing it here would only race
+# systemd into restarting it.
+_ps=(rofi ags)
 for _prs in "${_ps[@]}"; do
   if pidof "${_prs}" >/dev/null; then
     pkill "${_prs}"
   fi
 done
-
-# added since wallust sometimes not applying
-killall -SIGUSR2 waybar
-# Added sleep for GameMode causing multiple waybar
-sleep 0.1
 
 # quit ags & relaunch ags
 #ags -q && ags &
@@ -33,14 +31,17 @@ sleep 0.1
 #pkill qs && qs &
 
 # some process to kill
-for pid in $(pidof waybar rofi ags swaybg); do
+for pid in $(pidof rofi ags); do
   kill -SIGUSR1 "$pid"
   sleep 0.1
 done
 
-#Restart waybar
-sleep 0.1
-waybar &
+# Restart waybar through systemd so it stays supervised.
+# This used to be a bare `waybar &`: an unsupervised background process that
+# could die silently and leave no bar at all.
+# SIGUSR2 (the old `killall -SIGUSR2 waybar` line) is NOT handled by waybar and
+# terminates it, so it must never be used to "refresh" it.
+systemctl --user restart waybar.service
 
 systemctl --user restart swaync.service
 

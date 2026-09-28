@@ -1,0 +1,18 @@
+[Unit]
+Description=Waybar status bar
+Documentation=man:waybar(1)
+After=graphical-session.target
+# Never give up restarting waybar, no matter how many times it fails.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/waybar
+# SIGUSR1 is waybar's live-reload signal. SIGUSR2 is NOT handled by
+# waybar and terminates it, so it must never be used here.
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

@@ -180,7 +180,9 @@ apply_image_wallpaper() {
   awww img -o "$focused_monitor" "$image_path" $awww_PARAMS
 
   # Run additional scripts (pass the image path to avoid cache race conditions)
-  "$SCRIPTSDIR/Wallustawww.sh" "$image_path"
+  # NOTE: this used to call Wallustawww.sh, which does not exist. bash failed
+  # silently and the colour templates were never regenerated.
+  "$SCRIPTSDIR/WallustSwww.sh" "$image_path"
   sleep 2
   "$SCRIPTSDIR/Refresh.sh"
   sleep 1

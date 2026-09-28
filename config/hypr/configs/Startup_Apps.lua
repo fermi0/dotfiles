@@ -93,8 +93,14 @@ hl.on("hyprland.start", function()
     hl.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/KeybindsLayoutInit.sh")
     hl.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Polkit.sh")
     hl.exec_cmd("nm-applet --indicator")
-    hl.exec_cmd("nm-tray")
-    hl.exec_cmd("waybar")
+    -- nm-tray is not installed: network-manager-applet ships only nm-applet.
+    -- nm-applet --indicator above already provides the tray, so this line
+    -- used to be a silent no-op failure on every boot.
+    -- waybar is supervised by systemd (waybar.service, Restart=always), so it
+    -- must NOT be launched directly here or two bars will race. The explicit
+    -- start is a harmless no-op if the unit is already up, and a safety net if
+    -- it lost the race against WAYLAND_DISPLAY being imported above.
+    hl.exec_cmd("systemctl --user start waybar.service")
     hl.exec_cmd("kdeconnectd &")
     hl.exec_cmd("kdeconnect-indicator &")
     hl.exec_cmd("normcap --background-mode")
@@ -104,4 +110,8 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hypridle")
     hl.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Hyprsunset.sh init")
     hl.exec_cmd("blueman-applet")
+    -- Re-apply GPUPowerMizerMode=2 (adaptive) from ~/.nvidia-settings-rc.
+    -- Without this the setting is lost on reboot, since the rc file is only
+    -- read by nvidia-settings when it runs.
+    hl.exec_cmd("nvidia-settings -l 2>/dev/null")
 end)
