@@ -104,23 +104,13 @@
         "timeout": 900000,
         "chunkTimeout": 120000
       },
-      "models": {
-        "z-ai/glm-5.2:free": {
-          "name": "Z.ai: GLM 5.2 (free, no tools)",
-          "limit": {
-            "context": 32768,
-            "output": 29491
-          },
-          "stream": true,
-          "reasoning": true,
-          "tool_call": false
-        }
-      }
+      "models": {}
       // Models auto-managed by opencode-auto-free plugin (blacklist mode)
       // See ~/.config/opencode/auto-free/config.json
-      // NOTE: z-ai/glm-5.2:free explicitly defined above (tool_call:false)
-      // because the free endpoint has no tool-use support. Preserved by
-      // auto-free (defined models are always kept in blacklist mode).
+      // The hand-pinned z-ai/glm-5.2:free entry was removed 2026-09-28: kilo
+      // retired the :free variant (now 404), and the surviving z-ai/glm-5.2 is
+      // paid ($1.40/$4.40 per M) — so no free GLM remains on kilo. It is in
+      // auto-free's kilo `hide` list so it can never be auto-re-added.
     },
     "zai": {
       "npm": "@ai-sdk/openai-compatible",
@@ -139,7 +129,8 @@
       // Keep/hide curated in ~/.config/opencode/auto-free/config.json
     }
   },
-  "small_model": "kilo/nvidia/nemotron-3-super-120b-a12b:free",
+  // Title/summary auxiliary model: nemotron 3.5 lightning on kilo (fast, free).
+  "small_model": "kilo/nvidia/nemotron-3.5-lightning:free",
   "enabled_providers": [
     "local",
     "openrouter",
@@ -148,77 +139,26 @@
     "kilo",
     "zai"
   ],
+  // Main model: OpenRouter Nemotron 3 Ultra (550B MoE) on the `high` reasoning
+  // variant. Variant syntax is provider/model#variant; `high` sets
+  // reasoning.effort = "high". This is the DEFAULT for inheriting agents
+  // (build/plan/general/explore and the summary/compaction auxiliaries).
+  // NOTE: per-agent `model` is honoured only for *custom* agents — the built-in
+  // build/summary/compaction agents resolve their model internally and ignore
+  // `agent.<name>.model`, so the top-level key is the only way to pin them.
+  "model": "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free#high",
   "agent": {
-    "glm52-free": {
-      "description": "Chat-only agent pinned to Kilo GLM 5.2 free (endpoint has no tool-use support)",
-      "mode": "primary",
-      "model": "kilo/z-ai/glm-5.2:free",
-      "permission": {
-        "bash": "deny"
-      },
-      // Legacy tools map is the ONLY client-side switch that actually strips
-      // tool definitions from the outgoing request (tool_call:false and
-      // permission:deny still send them in opencode 1.18.x). Scoped to this
-      // agent only — build/plan/general are untouched.
-      "tools": {
-        "*": false,
-        "bash": false,
-        "read": false,
-        "write": false,
-        "edit": false,
-        "glob": false,
-        "grep": false,
-        "list": false,
-        "task": false,
-        "todowrite": false,
-        "webfetch": false,
-        "websearch": false,
-        "skill": false,
-        "question": false,
-        "lsp": false
-      }
-    }
+    // NOTE: the chat-only "glm52-free" agent was removed 2026-09-28 along
+    // with its kilo/z-ai/glm-5.2:free pin — kilo retired that :free variant
+    // (404) and the only surviving id is paid, so the agent could not work.
   },
-  "plugin": [
-    [
-      "file://{env:HOME}/.config/opencode/plugins/opencode-token-optimizer/dist/server.js",
-      {
-        "tokenOptimization": {
-          "rtk": {
-            "enabled": true
-          },
-          "dedup": {
-            "enabled": true,
-            "maxEntries": 200,
-            "ttlMs": 600000
-          },
-          "readCompact": {
-            "enabled": true,
-            "collapseRepeatedLines": true,
-            "trimTrailingWs": true
-          },
-          "wrap": {
-            "enabled": true,
-            "maxLineWidth": 120
-          },
-          "history": {
-            "enabled": false,
-            "keepLastTurns": 32
-          },
-          "systemPrompt": {
-            "enabled": true,
-            "codeModeNudge": "\n\n[Token-Optimizer hint] For batched tool work (>=3 tool calls, filter/aggregate/transform of results, or large file processing), prefer the `execute` tool (Code Mode). It can call multiple tools in one round, process data locally, and only return the summary to the context."
-          }
-        }
-      }
-    ],
-    "file://{env:HOME}/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js",
-    "file://{env:HOME}/.config/opencode/plugins/opencode-poorguy-ratelimit",
-    "file://{env:HOME}/.config/opencode/plugins/opencode-auto-free",
-    "opencode-scheduler",
-    "opencode-sentinel",
-    "@openspoon/subtask2",
-    "@fleetingecho/opencode-handoff"
+"plugins": [
+    "file://{env:HOME}/.config/opencode/plugins/token-optimizer-v2/index.ts",
+    "file://{env:HOME}/.config/opencode/plugins/poorguy-ratelimit-v2/index.ts",
+    "file://{env:HOME}/.config/opencode/plugins/auto-free-v2/index.ts",
+    "file://{env:HOME}/.config/opencode/plugins/sentinel-v2/index.ts",
+    "file://{env:HOME}/.config/opencode/plugins/subtask2-v2/index.ts",
+    "file://{env:HOME}/.config/opencode/plugins/handoff-v2/index.ts"
   ],
   "permission": {
     "bash": {
@@ -317,18 +257,20 @@
       ],
       "enabled": true
     },
-    "searxng": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "mcp-searxng@1.16.0"
-      ],
-      "enabled": true,
-      "environment": {
-        "SEARXNG_URL": "http://localhost:8080"
-      }
-    },
+    // searxng DISABLED 2026-09-28. opencode v2 has a NATIVE websearch tool
+    // (opencode.tool.websearch) that works with no API key - it defaults to
+    // Tinyfish and was verified live ("Web Search via Tinyfish" -> real
+    // results). Native `webfetch` also replaces searxng's web_url_read.
+    // Providers: exa, firecrawl, parallel, tavily, tinyfish. Set
+    // "websearch": { "provider": "..." } to pin a specific one.
+    // Only capability lost: searxng_search_suggestions (autocomplete), which a
+    // model does not need - it writes full queries.
+    // "searxng": {
+    //   "type": "local",
+    //   "command": ["npx", "-y", "mcp-searxng@1.16.0"],
+    //   "enabled": false,
+    //   "environment": { "SEARXNG_URL": "http://localhost:8080" }
+    // },
     "obsidian-rest": {
       "type": "remote",
       "url": "https://127.0.0.1:27124/mcp/",
@@ -336,7 +278,7 @@
       "headers": {
         "Authorization": "Bearer {env:OBSIDIAN_API_KEY}"
       }
-    },
+    }
     // "postman": {
     //   "type": "remote",
     //   "url": "https://mcp.eu.postman.com/code",

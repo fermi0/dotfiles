@@ -29,11 +29,39 @@
 ## Tools & Infra
 
 - **Vault**: `/home/shared/Zurnel` (Obsidian, via obsidian-rest MCP). Vault rules: `/home/shared/Zurnel/AGENTS.md`.
-- **Web**: searxng MCP (localhost:8080). **Browser**: playwright MCP.
+- **Web**: opencode's NATIVE `websearch` (default Tinyfish; providers exa/firecrawl/parallel/tavily/tinyfish, no API key
+            needed) + native `webfetch`. searxng MCP removed 2026-09-28 as redundant.
+- **Browser**: use the **playwright MCP** (per-project). opencode's NATIVE `browser` (45 tools) is a dead end here: it
+            requires the separate OpenCode Desktop app (a beta download, NOT in the Arch `opencode` package) to be
+            running and connected, otherwise every call fails with `[browser.disconnected] No desktop browser is
+            connected to this session`. The native tools cannot be disabled, so they also sit in every request as
+            non-functional context.
 - **Large files/output**: use `read_smart` or Code Mode `execute`; never dump >200KB into context; wrap long lines ≤120 chars; never truncate bash output.
 - **Ops runbook** (plugin stack, post-`pacman -Syu` checks, diagnostics, backups): `~/.config/opencode/RUNBOOK.md`.
+
+## OpenCode v2 gotchas (learned the hard way — RUNBOOK.md has detail)
+
+- **`Model.Info` has TWO id fields.** `id` = registry key (what `/models` lists, what `-m` takes); `modelID` = the string
+            actually sent upstream. Cloning a model across providers must override BOTH, or it looks fine in the picker
+            and 404s on every call.
+- **`Model.Ref` (session hooks) has `id`, not `modelID`.** `event.model.modelID` is `undefined`.
+- **v2 tool `execute()` must return `{content}`** (a bare string throws `"output" in s`); the `out()` wrapper belongs
+            only in `execute`, never in a helper that returns a string.
+- **Commenting a plugin out of the `plugins` array does NOT disable it** — v2 auto-discovers `plugin/` and `plugins/`.
+            To disable: `gio trash` the dir, then `opencode service restart`.
+- **Tool definitions are ~89% of input context** (measured: 9,938 vs 1,107 tokens, one-word prompt). The agent
+            `tools: {"*": false}` map is the only switch that strips them; `permission: deny` and `tool_call: false`
+            still send the schemas.
+- **`aisdk` hooks never fire.** Use `ctx.session.hook("http.request" | "http.response" | "retry")`.
+- **`opencode plugin list` / `opencode debug config` report the RUNNING daemon, not disk** — a stale daemon makes a
+            correct config edit look ineffective.
+- **Per-agent `model` works only for CUSTOM agents.** Built-in build/summary/compaction ignore `agent.<name>.model`;
+            pin them with the top-level `"model"` key (`provider/model#variant`, or an object with `variant`).
 
 ## Safety
 
 - Backup before modifying config. Never commit `.env` or `*poorguy-ratelimit.jsonc*`.
 - Delete via `gio trash` only; NEVER `rm`; NEVER empty Trash.
+- **Never enable a plugin in the live config that mutates a live request path** (auth headers, model ids, bodies) for
+            debugging. Instrument the EXISTING plugin's own code path with inert, append-only, try/catch logging. A
+            diagnostic on the auth path broke opencode globally on 2026-09-27.

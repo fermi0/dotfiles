@@ -1,0 +1,52 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "opencode",
+    "mode": "dark"
+  },
+  "plugins": [
+    "/home/work/.config/opencode/plugins/token-optimizer-v2/tui.tsx"
+  ],
+  "diffs": {
+    "wrap": "word",
+    "view": "auto",
+    "tree": true,
+    "single": false
+  },
+  "terminal": {
+    "title": true,
+    "copy": "select"
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": true,
+    "thinking": "show",
+    "permissions": "autoaccept",
+    "markdown": "rendered",
+    "grouping": "auto",
+    "verbosity": "high",
+    "image_preview": true,
+    "tps": true
+  },
+  "animations": true,
+  "debug": {
+    "devtools": true
+  },
+  "tabs": {
+    "mode": "on",
+    "layout": "horizontal",
+    "indicators": "status"
+  },
+  "scroll": {
+    "acceleration": true
+  },
+  "prompt": {
+    "paste": "full",
+    "image_preview": true
+  },
+  "attention": {
+    "notifications": true,
+    "sound": false,
+    "volume": 0.4
+  }
+}
