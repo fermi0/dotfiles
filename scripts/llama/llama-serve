@@ -22,6 +22,14 @@ case "$MODEL" in
           --ctx-size 262144 -ngl 999 --n-cpu-moe 38 -ub 1024 -fa on -ctk q8_0 -ctv q8_0
           --spec-type ngram-simple)
     ;;
+  ornith-compact)
+    # Ornith-1.5-35B-A3B APEX-Compact tier (consumer GPUs) — 16.5GB, ncmoe 36 optimal
+    # Benchmarked 2026-09-27: 42 t/s decode (vs 32 t/s Quality), 52 t/s prefill (vs 12 t/s).
+    # Same APEX technique, more aggressive precision gradient. Small quality cost.
+    ARGS=(-m "$M/Ornith-1.5-35B-A3B-APEX-Compact.gguf" --alias ornith-35b-a3b
+          --ctx-size 262144 -ngl 999 --n-cpu-moe 36 -ub 1024 -fa on -ctk q8_0 -ctv q8_0
+          --spec-type ngram-simple)
+    ;;
   ornith-vision)
     # Same model + mmproj. NOTE: multimodal disables --cache-reuse (slower repeat sessions).
     ARGS=(-m "$M/Ornith-1.5-35B-A3B-Q4_K_M.gguf" --mmproj "$M/mmproj-Ornith-1.5-35B-BF16.gguf" --alias ornith-35b-a3b
@@ -39,7 +47,7 @@ sleep 1
 
 exec "$BIN" "${ARGS[@]}" \
   --jinja \
-  --reasoning-budget 1024 \
+  --reasoning-budget 2048 \
   --cache-reuse 256 \
   --slot-save-path "$HOME/.cache/llama-slots" \
   --parallel 1 \

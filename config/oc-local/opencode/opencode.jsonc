@@ -3,7 +3,7 @@
   // oc-local: lean, isolated config for the local Ornith model (llama-server @ 127.0.0.1:1234).
   // Launched via the `oc-local` alias: XDG_CONFIG_HOME=~/.config/oc-local opencode
   // Fully isolated from the global ~/.config/opencode config (no merge) -> minimal system prompt.
-  "instructions": ["~/.config/opencode/AGENTS.md"],
+  "instructions": ["~/.config/opencode/AGENTS.md", "~/.config/oc-local/opencode/local-nudge.md"],
 
   "model": "local/Ornith-1.5-35B-A3B-APEX-Quality",
 
@@ -19,6 +19,23 @@
       "models": {
         "Ornith-1.5-35B-A3B-APEX-Quality": {
           "name": "Ornith-1.5-35B-A3B APEX-Quality - agentic RL-tuned MoE, ctx 256k (KV q8_0)",
+          "limit": {
+            "context": 262144,
+            "output": 8192
+          },
+          "stream": true,
+          "options": {
+            "temperature": 0.6
+          },
+          "variants": {
+            "precise": { "temperature": 0.2, "top_p": 0.9, "min_p": 0.05 },
+            "balanced": { "temperature": 0.6, "top_p": 0.95, "min_p": 0.1 },
+            "creative": { "temperature": 0.8, "top_p": 0.95 },
+            "benchmark": { "temperature": 1.0 }
+          }
+        },
+        "Ornith-1.5-35B-A3B-APEX-Compact": {
+          "name": "Ornith-1.5-35B-A3B APEX-Compact - agentic RL-tuned MoE, ctx 256k (KV q8_0), ~42 t/s, ncmoe 36",
           "limit": {
             "context": 262144,
             "output": 8192
