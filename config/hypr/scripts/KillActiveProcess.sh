@@ -8,8 +8,11 @@ active_pid=$(hyprctl activewindow -j | jq -r '.pid // empty')
 active_addr=$(hyprctl activewindow -j | jq -r '.address // empty')
 
 # Try Hyprland dispatch first (most reliable for any window, including special)
+# 0.56+: legacy `hyprctl dispatch killactive` / `closewindow <addr>` are dead -
+# hyprctl dispatch is now Lua-only and both forms die with a parse error, which
+# silently pushed every run onto the PID fallback below. Use hl.dispatch instead.
 if [ -n "$active_addr" ] && [ "$active_addr" != "null" ]; then
-    hyprctl dispatch killactive 2>/dev/null || hyprctl dispatch closewindow address:$active_addr 2>/dev/null || true
+    hyprctl eval "hl.dispatch(hl.dsp.window.kill({window=\"address:$active_addr\"}))" 2>/dev/null || true
 fi
 # Fallback: kill PID with SIGTERM then SIGKILL
 if [ -n "$active_pid" ] && [ "$active_pid" != "null" ] && kill -0 "$active_pid" 2>/dev/null; then

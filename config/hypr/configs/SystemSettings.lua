@@ -87,8 +87,11 @@ hl.config({
         workspace_swipe_use_r = true,
         --uncomment if wanted a forever create a new workspace with swipe right
         --MODIFIED
-        -- gesture = 3, up, dispatcher, exec, $scriptsDir/OverviewToggle.sh 
-        -- gesture = 4, down, dispatcher, exec, hyprctl dispatch togglefloating && sleep 0.1 && hyprctl dispatch centerwindow
+        -- 0.56+: legacy `hyprctl dispatch togglefloating` / `centerwindow` are dead.
+        -- Lua form: hyprctl eval "hl.dispatch(hl.dsp.window.float({action='toggle'}))" \
+        --                  && hyprctl eval "hl.dispatch(hl.dsp.window.center())"
+        -- gesture = 4, down, dispatcher, exec, <the above>
+        -- gesture = 3, up, dispatcher, exec, $scriptsDir/OverviewToggle.sh
     },
 })
 hl.gesture({

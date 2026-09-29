@@ -12,7 +12,10 @@ local mainMod = "SUPER"
 
 local scriptsDir = os.getenv("HOME") .. "/.config/hypr/scripts"
 
--- for disabling Touchpad. hyprctl devices to get device name. 
+-- For disabling Touchpad. hyprctl devices to get device name.
+-- NOTE: on this machine `hyprctl devices` reports no touchpads at all, so the
+-- hl.device() rule below matches nothing and xf86TouchpadToggle is never
+-- emitted. Kept because this file is shared with other machines.
 
 local Touchpad_Device = "asue1209:00-04f3:319f-touchpad"
 
@@ -44,7 +47,10 @@ hl.bind("xf86MonBrightnessUp", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hy
 
 -- increase monitor brightness
 
-hl.bind("xf86TouchpadToggle", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/TouchPad.sh"))
+-- The script reads the device name from the environment. This bind has to
+-- export it explicitly: a Lua `local` is invisible to the child process,
+-- which is why the old toggle was a silent no-op.
+hl.bind("xf86TouchpadToggle", hl.dsp.exec_cmd("TOUCHPAD_ENABLED='" .. Touchpad_Device .. "' " .. os.getenv("HOME") .. "/.config/hypr/scripts/TouchPad.sh"))
 
 -- disable touchpad
 
@@ -70,9 +76,7 @@ hl.bind("ALT" .. " + " .. "F6", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/h
 
 -- screenshot (active window only)
 
-local TOUCHPAD_ENABLED = true
-
 hl.device({
-    name = "asue1209:00-04f3:319f-touchpad",
+    name = Touchpad_Device,
     enabled = true,
 })

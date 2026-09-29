@@ -12,14 +12,64 @@
 DEBUG=false
 SPECIAL_WS="special:scratchpad"
 ADDR_FILE="/tmp/dropdown_terminal_addr"
+LOG_FILE="${XDG_RUNTIME_DIR:-/tmp}/hypr-dropdown.log"
+
+# Truncate once per invocation so the log cannot grow without bound, and so it
+# always describes the most recent toggle.
+: >"$LOG_FILE" 2>/dev/null
 
 # --- Hyprland 0.56+ lua compatibility (fixed 2026-08-26: silent moves + correct selectors) ---
-_hypr_move_to_ws() { local ws="$1" addr="$2"; hyprctl eval "hl.dispatch(hl.dsp.window.move({window=\"address:$addr\", workspace=\"$ws\", follow=false}))" >/dev/null 2>&1; }
-_hypr_pin() { local addr="$1"; hyprctl eval "hl.dispatch(hl.dsp.window.pin({window=\"address:$addr\"}))" >/dev/null 2>&1; }
-_hypr_exec() { local cmd="$1"; esc=$(printf "%s" "$cmd" | sed "s/'/\\'/g"); hyprctl eval "hl.dispatch(hl.dsp.exec_cmd('$esc'))" >/dev/null 2>&1; }
-_hypr_move_pixel() { local x="$1" y="$2" addr="$3"; hyprctl eval "hl.dispatch(hl.dsp.window.move({window=\"address:$addr\", x=$x, y=$y}))" >/dev/null 2>&1; }
-_hypr_resize_pixel() { local w="$1" h="$2" addr="$3"; hyprctl eval "hl.dispatch(hl.dsp.window.resize({window=\"address:$addr\", x=$w, y=$h}))" >/dev/null 2>&1; }
-_hypr_focus() { local addr="$1"; hyprctl eval "hl.dispatch(hl.dsp.focus({window=\"address:$addr\"}))" >/dev/null 2>&1 || true; }
+#
+# Every dispatch used to be piped to /dev/null, which threw away the only
+# diagnostic Hyprland gives: warnings such as "=[C]:-1: Window is fullscreen".
+# That is exactly why a dropdown stuck at ~fullscreen went undiagnosed - the log
+# showed 20+ refusals that nobody could see. _hypr_run keeps the command quiet on
+# success and records anything unexpected in $LOG_FILE.
+_hypr_log() {
+  printf '%s %s\n' "$(date '+%H:%M:%S')" "$1" >>"$LOG_FILE" 2>/dev/null
+  debug_echo "$1"
+}
+
+# Runs a lua dispatch. Returns non-zero if Hyprland answered anything but "ok".
+_hypr_run() {
+  local dsp="$1" out rc=0
+  out=$(hyprctl eval "$dsp" 2>&1) || rc=$?
+  if [ -n "$out" ] && [ "$out" != "ok" ]; then
+    _hypr_log "REJECTED: ${out//$'\n'/ } -- $dsp"
+    return 1
+  fi
+  [ $rc -ne 0 ] && { _hypr_log "EXIT $rc -- $dsp"; return $rc; }
+  return 0
+}
+
+_hypr_move_to_ws() { local ws="$1" addr="$2"; _hypr_run "hl.dispatch(hl.dsp.window.move({window=\"address:$addr\", workspace=\"$ws\", follow=false}))"; }
+_hypr_pin() { local addr="$1"; _hypr_run "hl.dispatch(hl.dsp.window.pin({window=\"address:$addr\"}))"; }
+_hypr_exec() { local cmd="$1"; esc=$(printf "%s" "$cmd" | sed "s/'/\\'/g"); _hypr_run "hl.dispatch(hl.dsp.exec_cmd('$esc'))"; }
+_hypr_move_pixel() { local x="$1" y="$2" addr="$3"; _hypr_run "hl.dispatch(hl.dsp.window.move({window=\"address:$addr\", x=$x, y=$y}))"; }
+_hypr_resize_pixel() { local w="$1" h="$2" addr="$3"; _hypr_run "hl.dispatch(hl.dsp.window.resize({window=\"address:$addr\", x=$w, y=$h}))"; }
+_hypr_focus() { local addr="$1"; _hypr_run "hl.dispatch(hl.dsp.focus({window=\"address:$addr\"}))" || true; }
+
+# Hyprland 0.56.2 bug: xdg-toplevel windows (kitty, Electron) are sometimes born
+# in a bogus maximized/fullscreen state - hyprland.log shows
+#   ERR: window kitty doesn't have FS handler assinged. This should never happen
+# and then a configure for the full working area (2556x1567 on 2560x1600).
+# In that state Hyprland REFUSES move/resize ("Window is fullscreen") and pin
+# ("Window does not qualify to be pinned"), so every helper above silently
+# no-ops and the dropdown stays stuck at ~fullscreen.
+#
+# The state clears with a *toggle* of mode="maximized" (action="unset" does NOT
+# work). Guard it: only toggle when the window actually reports fullscreen, or we
+# would maximize an otherwise healthy window.
+_hypr_clear_bogus_fullscreen() {
+  local addr="$1"
+  local fs=$(hyprctl clients -j 2>/dev/null | jq -r --arg ADDR "$addr" '.[] | select(.address == $ADDR) | .fullscreen' 2>/dev/null)
+  if [ "$fs" = "1" ]; then
+    debug_echo "Clearing bogus fullscreen state on $addr"
+    hyprctl eval "hl.dispatch(hl.dsp.window.fullscreen({window=\"address:$addr\", mode=\"maximized\"}))" >/dev/null 2>&1
+    sleep 0.2
+  fi
+  return 0
+}
 
 
 # Dropdown size and position configuration (percentages)
@@ -156,33 +206,18 @@ calculate_dropdown_position() {
 
   debug_echo "Monitor info: x=$mon_x, y=$mon_y, width=$mon_width, height=$mon_height, scale=$mon_scale"
 
-  # Validate scale value and provide fallback
-  if [ -z "$mon_scale" ] || [ "$mon_scale" = "null" ] || [ "$mon_scale" = "0" ]; then
-    debug_echo "Invalid scale value, using 1.0 as fallback"
-    mon_scale="1.0"
-  fi
+  # NOTE: hyprctl reports LOGICAL pixels - it has already applied the monitor
+  # scale and the reserved-area insets. Dividing by .scale again (as this
+  # function used to) shrank the dropdown by ~1/scale on a scaled monitor, and
+  # the non-bc fallback turned scale 1.5 into 15, a 10x error. No scale maths
+  # is needed here at all; scale is only logged now.
+  local logical_width="$mon_width"
+  local logical_height="$mon_height"
 
-  # Calculate logical dimensions by dividing physical dimensions by scale
-  local logical_width logical_height
-  if command -v bc >/dev/null 2>&1; then
-    # Use bc for precise floating point calculation
-    logical_width=$(echo "scale=0; $mon_width / $mon_scale" | bc | cut -d'.' -f1)
-    logical_height=$(echo "scale=0; $mon_height / $mon_scale" | bc | cut -d'.' -f1)
-  else
-    # Fallback to integer math (multiply by 100 for precision, then divide)
-    local scale_int=$(echo "$mon_scale" | sed 's/\.//' | sed 's/^0*//')
-    if [ -z "$scale_int" ]; then scale_int=100; fi
+  if ! [[ "$logical_width" =~ ^-?[0-9]+$ ]] || [ "$logical_width" -le 0 ]; then logical_width=1920; fi
+  if ! [[ "$logical_height" =~ ^-?[0-9]+$ ]] || [ "$logical_height" -le 0 ]; then logical_height=1080; fi
 
-    logical_width=$(((mon_width * 100) / scale_int))
-    logical_height=$(((mon_height * 100) / scale_int))
-  fi
-
-  # Ensure we have valid integer values
-  if ! [[ "$logical_width" =~ ^-?[0-9]+$ ]]; then logical_width=$mon_width; fi
-  if ! [[ "$logical_height" =~ ^-?[0-9]+$ ]]; then logical_height=$mon_height; fi
-
-  debug_echo "Physical resolution: ${mon_width}x${mon_height}"
-  debug_echo "Logical resolution: ${logical_width}x${logical_height} (physical ÷ scale)"
+  debug_echo "Monitor logical resolution: ${logical_width}x${logical_height} (scale=$mon_scale, already scaled)"
 
   # Calculate window dimensions based on LOGICAL space percentages
   local width=$((logical_width * WIDTH_PERCENT / 100))
@@ -200,7 +235,6 @@ calculate_dropdown_position() {
 
   debug_echo "Window size: ${width}x${height} (logical pixels)"
   debug_echo "Final position: x=$final_x, y=$final_y (logical coordinates)"
-  debug_echo "Hyprland will scale these to physical coordinates automatically"
 
   echo "$final_x $final_y $width $height $mon_name"
 }
@@ -299,6 +333,7 @@ spawn_terminal() {
 
     # Now bring it back with the same animation as subsequent shows
     # Use movetoworkspacesilent to avoid affecting workspace history
+    _hypr_clear_bogus_fullscreen "$new_addr"
     _hypr_move_to_ws "$CURRENT_WS" "$new_addr"
     _hypr_pin "$new_addr"
     animate_slide_down "$new_addr" "$target_x" "$target_y" "$width" "$height"
@@ -326,6 +361,7 @@ if terminal_exists; then
     height=$(echo $pos_info | cut -d' ' -f4)
     monitor_name=$(echo $pos_info | cut -d' ' -f5)
     # Move and resize window
+    _hypr_clear_bogus_fullscreen "$TERMINAL_ADDR"
     _hypr_move_pixel "$target_x" "$target_y" "$TERMINAL_ADDR"
     _hypr_resize_pixel "$width" "$height" "$TERMINAL_ADDR"
     # Update ADDR_FILE
@@ -343,6 +379,7 @@ if terminal_exists; then
     height=$(echo $pos_info | cut -d' ' -f4)
 
     # Use movetoworkspacesilent to avoid affecting workspace history
+    _hypr_clear_bogus_fullscreen "$TERMINAL_ADDR"
     _hypr_move_to_ws "$CURRENT_WS" "$TERMINAL_ADDR"
     _hypr_pin "$TERMINAL_ADDR"
 

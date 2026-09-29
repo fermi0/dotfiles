@@ -86,6 +86,9 @@ end)
 
 --MODIFIED
 
+-- 0.56+ NOTE: `workspaceopt allfloat` has no lua equivalent
+-- (hl.dsp.workspace exposes only change_id/move/rename/swap_monitors/toggle_special),
+-- so this idea cannot be restored as written. It is left disabled.
 -- bindd = $mainMod ALT, SPACE, Float all windows, exec, hyprctl dispatch workspaceopt allfloat #MODIFIED
 
 hl.bind("F12", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Dropterminal.sh \"kitty --class dropdown\""))
@@ -93,10 +96,15 @@ hl.bind("F12", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/Dropt
 --MODIFIED
 
 -- Desktop zooming or magnifier #MODIFIED
+-- 0.56+: `hyprctl keyword` is dead, use hl.config({cursor={zoom_factor=N}}).
+-- Keeping them disabled; enable by moving into a real hl.bind().
 
--- bindd = $mainMod ALT, mouse_down, zoom in, exec, hyprctl keyword cursor:zoom_factor "$(hyprctl getoption cursor:zoom_factor | awk 'NR==1 {factor = $2; if (factor < 1) {factor = 1}; print factor * 2.0}')"
-
--- bindd = $mainMod ALT, mouse_up, zoom out, exec, hyprctl keyword cursor:zoom_factor "$(hyprctl getoption cursor:zoom_factor | awk 'NR==1 {factor = $2; if (factor < 1) {factor = 1}; print factor / 2.0}')" 
+-- local function zoom_by(f)
+--     local cur = tonumber((hyprctl getoption cursor:zoom_factor | awk 'NR==1 {print $2}') or "1")
+--     if cur < 1 then cur = 1 end
+--     hyprctl eval ("hl.config({cursor={zoom_factor=%.4f}})" % math.min(f(cur), 10))
+-- end
+-- hl.bind(mainMod .. " + " .. "ALT" .. " + " .. "mouse_down", hl.dsp.exec_cmd("...")) 
 
 -- Waybar / Bar related
 

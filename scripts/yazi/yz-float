@@ -16,12 +16,15 @@ for _ in $(seq 1 60); do
   [[ -n "$addr" ]] && break; sleep 0.05
 done
 if [[ -n "$addr" ]]; then
-  hyprctl dispatch focuswindow "address:$addr" >/dev/null 2>&1 || true
-  hyprctl dispatch resizewindowpixel "exact $W $H,address:$addr" >/dev/null 2>&1 || true
+  # 0.56+: legacy `hyprctl dispatch <args>` is dead - hyprctl dispatch is now
+  # Lua-only, so focuswindow/resizewindowpixel/movewindowpixel all died with a
+  # parse error. window.resize with x/y sets an EXACT size (not a delta).
+  hyprctl eval "hl.dispatch(hl.dsp.focus({window=\"address:$addr\"}))" >/dev/null 2>&1 || true
+  hyprctl eval "hl.dispatch(hl.dsp.window.resize({window=\"address:$addr\", x=$W, y=$H}))" >/dev/null 2>&1 || true
   # top-center placement
   monw=$(hyprctl -j monitors 2>/dev/null | jq -r '(.[] | select(.focused==true) | .width) // (.[0].width) // 1920')
   x=$(( (monw - W) / 2 )); (( x < 0 )) && x=0
-  hyprctl dispatch movewindowpixel "exact $x 40,address:$addr" >/dev/null 2>&1 || true
+  hyprctl eval "hl.dispatch(hl.dsp.window.move({window=\"address:$addr\", x=$x, y=40}))" >/dev/null 2>&1 || true
 fi
 wait "$pid" 2>/dev/null || true
 exit 0

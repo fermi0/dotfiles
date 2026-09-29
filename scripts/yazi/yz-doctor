@@ -46,7 +46,7 @@ if hyprctl -j clients >/dev/null 2>&1; then
   fl=$(hyprctl -j clients | jq -r '[.[]|select(.class=="yzfloat-doccheck")][0].floating // "closed"')
   wait 2>/dev/null
   [[ "$fl" == true ]] && good "yzfloat-* floats via windowrule" \
-    || skip "float rule not active this session (applies next login; run: hyprctl keyword windowrule 'match:class ^(yzfloat-), float on')"
+    || skip "float rule not active this session (rule lives in hypr/configs/WindowRules.lua; it applies on next Hyprland start - note: reload is NOT enough, hyprland.lua re-runs nwg-displays via require('monitors'))"
 else
   skip "not inside a Hyprland session"
 fi
