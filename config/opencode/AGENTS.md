@@ -31,11 +31,14 @@
 - **Vault**: `/home/shared/Zurnel` (Obsidian, via obsidian-rest MCP). Vault rules: `/home/shared/Zurnel/AGENTS.md`.
 - **Web**: opencode's NATIVE `websearch` (default Tinyfish; providers exa/firecrawl/parallel/tavily/tinyfish, no API key
             needed) + native `webfetch`. searxng MCP removed 2026-09-28 as redundant.
-- **Browser**: use the **playwright MCP** (per-project). opencode's NATIVE `browser` (45 tools) is a dead end here: it
-            requires the separate OpenCode Desktop app (a beta download, NOT in the Arch `opencode` package) to be
-            running and connected, otherwise every call fails with `[browser.disconnected] No desktop browser is
-            connected to this session`. The native tools cannot be disabled, so they also sit in every request as
-            non-functional context.
+- **Browser**: opencode's NATIVE `browser` (45 tools) WORKS here — verified 2026-09-30 by opening real tabs
+            (example.com, hypr.land, github.com). The earlier claim that it was a dead end needing the OpenCode
+            Desktop app was wrong; do not repeat it without testing. Two real limits: (1) the profile is NOT signed
+            in to anything — github.com redirects to /login, so anything needing auth needs the user to log in
+            themselves; (2) the return shape is the tab object itself (`r.id`, `r.title`), NOT `r.output.id` —
+            reading the wrong path makes a working call look like a failure. There is no playwright MCP on this box
+            and no `gh`-style CLI unless installed, so prefer NATIVE `browser` + the `gh` CLI (or a PAT) for
+            anything authenticated.
 - **Large files/output**: use `read_smart` or Code Mode `execute`; never dump >200KB into context; wrap long lines ≤120 chars; never truncate bash output.
 - **Ops runbook** (plugin stack, post-`pacman -Syu` checks, diagnostics, backups): `~/.config/opencode/RUNBOOK.md`.
 

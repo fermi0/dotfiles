@@ -52,8 +52,15 @@ hl.config({
             enabled = true,
             size = 10,
             passes = 2,
+            -- Blur is applied regardless of the window's opacity, so a window
+            -- with opacity 0.9 can still be frosted rather than clearly see-through.
             ignore_opacity = true,
             new_optimizations = true,
+            -- `special` = blur behind the SPECIAL WORKSPACE, i.e. the scratchpad the
+            -- dropdown terminal lives in. It is NOT an "only blur special windows"
+            -- flag. Hyprland documents it as expensive and it defaults to false;
+            -- set to true here on purpose. Flip it live to compare:
+            --   hyprctl eval "hl.config({decoration={blur={special=false}}})"
             special = true,
             popups = true,
         },
