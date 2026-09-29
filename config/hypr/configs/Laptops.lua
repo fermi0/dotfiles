@@ -13,11 +13,16 @@ local mainMod = "SUPER"
 local scriptsDir = os.getenv("HOME") .. "/.config/hypr/scripts"
 
 -- For disabling Touchpad. hyprctl devices to get device name.
--- NOTE: on this machine `hyprctl devices` reports no touchpads at all, so the
--- hl.device() rule below matches nothing and xf86TouchpadToggle is never
--- emitted. Kept because this file is shared with other machines.
+-- CORRECTED 2026-09-29: this was "asue1209:00-04f3:319f-touchpad", an ASUS
+-- Vivobook device from another machine, so the rule below matched nothing.
+-- This Legion's touchpad is the ELAN one below. The touchpad kept working all
+-- along because libinput enables it by default - the rule was never what made
+-- it work, it only ever controlled the toggle.
+-- NB: in 0.56 `hyprctl devices` lists this under the "mice" key, not "touch"
+-- (`jq '.touchpads'` returns null and looks like "no touchpad"). Use:
+--   hyprctl devices -j | jq -r '.mice[].name'
 
-local Touchpad_Device = "asue1209:00-04f3:319f-touchpad"
+local Touchpad_Device = "elan06fa:00-04f3:327e-touchpad"
 
 hl.bind("xf86KbdBrightnessDown", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/scripts/BrightnessKbd.sh --dec"))
 
