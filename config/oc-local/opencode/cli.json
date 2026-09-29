@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "system"
+  },
+  "plugins": [
+    "{env:HOME}/.config/opencode/plugins/opencode-token-optimizer/dist/tui.js"
+  ],
+  "diffs": {
+    "wrap": "word"
+  },
+  "terminal": {
+    "title": false
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": false,
+    "thinking": "show"
+  },
+  "animations": true
+}
