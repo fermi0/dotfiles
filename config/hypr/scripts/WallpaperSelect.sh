@@ -142,28 +142,19 @@ set_sddm_wallpaper() {
 }
 
 modify_startup_config() {
-  local selected_file="$1"
-  local startup_config="$HOME/.config/hypr/configs/Startup_Apps.conf"
-
-  # Check if it's a live wallpaper (video)
-  if [[ "$selected_file" =~ \.(mp4|mkv|mov|webm)$ ]]; then
-    # For video wallpapers:
-    sed -i '/^\s*exec-once\s*=\s*awww-daemon\s*--format\s*xrgb\s*$/s/^/\#/' "$startup_config"
-    sed -i '/^\s*#\s*exec-once\s*=\s*mpvpaper\s*.*$/s/^#\s*//;' "$startup_config"
-
-    # Update the livewallpaper variable with the selected video path (using $HOME)
-    selected_file="${selected_file/#$HOME/\$HOME}" # Replace /home/user with $HOME
-    sed -i "s|^\$livewallpaper=.*|\$livewallpaper=\"$selected_file\"|" "$startup_config"
-
-    echo "Configured for live wallpaper (video)."
-  else
-    # For image wallpapers:
-    sed -i '/^\s*#\s*exec-once\s*=\s*awww-daemon\s*--format\s*xrgb\s*$/s/^\s*#\s*//;' "$startup_config"
-
-    sed -i '/^\s*exec-once\s*=\s*mpvpaper\s*.*$/s/^/\#/' "$startup_config"
-
-    echo "Configured for static wallpaper (image)."
-  fi
+  # Intentionally a no-op.
+  #
+  # This used to sed-toggle `exec-once` lines in
+  # ~/.config/hypr/configs/Startup_Apps.conf to switch between awww-daemon and
+  # mpvpaper depending on the wallpaper type. That file no longer exists: the
+  # config was migrated to Lua (Startup_Apps.lua), where $livewallpaper is a Lua
+  # local rather than a hyprlang variable, so a sed on the old format could
+  # never work. The sed silently failed on every wallpaper change.
+  #
+  # Video wallpapers are also unavailable: mpvpaper is not installed, and
+  # apply_video_wallpaper() reports that to the user. If live wallpapers are
+  # wanted later, this needs a real Lua implementation, not a sed.
+  :
 }
 
 # Apply Image Wallpaper
@@ -230,7 +221,7 @@ main() {
     exit 1
   fi
 
-  # Modify the Startup_Apps.conf file based on wallpaper type
+  # No-op since the Lua migration (see modify_startup_config)
   modify_startup_config "$selected_file"
 
   # **CHECK FIRST** if it's a video or an image **before calling any function**

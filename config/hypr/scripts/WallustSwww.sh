@@ -19,6 +19,27 @@ get_focused_monitor() {
   fi
 }
 
+# Helper: read the wallpaper path currently displayed on a monitor, straight
+# from the awww daemon.
+#
+# This must use `awww query -j`. The plain-text output is whitespace-delimited,
+# so the previous `awk '{print $9}'` truncated the path at the first space and
+# broke on every wallpaper whose filename contains one -- which silently exited
+# and left the colour templates stale.
+get_wallpaper_for_monitor() {
+  local mon="$1"
+  if command -v jq >/dev/null 2>&1; then
+    # Shape is {"<namespace>": [{"name":..., "displaying": {"image": "..."}}]}
+    awww query -j 2>/dev/null |
+      jq -r --arg m "$mon" '.[].[] | select(.name == $m) | .displaying.image // empty'
+  else
+    # Fallback: strip the known literal prefix instead of counting fields, so
+    # spaces in the path survive.
+    awww query 2>/dev/null |
+      grep -F "$mon" | sed -e 's/^.*currently displaying: image: //'
+  fi
+}
+
 # Determine wallpaper_path
 wallpaper_path=""
 if [[ -n "$passed_path" && -f "$passed_path" ]]; then
@@ -26,8 +47,7 @@ if [[ -n "$passed_path" && -f "$passed_path" ]]; then
 else
   # Read current wallpaper for the focused monitor straight from the daemon
   current_monitor="$(get_focused_monitor)"
-  wallpaper_path=$(awww query | grep "$current_monitor" | awk '{print $9}')
-  [[ -n "$wallpaper_path" && -f "$wallpaper_path" ]] || wallpaper_path=""
+  wallpaper_path="$(get_wallpaper_for_monitor "$current_monitor")"
 fi
 
 if [[ -z "${wallpaper_path:-}" || ! -f "$wallpaper_path" ]]; then

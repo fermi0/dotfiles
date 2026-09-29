@@ -19,14 +19,30 @@ cursor_theme="Bibata-Modern-Ice"
 awwwcmd="awww img"
 effect="--transition-bezier .43,1.19,1,.4 --transition-fps 30 --transition-type grow --transition-pos 0.925,0.977 --transition-duration 2"
 
+# --- wallust: deliberately NOT marker-gated ---------------------------
+# The colour templates (WallustColors.lua, wallust-hyprland.conf, and the
+# rofi/kitty/waybar/cava ones) must be regenerated on EVERY boot, or
+# Hyprland and hyprlock load week-old colours. This used to sit inside the
+# marker-gated block below, so it only ever ran on the very first boot --
+# and even then only if .wallpaper_current existed.
+#
+# WallustSwww.sh reads the wallpaper from awww and exits 0 silently when
+# there is none, so calling it unconditionally is safe. awww-daemon is
+# started later in the startup chain, so wait for it before asking.
+(
+    for _ in 1 2 3 4 5 6 7 8 9 10; do
+        pgrep -x awww-daemon >/dev/null && break
+        sleep 0.5
+    done
+    "$scriptsDir/WallustSwww.sh"
+) >/dev/null 2>&1 &
+
 # Check if a marker file exists.
 if [ ! -f "$HOME/.config/hypr/.initial_startup_done" ]; then
     sleep 1
-    # Initialize wallust and wallpaper
+    # Initialize wallpaper (wallust is handled above, unconditionally)
 	if [ -f "$wallpaper" ]; then
-		wallust run -s $wallpaper > /dev/null 
 		awww query || awww-daemon && $awwwcmd $wallpaper $effect
-	    "$scriptsDir/WallustSwww.sh" > /dev/null 2>&1 & 
 	fi
      
     # initiate GTK dark mode and apply icon and cursor theme
