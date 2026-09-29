@@ -183,3 +183,7 @@ export OPENCODE_EXPERIMENTAL_CODE_MODE=1
 # its own rate-limit pool, so folding never competes with the active model.
 export OPENCODE_HANDOFF_MODEL=zai/glm-4.5-flash
 
+export PATH=/opt/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/opt/cuda/lib64:$LD_LIBRARY_PATH
+export LIBVA_DRIVER_NAME=nvidia
+
