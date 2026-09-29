@@ -63,12 +63,15 @@ and call the exact path it returns. Never guess a tool path.
 
 ## Infra pointers
 
-- Vault: `/home/shared/Zurnel` (Obsidian, obsidian-rest MCP). Its own rules live
-  in `Zurnel/AGENTS.md` — read the section index before placing anything.
+- Vault: `/home/shared/Zurnel` (Obsidian). Its own rules live in
+  `Zurnel/AGENTS.md` — read the section index before placing anything. The
+  `obsidian-rest` MCP is only live while Obsidian is open; if vault tools are
+  missing, check `pgrep obsidian` before assuming the config is broken.
 - Web: native `websearch` (Tinyfish default, no API key needed) + native `webfetch`.
-- Browser: the native `browser` tool works here and is the only browser on this
-  box (playwright exists in some project configs, not globally). It is not signed
-  in to anything, so authenticated work needs the user to log in, or `gh`/a PAT.
+- Browser: the native `browser` tool is the only browser here — the `playwright`
+  MCP is disabled in `opencode.jsonc`. It needs a connected browser and is not
+  signed in to anything, so authenticated work needs the user to log in, or
+  `gh auth login` / a PAT.
 - Hyprland config is **Lua** (`config/hypr/**/*.lua`): legacy `hyprctl dispatch`
   and `hyprctl keyword` are dead in 0.56. Before touching window rules read the
   header notes in `configs/WindowRules.lua` — two silent failure modes there cost

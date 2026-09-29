@@ -83,19 +83,25 @@ offline/deterministic (real openrouter catalog + pre-seeded probe cache).
 
 ## MCPs
 
-Global session exposes: `context7`, `lemma`, `sequential-thinking`, `sqlite`, plus opencode's own
-`browser` / `read_smart` / `sentinel_*` / `plugin_health` / `poorguy_reset` tool groups. `playwright` and
-`obsidian-rest` are project-scoped (e.g. `~/projects/saksham/opencode.json`) and are NOT in a global
-session — check a project's own config before assuming they are there.
+Global session (`~/.config/opencode/opencode.jsonc`): `context7`, `lemma`, `sequential-thinking`, `sqlite`, plus
+opencode's own `browser` / `read_smart` / `sentinel_*` / `plugin_health` / `poorguy_reset` tool groups.
+
+Two conditional ones — check before assuming they exist:
+
+- **`playwright` is disabled**, commented out in `opencode.jsonc` since the native `browser` tool covers it. Unrelated
+  to `@playwright/test`, which is still a dev dependency in `~/projects/saksham` for running e2e specs.
+- **`obsidian-rest` needs Obsidian running.** It is an HTTP MCP at `https://127.0.0.1:27124/mcp/` (the Local REST
+  API plugin), so it only connects while Obsidian is open. It is simply absent from a session started without it —
+  `pgrep obsidian` is the check.
 
 Removed 2026-09-28: `searxng` — opencode's NATIVE `websearch` covers search and defaults to Tinyfish with no API key
 (verified live), and native `webfetch` covered its `web_url_read`.
 
 ### Browser: the native `browser` tool works here (correction, 2026-09-30)
 
-The earlier note in this file claimed the native `browser` tool was dead without the OpenCode Desktop app.
-**That was wrong.** Verified live on 2026-09-30 by opening real tabs (`example.com`, `hypr.land`,
-`github.com`). The real constraints are narrower:
+The earlier note in this file claimed the native `browser` tool was dead without the OpenCode Desktop app, and
+said to use the playwright MCP instead. **Both were wrong.** Verified live on 2026-09-30 by opening real tabs
+(`example.com`, `hypr.land`, `github.com`), and playwright is since disabled. The real constraints are narrower:
 
 - It needs a connected browser (the desktop app, or `opencode pair` if you install it). There is no config
   key to disable it — `config.browser` does not exist — so its 45 tool definitions ride along in every request.
@@ -103,9 +109,6 @@ The earlier note in this file claimed the native `browser` tool was dead without
   needs the user to log in themselves, or a separate credential path (`gh auth login`, or a PAT in a file).
 - The return value is the tab object itself — read `r.id` / `r.title`, **not** `r.output.id`. Getting that
   path wrong makes a working call look like a failure, which is how the "it's broken" myth started.
-
-Keep `playwright` in the project configs that use it; do not remove it on the grounds that native browser
-covers those cases — native browser is unsigned-in and is not a drop-in replacement.
 
 ## Anti-Truncation Protocol (details)
 
