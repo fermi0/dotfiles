@@ -45,14 +45,15 @@ require("monitors")
 
 -- HDR override (after require("monitors") so it survives nwg-displays regeneration)
 -- All fields must be explicit: omitted ones reset to Hyprland defaults.
-hl.monitor({
-    output = "desc:China Star Optoelectronics Technology Co. Ltd MNG007DA6-2 0x00006006",
-    mode = "2560x1600@240.0",
-    position = "0x0",
-    scale = 1,
-    bitdepth = 10,
-    vrr = 1,
-    cm = "hdr",
-    sdrbrightness = 1.2,
-})
+-- hl.monitor({
+--     output = "desc:China Star Optoelectronics Technology Co. Ltd MNG007DA6-2 0x00006006",
+--     mode = "2560x1600@240.0",
+--     position = "0x0",
+--     scale = 1,
+--     bitdepth = 10,
+--     vrr = 1,
+--     cm = "hdr",
+--     -- sdrbrightness = 1.0,
+--     -- sdrsaturation = 1.0
+-- })
 -- workspaces.conf was comments-only; no lua counterpart needed
