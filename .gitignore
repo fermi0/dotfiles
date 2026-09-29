@@ -61,4 +61,19 @@ config/waybar/wallust/colors-waybar.css
 config/hypr/monitors.conf
 config/hypr/monitors.lua
 
+# ── unused third-party cava shaders ──
+# NOT wallust output (wallust has no shader template) and NOT written by any
+# script here -- these are hand-placed files, MIT-licensed by
+# rezky_nightky <with.rezky@gmail.com>.
+#
+# They are not needed to reproduce this machine: cava's [output] section sets no
+# `method` at all (so it defaults to `bars`), and vertex_shader/fragment_shader
+# are commented out, so sdl_glsl is not in use. The seven other shaders in this
+# directory are already tracked; these four are listed individually so the
+# ignore does not silently untrack them.
+config/cava/shaders/orion_circle.frag
+config/cava/shaders/orion_circle_rotate.frag
+config/cava/shaders/orion_saturn_core.frag
+config/cava/shaders/orion_saturn_subring.frag
+
 
