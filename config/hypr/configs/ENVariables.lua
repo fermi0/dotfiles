@@ -96,11 +96,14 @@ hl.env("GBM_BACKEND", "nvidia-drm")
 
 --env = __GL_GSYNC_ALLOWED,1 #adaptive Vsync
 
---env = __NV_PRIME_RENDER_OFFLOAD,1
+hl.env("__NV_PRIME_RENDER_OFFLOAD", 1)
+hl.env("__NV_PRIME_RENDER_OFFLOAD_PROVIDER", "NVIDIA-G0")
 
 --env = __VK_LAYER_NV_optimus,NVIDIA_only
 
---env = WLR_DRM_NO_ATOMIC,1
+-- Hyprland 0.55+ uses Aquamarine, not wlroots. The old WLR_DRM_NO_ATOMIC is
+-- a dead wlroots var; the current equivalent is AQ_NO_ATOMIC.
+hl.env("AQ_NO_ATOMIC", 1)
 
 --## FOR VM and POSSIBLY NVIDIA ###
 
@@ -165,48 +168,6 @@ hl.env("EGL_PLATFORM", "wayland")
 -- env = GDK_SCALE,1
 
 -- env = QT_SCALE_FACTOR,1
-
---## NVIDIA ###
-
--- This is from Hyprland Wiki. Below will be activated nvidia gpu detected
-
--- See hyprland wiki https://wiki.hyprland.org/Nvidia/#environment-variables
-
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
-
-hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
-
-hl.env("NVD_BACKEND", "direct")
-
-hl.env("GSK_RENDERER", "ngl")
-
---## additional ENV's for nvidia. Caution, activate with care ###
-
-hl.env("GBM_BACKEND", "nvidia-drm")
-
---env = __GL_GSYNC_ALLOWED,1 #adaptive Vsync
-
---env = __NV_PRIME_RENDER_OFFLOAD,1
-
---env = __VK_LAYER_NV_optimus,NVIDIA_only
-
---env = WLR_DRM_NO_ATOMIC,1
-
---## FOR VM and POSSIBLY NVIDIA ###
-
--- LIBGL_ALWAYS_SOFTWARE software mesa rendering
-
---env = LIBGL_ALWAYS_SOFTWARE,1 # Warning. May cause hyprland to crash
-
---env = WLR_RENDERER_ALLOW_SOFTWARE,1
-
---## nvidia firefox ###
-
--- check this post https://github.com/elFarto/nvidia-vaapi-driver#configuration
-
-hl.env("MOZ_DISABLE_RDD_SANDBOX", 1)
-
-hl.env("EGL_PLATFORM", "wayland")
 
 --## Aquamarine Environment Variables (Hyprland > 0.45) ###
 
