@@ -279,6 +279,25 @@ rule({
     opacity = "0.8 0.7",
 })
 
+-- Terminals. This is the rule that used to exist in this file as
+--   match = { tag = "terminal" }, opacity = "0.9 0.7"
+-- which never fired, because 0.56 does not match on tags (see the header note).
+-- That left Hyprland compositing kitty at decoration:active_opacity = 1.0, so
+-- the only transparency was kitty's own background_opacity 0.85 - and kitty
+-- forces that to fully opaque when unfocused, which is why terminals looked
+-- solid most of the time.
+-- 0.9/0.7 is the value the vendor config intended. It multiplies with kitty's
+-- own 0.85, giving roughly 0.77 focused and 0.60 unfocused.
+-- "dropdown" is included because the scratchpad terminal runs as
+-- `kitty --class dropdown`, which the old tag matcher never covered either.
+rule({
+    name  = "opacity_terminal",
+    match = {
+        class = "^(kitty|dropdown|Alacritty|kitty-dropterm)$",
+    },
+    opacity = "0.9 0.7",
+})
+
 rule({
     name  = "opacity_0_9_0_8",
     match = {

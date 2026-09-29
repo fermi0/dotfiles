@@ -30,7 +30,13 @@ hl.config({
     decoration = {
         rounding = 10,
         active_opacity = 1.0,
-        inactive_opacity = 1.17,
+        -- Was 1.17, which is outside the valid 0.0-1.0 range and was read back
+        -- verbatim by `hyprctl getoption decoration:inactive_opacity`. Set to 1.0
+        -- rather than something lower on purpose: a global sub-1.0 inactive
+        -- opacity would make EVERY unfocused app translucent, not just terminals.
+        -- Terminals get their own opacity from the opacity_terminal rule in
+        -- WindowRules.lua, and dim_inactive below provides the focus cue.
+        inactive_opacity = 1.0,
         fullscreen_opacity = 1.0,
         dim_inactive = true,
         dim_strength = 0.1,
